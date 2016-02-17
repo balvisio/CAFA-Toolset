@@ -1,0 +1,49 @@
+CAFA Asessment Program
+
+The CAFA Assessment program is designed to assess user's predictions against a standard benchmark set. This benchmark set
+could be created either using the CAFA Benchmark generator or using any other software, being consistent with the format.
+
+The CAFA Assessment program can be run in the following way:
+
+python Assess -P <prediction filename> -B <benchmark filename>
+
+This simple command will compare predictions in the prediction file with the benchmark and score the method accordingly.
+
+There are a few optional parameters that be viewed by typing this command:
+
+python Assess --help
+
+Configuration : 
+
+Before starting to run the main Assess program, a configuration script named "Cofigure.py" needs to be run. This script
+downloads the latest version of the uniprot id-mapping file into the current directory.This file is needed to map Swiss-
+Prot ids to uniprot ids in the main program.
+
+
+There are a variety of metrics that can be used to assess protein function predictions. The one currently used by the
+program is the protein-centric measure. So, this tries to measure how well a particular protein has been predicted. The
+other metric that will be added in the future is called the term-centric measure, which checks how well a certain term in
+the GO tree has been predicted. 
+
+Output :
+
+The output of the Assessment program is a tab delimited file with precision - recall values for every threshold at which
+a prediction has been submitted. A precision-recall curve of the same is also provided to obtain graphic visualization of
+the performance of the method.The curve will also help identify the best point, at which both the precision and recall
+are reasonably good. The higher this average is, the better the performance of the prediction method.
+
+Sample Files:
+
+There is a sample benchmark file and a sample prediction file provided with the scripts for the appropriate file formats
+to be used with the program and also for a look at the desired output.
+
+Source Code :
+
+The source code for the assessment program cabe found at this url : 
+https://github.com/rajeswari284/CAFA/edit/dev/assessment/
+
+It is open source and users are welcome to contribute to it. In case of any questions or comments regarding the program,
+please send an email to any of the following:
+
+idoerg@gmail.com
+rajeswari284@gmail.com
