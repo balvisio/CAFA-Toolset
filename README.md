@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ## CAFA Toolset 
 #### Features 
 * Integration of protein annotation databases: This tool integrates multiple protein annotation datasets in different file 
