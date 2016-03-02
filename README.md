@@ -151,14 +151,4 @@ In this target generation mode, only optional parameter is targetType. Be defaul
 for being potential targets.
 
 ### Source Code
-This is an open source project and the source code is publicly available on github through the following url: https://github.com/arkatebi/CAFA-Benchmark. 
-For questions, please email us: Iddo Friedberg (idoerg@gmail.com) or Ataur Katebi (arkatebi@gmail.com).
-
-
-
-
-
-=======
-# CAFA-Toolset
-A software package for managing the CAFA community experiment
->>>>>>> c2671a5eaa2ac9da800d17be16538a0badcc0b0e
+This is an open source project and the source code is publicly available on github through the following url: https://github.com/arkatebi/CAFA-Benchmark. For questions, please email us: Iddo Friedberg (idoerg@gmail.com) or Ataur Katebi (arkatebi@gmail.com).
