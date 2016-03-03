@@ -51,12 +51,13 @@ we will have three NK benchmark sets – one for each ontology.
 
 ##### Limited-knowledge (LK) benchmark set
 A protein will be included in this set if it did not have any experimentally verified annotations in a specific GO ontology, such as MFO 
-(irrespective of whether it had such annotations in one or both of the other two ontologies) at time point t1 but has gained at least one experimentally 
-verified functional term in that specific ontology between time t1 and t2. Therefore, we will have three LK benchmark sets – one for each ontology.
+(irrespective of whether it had such annotations in one or both of the other two ontologies) at time point t1 but has gained at least one 
+experimentally verified functional term in that specific ontology between time t1 and t2. Therefore, we will have three LK benchmark sets 
+– one for each ontology.
 
 ##### GAF 1.0 vs GAF 2.0
-These are two file formats for uniprot-goa annotation files. The input annotation files must be in either one of these two file formats for Benchmark 
-creation and verification tools. More details about GAF 1.0 format can be found at 
+These are two file formats for uniprot-goa annotation files. The input annotation files must be in either one of these two file formats for 
+Benchmark creation and verification tools. More details about GAF 1.0 format can be found at 
 http://geneontology.org/page/go-annotation-file-gaf-format-10 and GAF 2.0 format at http://geneontology.org/page/go-annotation-file-format-20.
 
 ### Python Requirements
@@ -115,42 +116,45 @@ annotation files at time points t1 and t2, respectively.
 
 ##### python Verify -I1=gene_association.goa_ref_yeast.23 -I2=gene_association.goa_ref_yeast.52
 
-The program will find SIX benchmark files of the latest version (obtained from the last run of the Benchmark program) and verify the content in 
-each of them for the correctness of the benchmark entries. To verify the benchmark files of a specific version, you can supply any of the benchmark 
-files as the third input. That way, the program will verify all the benchmark files that end with that specific version number available in the work space 
-folder. Here is an example for verifying the benchmark files of a specific version number (version 1):
+The program will find SIX benchmark files of the latest version (obtained from the last run of the Benchmark program) and 
+verify the content in each of them for the correctness of the benchmark entries. To verify the benchmark files of a specific 
+version, you can supply any of the benchmark files as the third input. That way, the program will verify all the benchmark files 
+that end with that specific version number available in the work space folder. Here is an example for verifying the benchmark 
+files of a specific version number (version 1):
 
 ##### python Verify -I1=gene_association.goa_ref_yeast.23 -I2=gene_association.goa_ref_yeast.52 -I3=gene_association.goa_ref_yeast.52.benchmark_LK_bpo.1
 
-You must also supply all optional parameters that you supplied while running the Benchmark Creation program to create this version of the benchmark files. 
-This will verify all six benchmark files that end with .1, i.e dot one.
+You must also supply all optional parameters that you supplied while running the Benchmark Creation program to create this 
+version of the benchmark files. This will verify all six benchmark files that end with .1, i.e dot one.
 
 ### Target Generation
-This tool will create a file for the target set, containing the protein sequences in fasta format. The simplest way to run the program for target generation:
+This tool will create a file for the target set, containing the protein sequences in fasta format. The simplest way to run the 
+program for target generation:
 
 python Benchmark  -M TG --input1 uniprot-goa-annotation-at-t0 --input2 uniprot-goa-annotation-information-at-t0
 
-input1 is a uniprot-GOA annotation file in gaf format at a certain time point (in cafa competition, this is time t0, the sequence release date 
-for the CAFA experiment). Input2 is a uniprot-GOA file in gpi format that supplies additional information about the input1 file at the same time point. 
-Here is an example with gene_association.goa_ref_yeast.23 as the uniprot-GOA annotation file and gp_information.goa_ref_yeast.23  as the GPI file with 
-the additional information about the GOA file (both retrieved from uniprot-GOA archive).
+input1 is a uniprot-GOA annotation file in gaf format at a certain time point (in cafa competition, this is time t0, the sequence 
+release date for the CAFA experiment). Input2 is a uniprot-GOA file in gpi format that supplies additional information about the 
+input1 file at the same time point. Here is an example with gene_association.goa_ref_yeast.23 as the uniprot-GOA annotation 
+file and gp_information.goa_ref_yeast.23  as the GPI file with the additional information about the GOA file (both retrieved from 
+uniprot-GOA archive).
 
 ##### python Benchmark -M TG -I1=gene_association.goa_ref_yeast.23 -I2=gp_information.goa_ref_yeast.23
 
-The program will generate THREE target sequence files in fasta format (one file for each ontology) for a supplied taxon with the amino acid sequences 
-of the proteins having no experimental evidence (evidence code IEA).
+The program will generate THREE target sequence files in fasta format (one file for each ontology) for a supplied taxon with the amino 
+acid sequences of the proteins having no experimental evidence (evidence code IEA).
 
 1. gene_association.goa_ref_yeast.23.target_taxa_559292_bpo.1.fasta
 2. gene_association.goa_ref_yeast.23.target_taxa_559292_cco.1.fasta
 3. gene_association.goa_ref_yeast.23.target_taxa_559292_mfo.1.fasta
 
-In this target generation mode, only optional parameter is targetType. By default, it is set to 0, which means that only IEA exclusive proteins would be considered 
-for being potential targets.
+In this target generation mode, only optional parameter is targetType. By default, it is set to 0, which means that only IEA exclusive 
+proteins would be considered for being potential targets.
 
 ### Source Code
 This is an open source project and the source code is publicly available on github through the following url: https://github.com/arkatebi/CAFA-Benchmark. 
 For questions, please email either of us: Iddo Friedberg (idoerg@gmail.com) or Ataur Katebi (arkatebi@gmail.com).
 
 ### References
-[1] Radivojac P, Clark WT, Oron TR, et al. (2013). A large-scale evaluation of computational protein function prediction, Nature Methods 10(3), pp 221-227, 
-PMID 23353650. 
+[1] Radivojac P, Clark WT, Oron TR, et al (2013). A large-scale evaluation of computational protein function prediction, Nature Methods, 
+10(3), pp 221-227, PMID 23353650. 
