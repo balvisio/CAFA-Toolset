@@ -152,7 +152,7 @@ In this target generation mode, only optional parameter is targetType. By defaul
 proteins would be considered for being potential targets.
 
 ### Source Code
-This is an open source project and the source code is publicly available on github through the following url: https://github.com/arkatebi/CAFA-Benchmark. 
+This is an open source project and the source code is publicly available on github through the following url: https://github.com/arkatebi/CAFA-Toolset.
 For questions, please email either of us: Iddo Friedberg (idoerg@gmail.com),  Ataur Katebi (arkatebi@gmail.com).
 
 ### References
