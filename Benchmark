@@ -5,20 +5,22 @@ import sys
 import argparse
 import shutil
 import subprocess
+from Bio.UniProt import GOA
 from collections import defaultdict
 from os.path import basename 
+
 import ArgParser as ap
+import Config
+import ConfigParser as cp
 import CreateDataset as cd
 import CreateBenchmark as cb
-import PaperTermFrequency as ptf
-import Config
-import Stats
-import ConfigParser as cp
 import FormatChecker as fc
-import SeqDownload as sd
 import GOAParser_cafa as gc
-from Bio.UniProt import GOA
-import TargetGenerator_from_uniprot as tg
+import PaperTermFrequency as ptf
+
+#import SeqDownload as sd
+#import Stats
+#import TargetGenerator_from_uniprot as tg
 
 '''
    The Benchmark program is made to work in TWO modes: Benchmark Creation mode and Target Generation 
