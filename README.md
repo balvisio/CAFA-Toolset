@@ -102,7 +102,7 @@ uniprot-GOA file, considering only the entries that are not already in the latte
 gene_association.goa_ref_yeast.38+sprot.38.1
 
 Multiple run of this program with the same input file versions will create subsequent versions of the output file where the file name will 
-end with subsequent version number 2, 3, 4, etc. 
+end with subsequent version number, such as 2, 3, 4, etc. 
 
 ### Benchmark Creation
 This tool will create benchmark files from two input annotation files in uniprot-GOA file format at time points t1 and t2, respectively. 
