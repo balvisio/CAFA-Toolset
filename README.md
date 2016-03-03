@@ -23,7 +23,23 @@ related announcements: http://biofunctionprediction.org/node/8. The following fi
 This software is specifically designed for the participants in the upcoming CAFA 3 experiment. The CAFA 1 results are 
 published [1] and CAFA 2 results are submitted for publication. 
 
-Definitions of some terms used in this document are given as follows.
+Definitions of some terms used in this document are following.
+
+#### UniProt-GOA 
+This is a database for protein assignments to GO resources which maintains a dynamically controlled vocabulary.  
+(*) UniProt-GOA dataset archive: ftp://ftp.ebi.ac.uk/pub/databases/GO/goa 
+(*) UniProt-GOA datasets can be in GAF 1.0 or GAF 2.0 file format. More details about GAF 1.0 format can be found at 
+http://geneontology.org/page/go-annotation-file-gaf-format-10 and GAF 2.0 format at 
+http://geneontology.org/page/go-annotation-file-format-20. 
+(*) More details about UniProt-GOA project: http://www.geneontology.org/gene-associations/readme/goa.README  
+
+#### UniProt-swissProt 
+This database is one of the two sections of UniProt Knowledgebase (UniProtKB) which is the central accesspoint for extensive curated 
+protein information, classificatio, and cross-reference. UniProt-SwissProt is manually annoated and is reviwed where the other section 
+UniProt-TrEMBL is automatically annotated and is not reviewed. 
+(*) UniProt-swissProt dataset archive (release 9 to 45): ftp://ftp.ebi.ac.uk/pub/databases/swissprot/sw_old_releases/ 
+(*) UniProt-swissProt dataset archive (release 46 and greater ): ftp://ftp.uniprot.org/pub/databases/uniprot/previous_releases/
+
 
 #### Time points t0, t1, and t2
 t0 is the time point when a CAFA experiment is launched and targets are made accessible to the community, whereas t1 is 
@@ -55,11 +71,6 @@ A protein will be included in this set if it did not have any experimentally ver
 experimentally verified functional term in that specific ontology between time t1 and t2. Therefore, we will have three LK benchmark sets 
 – one for each ontology.
 
-##### GAF 1.0 vs GAF 2.0
-These are two file formats for uniprot-goa annotation files. The input annotation files must be in either one of these two file formats for 
-Benchmark creation and verification tools. More details about GAF 1.0 format can be found at 
-http://geneontology.org/page/go-annotation-file-gaf-format-10 and GAF 2.0 format at http://geneontology.org/page/go-annotation-file-format-20.
-
 ### Python Requirements
 * Python 2.7 
 * Biopython 1.66 or greater 
@@ -73,6 +84,22 @@ this script at a linux promt as follows:
 ##### sh example.sh
 
 The details of the usage description of the CAFA Toolset are following. 
+
+### Integrating Databases
+This tool integrates protein annoations from multiple sources. Currently, it supports uniprot-swissProt and uniprot-GOA file format. 
+Here is the command to run this tool:
+python Mergedb -input1 uniprot-swissProt-annoation-at-t0 -input2 uniprot-GOA-annotation-at-time-t0 -organism taxon-id 
+
+One specific example run with input1 file uniprot_sprot.dat.38, input2 file gene_association.goa_ref_yeast.38, and taxon id 559292 
+for Saccharomyces Cerevisiae: 
+python Mergedb -I1=uniprot_sprot.dat.38 -I2=gene_association.goa_ref_yeast.38 -G 559292
+
+This command will extract the annotations for taxon id 559292 from the uniprot-swissProt file and append them at the end of the 
+uniprot-GOA file, considering only the entries that are not already in the latter file. It will create a combined file: 
+gene_association.goa_ref_yeast.38+sprot.38.1
+
+Multiple run of this program will create subsequent version of the output file where the file name will end with subsequent version 
+number 2, 3, 4, etc. 
 
 ### Benchmark Creation
 This tool will create benchmark files from two input annotation files in uniprot-GOA file format at time points t1 and t2, respectively. 
