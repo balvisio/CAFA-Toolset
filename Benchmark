@@ -242,20 +242,20 @@ if parsed_dict['Mode'] == 'TG': # Target Generation mode
     print 'Thank you for using the Target Generation Software.'
     sys.exit(1)
 else: # Bencmark Creation mode i.e --C is assigned T
-  # Create input datasets based on whether the user chose CAFA or non-CAFA submode of Benchmark Creation mode 
+  # Create input datasets based on whether the user chose CAFA or non-CAFA submode of Benchmark Creation mode
     if parsed_dict['t1'] == parsed_dict['t2']:
         print 'Both input files are from the same time point. This will not create a valid benchmark set.'
         print 'Program quiting ...'
         sys.exit(1)
     if parsed_dict['Program'] == 'T': # CAFA mode
-        print 'Program does not run in CAFA mode. Quiting ...'
+        print 'Program does not run in CAFA mode. Quitting ...'
         sys.exit(1)
         t1_input_file = work_dir + '/' + cd.parse_cafa(t1, ConfigParam) # parse t1 file in CAFA mode. it also creates t1.iea file 
     else:  # non-CAFA mode
         t1_input_file = work_dir + '/' + cd.parse(t1, ConfigParam) 
            # parse t1 file in non-CAFA mode. It does not create t1.iea file at this stage.
 
-    t2_input_file = work_dir + '/' + cd.parse(t2, ConfigParam) # parse t2 file. 
+    t2_input_file = work_dir + '/' + cd.parse(t2, ConfigParam) # parse t2 file.
 
     # Filename initialization
     output_filename_LK_bpo = work_dir + '/' + create_output(
