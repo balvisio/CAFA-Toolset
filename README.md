@@ -27,18 +27,18 @@ Definitions of some terms used in this document are following.
 
 #### uniprot-GOA 
 This is a database for protein assignments to GO resources which maintains a dynamically controlled vocabulary.  
-(*) UniProt-GOA dataset archive: ftp://ftp.ebi.ac.uk/pub/databases/GO/goa 
-(*) UniProt-GOA datasets can be in GAF 1.0 or GAF 2.0 file format. More details about GAF 1.0 format can be found at 
+*  UniProt-GOA dataset archive: ftp://ftp.ebi.ac.uk/pub/databases/GO/goa 
+*  UniProt-GOA datasets can be in GAF 1.0 or GAF 2.0 file format. More details about GAF 1.0 format can be found at 
 http://geneontology.org/page/go-annotation-file-gaf-format-10 and GAF 2.0 format at 
 http://geneontology.org/page/go-annotation-file-format-20. 
-(*) More details about UniProt-GOA project: http://www.geneontology.org/gene-associations/readme/goa.README  
+* More details about UniProt-GOA project: http://www.geneontology.org/gene-associations/readme/goa.README  
 
 #### uniprot-swissProt 
 This database is one of the two sections of UniProt Knowledgebase (UniProtKB) which is the central accesspoint for extensive curated 
 protein information, classificatio, and cross-reference. UniProt-SwissProt is manually annoated and is reviwed where the other section 
 UniProt-TrEMBL is automatically annotated and is not reviewed. 
-(*) uniprot-swissProt dataset archive (release 9 to 45): ftp://ftp.ebi.ac.uk/pub/databases/swissprot/sw_old_releases/ 
-(*) uniprot-swissProt dataset archive (release 46 and greater ): ftp://ftp.uniprot.org/pub/databases/uniprot/previous_releases/
+* uniprot-swissProt dataset archive (release 9 to 45): ftp://ftp.ebi.ac.uk/pub/databases/swissprot/sw_old_releases/ 
+* uniprot-swissProt dataset archive (release 46 and greater ): ftp://ftp.uniprot.org/pub/databases/uniprot/previous_releases/
 
 
 #### Time points t0, t1, and t2
