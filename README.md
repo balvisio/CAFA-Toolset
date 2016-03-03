@@ -101,7 +101,7 @@ This command will extract the annotations for taxon id 559292 from the uniprot-s
 uniprot-GOA file, considering only the entries that are not already in the latter file. It will create a combined file: 
 gene_association.goa_ref_yeast.38+sprot.38.1
 
-Multiple run of this program will create subsequent version of the output file where the file name will end with subsequent version 
+Multiple run of this program with the same input file versions will create subsequent version of the output file where the file name will end with subsequent version 
 number 2, 3, 4, etc. 
 
 ### Benchmark Creation
