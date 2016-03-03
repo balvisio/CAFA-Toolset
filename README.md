@@ -39,6 +39,7 @@ protein information, classificatio, and cross-reference. UniProt-SwissProt is ma
 UniProt-TrEMBL is automatically annotated and is not reviewed. 
 * uniprot-swissProt dataset archive (release 9 to 45): ftp://ftp.ebi.ac.uk/pub/databases/swissprot/sw_old_releases/ 
 * uniprot-swissProt dataset archive (release 46 and greater ): ftp://ftp.uniprot.org/pub/databases/uniprot/previous_releases/
+* uniprot-swissProt file format: http://arep.med.harvard.edu/labgc/jong/Fetch/SwissProtAll.html
 
 
 #### Time points t0, t1, and t2
