@@ -153,7 +153,7 @@ proteins would be considered for being potential targets.
 
 ### Source Code
 This is an open source project and the source code is publicly available on github through the following url: https://github.com/arkatebi/CAFA-Benchmark. 
-For questions, please email either of us: Iddo Friedberg (idoerg@gmail.com) or Ataur Katebi (arkatebi@gmail.com).
+For questions, please email either of us: Iddo Friedberg (idoerg@gmail.com),  Ataur Katebi (arkatebi@gmail.com).
 
 ### References
 [1] Radivojac P, Clark WT, Oron TR, et al. (2013). A large-scale evaluation of computational protein function prediction, Nature Methods 10(3), 
