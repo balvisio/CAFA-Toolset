@@ -104,10 +104,12 @@ gene_association.goa_ref_yeast.38+sprot.38.1 whose file format would be the same
 Multiple run of this program with the same input file versions will create subsequent versions of the output file where the file name will 
 end with subsequent version number, such as 2, 3, 4, etc.
 
-##### Note on uniprot-swissProt file use in this example 
-The uniprot-swissProt file uniprot_sprot.dat.38 is not stored in gitHub because of its  large size which exceeds gitHub file storage 
-limit. To get this specif file, please downlaod it at 
-ftp://ftp.uniprot.org/pub/databases/uniprot/previous_releases/release-2014_09/knowledgebase/uniprot_sprot-only2014_09.tar.gz. 
+##### Note 
+The uniprot-swissProt file uniprot_sprot.dat.38 is not stored in gitHub because of its large size which exceeds gitHub file storage limit. 
+To get this specif file: 
+* downlaod from ftp://ftp.uniprot.org/pub/databases/uniprot/previous_releases/release-2014_09/knowledgebase/uniprot_sprot-only2014_09.tar.gz. 
+* gunzip uniprot_sprot-only2014_09.tar.gz
+* tar xvf uniprot_sprot-only2014_09.tar 
 
 ### Target Generation
 This tool will create a file for the target set, containing the protein sequences in fasta format. The simplest way to run the 
