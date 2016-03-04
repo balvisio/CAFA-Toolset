@@ -108,13 +108,14 @@ end with subsequent version number, such as 2, 3, 4, etc.
 This tool will create a file for the target set, containing the protein sequences in fasta format. The simplest way to run the 
 program for target generation:
 
-python Benchmark  -M TG --input1 uniprot-goa-annotation-at-t0 --input2 uniprot-goa-annotation-information-at-t0
+python Filter  --input1 uniprot-swissProt-annotation-at-t0  -G taxon_id
 
-input1 is a uniprot-GOA annotation file in gaf format at a certain time point (in cafa competition, this is time t0, the sequence 
-release date for the CAFA experiment). Input2 is a uniprot-GOA file in gpi format that supplies additional information about the 
-input1 file at the same time point. Here is an example with gene_association.goa_ref_yeast.23 as the uniprot-GOA annotation 
-file and gp_information.goa_ref_yeast.23  as the GPI file with the additional information about the GOA file (both retrieved from 
-uniprot-GOA archive).
+input1 is a uniprot-swissProt annotation file at a certain time point (in cafa competition, this is time t0, the sequence 
+release date for the CAFA experiment), taxon_id is the taxon id for the specific species whose protein sequences are being filtered. 
+Here is an example with  uniprot_sprot.dat.38  as the uniprot-swissProt annotation file and 559292 as taxon id for Saccharomyces 
+cerevisiae.
+
+#####   python Filter -I1=uniprot_sprot.dat.38  -G=559292
 
 ##### python Benchmark -M TG -I1=gene_association.goa_ref_yeast.23 -I2=gp_information.goa_ref_yeast.23
 
@@ -125,8 +126,19 @@ acid sequences of the proteins having no experimental evidence (evidence code IE
 2. gene_association.goa_ref_yeast.23.target_taxa_559292_cco.1.fasta
 3. gene_association.goa_ref_yeast.23.target_taxa_559292_mfo.1.fasta
 
-In this target generation mode, only optional parameter is targetType. By default, it is set to 0, which means that only IEA exclusive 
-proteins would be considered for being potential targets.
+It will create the following target sequence file: 
+
+uniprot_sprot.dat.38.559292.tfa.1
+
+This output file name is created by adding an extension with the name of the input file where the extension is formed by 
+[taxon id].[tfa].[version #].
+
+Multiple run of this program with the same input file name will create subsequent versions of the output file where the file name will 
+end with subsequent version number, such as 2, 3, 4, etc.
+
+The program can also generate an output file if a user defined supply an additional argument with the output file name as here: 
+
+python Filter  --input1 uniprot-swissProt-annotation-at-t0  -G taxon_id -output output_filename
 
 ### Benchmark Creation
 This tool will create benchmark files from two input annotation files in uniprot-GOA file format at time points t1 and t2, respectively. 
