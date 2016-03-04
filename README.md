@@ -90,19 +90,19 @@ The details of the usage description of the CAFA Toolset are following.
 This tool integrates protein annoations from multiple sources. Currently, it supports uniprot-swissProt and uniprot-GOA file format. 
 Here is the command to run this tool:
 
-python Mergedb -input1 uniprot-swissProt-annoation-at-t0 -input2 uniprot-GOA-annotation-at-time-t0 -organism taxon-id 
+python Mergedb -input1 uniprot-swissProt-annoation-at-t0 -input2 uniprot-GOA-annotation-at-time-t0 -organism taxon-id
 
 One specific example run with input1 file uniprot_sprot.dat.38, input2 file gene_association.goa_ref_yeast.38, and taxon id 559292 
-for Saccharomyces Cerevisiae: 
+for Saccharomyces Cerevisiae:
 
 ##### python Mergedb -I1=uniprot_sprot.dat.38 -I2=gene_association.goa_ref_yeast.38 -G 559292
 
 This command will extract the annotations for taxon id 559292 from the uniprot-swissProt file and append them at the end of the 
-uniprot-GOA file, considering only the entries that are not already in the latter file. It will create a combined file: 
-gene_association.goa_ref_yeast.38+sprot.38.1
+uniprot-GOA file, considering only the entries that are not already in the latter file. It will create a combined file:
+gene_association.goa_ref_yeast.38+sprot.38.1 whose file format would be the same as the uniprot-GOA format.
 
 Multiple run of this program with the same input file versions will create subsequent versions of the output file where the file name will 
-end with subsequent version number, such as 2, 3, 4, etc. 
+end with subsequent version number, such as 2, 3, 4, etc.
 
 ### Benchmark Creation
 This tool will create benchmark files from two input annotation files in uniprot-GOA file format at time points t1 and t2, respectively. 
