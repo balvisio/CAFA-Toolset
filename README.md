@@ -86,7 +86,7 @@ this script at a linux promt as follows:
 
 The details of the usage description of the CAFA Toolset are following. 
 
-### Integrating Databases
+### Integrating Annotation Datasets
 This tool integrates protein annoations from multiple sources. Currently, it supports uniprot-swissProt and uniprot-GOA file format. 
 Here is the command to run this tool:
 
