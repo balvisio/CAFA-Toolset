@@ -120,7 +120,7 @@ It will create the following target sequence file:
 
 uniprot_sprot.dat.38.559292.tfa.1
 
-* The output file name is created by adding an extension with the name of the input file where the extension is formed by 
+* The output file name is created by adding an extension with the name of the input file where the extension is formed in the following way 
 [taxon id].[tfa].[version #].
 
 * Multiple run of this program with the same input file name will create subsequent versions of the output file where the file name will 
