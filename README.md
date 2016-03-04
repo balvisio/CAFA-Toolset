@@ -110,33 +110,23 @@ program for target generation:
 
 python Filter  --input1 uniprot-swissProt-annotation-at-t0  -G taxon_id
 
-input1 is a uniprot-swissProt annotation file at a certain time point (in cafa competition, this is time t0, the sequence 
-release date for the CAFA experiment), taxon_id is the taxon id for the specific species whose protein sequences are being filtered. 
-Here is an example with  uniprot_sprot.dat.38  as the uniprot-swissProt annotation file and 559292 as taxon id for Saccharomyces 
-cerevisiae.
+input1 is a uniprot-swissProt annotation file at a certain time point (on CAFA time-line, this is time t0, the sequence release date for the 
+CAFA community challenge), taxon_id is the taxonomy id for the specific species whose protein sequences are being filtered. Here is an 
+example with uniprot_sprot.dat.38  as the uniprot-swissProt annotation file and 559292 as taxon id for Saccharomyces cerevisiae.
 
 #####   python Filter -I1=uniprot_sprot.dat.38  -G=559292
-
-##### python Benchmark -M TG -I1=gene_association.goa_ref_yeast.23 -I2=gp_information.goa_ref_yeast.23
-
-The program will generate THREE target sequence files in fasta format (one file for each ontology) for a supplied taxon with the amino 
-acid sequences of the proteins having no experimental evidence (evidence code IEA).
-
-1. gene_association.goa_ref_yeast.23.target_taxa_559292_bpo.1.fasta
-2. gene_association.goa_ref_yeast.23.target_taxa_559292_cco.1.fasta
-3. gene_association.goa_ref_yeast.23.target_taxa_559292_mfo.1.fasta
 
 It will create the following target sequence file: 
 
 uniprot_sprot.dat.38.559292.tfa.1
 
-This output file name is created by adding an extension with the name of the input file where the extension is formed by 
+* The output file name is created by adding an extension with the name of the input file where the extension is formed by 
 [taxon id].[tfa].[version #].
 
-Multiple run of this program with the same input file name will create subsequent versions of the output file where the file name will 
+* Multiple run of this program with the same input file name will create subsequent versions of the output file where the file name will 
 end with subsequent version number, such as 2, 3, 4, etc.
 
-The program can also generate an output file if a user defined supply an additional argument with the output file name as here: 
+The program can also a user defined supplied output file name if the user supplies such a name as shown here: 
 
 python Filter  --input1 uniprot-swissProt-annotation-at-t0  -G taxon_id -output output_filename
 
