@@ -133,8 +133,8 @@ subprocess.call(cmd, shell=True)
 as2g.appendSprot2goa(open(t1_input_file, 'r'), t2_input_file, parsed_dict['g'], open(output_filename, 'a'))
 # Step 2: Create GOA records from uniprot-sprot file and append them at the end of the output file
 
-if os.path.exists(outfile_basename):
-    print (bcolors.OKGREEN + 'The following output file is created: ' + outfile_basename + bcolors.ENDC)
+if os.path.exists(output_filename):
+    print (bcolors.OKGREEN + 'The following output file is created: ' + basename(output_filename) + bcolors.ENDC)
 else:
-    print (bcolors.WARNING + 'No output file is created with the given input parameters' + outfile_basename + bcolors.ENDC)
+    print (bcolors.WARNING + 'No output file is created with the given input parameters' + bcolors.ENDC)
 print (bcolors.OKGREEN + 'Thank you for using the Merge Database Software' + bcolors.ENDC)
