@@ -62,14 +62,14 @@ placed in the benchmark set. Two types of benchmark sets, no-knowledge and limit
 (MFO, BPO, and CCO) to evaluate the protein function prediction models. Thus, we can have total six types of benchmark sets.
 
 ##### No-knowledge (NK) benchmark set
-A protein will be included in this set if it did not have any experimentally verified annotations in any of the GO ontologies (MFO, BPO, CCO) 
-at time t1 but has gained at least one experimentally verified functional term in a specific ontology between time t1 and t2. Therefore, 
-we will have three NK benchmark sets – one for each ontology.
+NK-benchmark set consists of the proteins that did not have any experimentally verified annotations in any of the GO ontologies (MFO, BPO, 
+CCO) at time t1 but have gained at least one experimentally verified functional term in a specific ontology between time t1 and t2. Therefore, 
+we will have three NK-benchmark sets – one for each ontology.
 
 ##### Limited-knowledge (LK) benchmark set
-A protein will be included in this set if it did not have any experimentally verified annotations in a specific GO ontology, such as MFO 
-(irrespective of whether it had such annotations in one or both of the other two ontologies) at time point t1 but has gained at least one 
-experimentally verified functional term in that specific ontology between time t1 and t2. Therefore, we will have three LK benchmark sets 
+LK-benchmark set consists of the proteins that did not have any experimentally verified annotations in a specific GO ontology, such as MFO 
+(irrespective of whether it had such annotations in one or both of the other two ontologies) at time point t1 but have gained at least one 
+experimentally verified functional term in that specific ontology between time t1 and t2. Therefore, we will have three LK-benchmark sets 
 – one for each ontology.
 
 ### Python Requirements
