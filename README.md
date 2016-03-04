@@ -104,6 +104,30 @@ gene_association.goa_ref_yeast.38+sprot.38.1 whose file format would be the same
 Multiple run of this program with the same input file versions will create subsequent versions of the output file where the file name will 
 end with subsequent version number, such as 2, 3, 4, etc.
 
+### Target Generation
+This tool will create a file for the target set, containing the protein sequences in fasta format. The simplest way to run the 
+program for target generation:
+
+python Benchmark  -M TG --input1 uniprot-goa-annotation-at-t0 --input2 uniprot-goa-annotation-information-at-t0
+
+input1 is a uniprot-GOA annotation file in gaf format at a certain time point (in cafa competition, this is time t0, the sequence 
+release date for the CAFA experiment). Input2 is a uniprot-GOA file in gpi format that supplies additional information about the 
+input1 file at the same time point. Here is an example with gene_association.goa_ref_yeast.23 as the uniprot-GOA annotation 
+file and gp_information.goa_ref_yeast.23  as the GPI file with the additional information about the GOA file (both retrieved from 
+uniprot-GOA archive).
+
+##### python Benchmark -M TG -I1=gene_association.goa_ref_yeast.23 -I2=gp_information.goa_ref_yeast.23
+
+The program will generate THREE target sequence files in fasta format (one file for each ontology) for a supplied taxon with the amino 
+acid sequences of the proteins having no experimental evidence (evidence code IEA).
+
+1. gene_association.goa_ref_yeast.23.target_taxa_559292_bpo.1.fasta
+2. gene_association.goa_ref_yeast.23.target_taxa_559292_cco.1.fasta
+3. gene_association.goa_ref_yeast.23.target_taxa_559292_mfo.1.fasta
+
+In this target generation mode, only optional parameter is targetType. By default, it is set to 0, which means that only IEA exclusive 
+proteins would be considered for being potential targets.
+
 ### Benchmark Creation
 This tool will create benchmark files from two input annotation files in uniprot-GOA file format at time points t1 and t2, respectively. 
 The simplest way to run this program:
@@ -156,30 +180,6 @@ files of a specific version number (version 1):
 
 You must also supply all optional parameters that you supplied while running the Benchmark Creation program to create this 
 version of the benchmark files. This will verify all six benchmark files that end with .1, i.e dot one.
-
-### Target Generation
-This tool will create a file for the target set, containing the protein sequences in fasta format. The simplest way to run the 
-program for target generation:
-
-python Benchmark  -M TG --input1 uniprot-goa-annotation-at-t0 --input2 uniprot-goa-annotation-information-at-t0
-
-input1 is a uniprot-GOA annotation file in gaf format at a certain time point (in cafa competition, this is time t0, the sequence 
-release date for the CAFA experiment). Input2 is a uniprot-GOA file in gpi format that supplies additional information about the 
-input1 file at the same time point. Here is an example with gene_association.goa_ref_yeast.23 as the uniprot-GOA annotation 
-file and gp_information.goa_ref_yeast.23  as the GPI file with the additional information about the GOA file (both retrieved from 
-uniprot-GOA archive).
-
-##### python Benchmark -M TG -I1=gene_association.goa_ref_yeast.23 -I2=gp_information.goa_ref_yeast.23
-
-The program will generate THREE target sequence files in fasta format (one file for each ontology) for a supplied taxon with the amino 
-acid sequences of the proteins having no experimental evidence (evidence code IEA).
-
-1. gene_association.goa_ref_yeast.23.target_taxa_559292_bpo.1.fasta
-2. gene_association.goa_ref_yeast.23.target_taxa_559292_cco.1.fasta
-3. gene_association.goa_ref_yeast.23.target_taxa_559292_mfo.1.fasta
-
-In this target generation mode, only optional parameter is targetType. By default, it is set to 0, which means that only IEA exclusive 
-proteins would be considered for being potential targets.
 
 ### Source Code
 This is an open source project and the source code is publicly available on github through the following url: https://github.com/arkatebi/CAFA-Toolset.
