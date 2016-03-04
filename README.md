@@ -28,9 +28,9 @@ Definitions of some terms used in this document are following.
 #### uniprot-GOA 
 This is a database for protein assignments to GO resources which maintains a dynamically controlled vocabulary.  
 *  uniprot-GOA dataset archive: ftp://ftp.ebi.ac.uk/pub/databases/GO/goa 
-*  uniprot-GOA datasets can be in GAF 1.0 or GAF 2.0 file format. More details about GAF 1.0 format can be found at 
+*  uniprot-GOA datasets can be in GAF 1.0 or GAF 2.0 file format. More details about GAF 1.0 format at 
 http://geneontology.org/page/go-annotation-file-gaf-format-10 and GAF 2.0 format at 
-http://geneontology.org/page/go-annotation-file-format-20. 
+http://geneontology.org/page/go-annotation-file-format-20
 * More details about uniprot-GOA project: http://www.geneontology.org/gene-associations/readme/goa.README  
 
 #### uniprot-swissProt 
