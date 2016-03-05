@@ -106,7 +106,7 @@ end with subsequent version number, such as 2, 3, 4, etc.
 
 ##### Note 
 The uniprot-swissProt file uniprot_sprot.dat.38 is not stored in gitHub because of its large size. To get this specific file: 
-* downlaod from ftp://ftp.uniprot.org/pub/databases/uniprot/previous_releases/release-2014_09/knowledgebase/uniprot_sprot-only2014_09.tar.gz. 
+* downlaod the .gz file at ftp://ftp.uniprot.org/pub/databases/uniprot/previous_releases/release-2014_09/knowledgebase/uniprot_sprot-only2014_09.tar.gz. 
 * gunzip uniprot_sprot-only2014_09.tar.gz
 * tar xvf uniprot_sprot-only2014_09.tar 
 * mv uniprot_sprot.data uniprot_sprot.dat.38
