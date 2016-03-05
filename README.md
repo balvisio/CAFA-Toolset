@@ -95,18 +95,19 @@ python Mergedb -input1 uniprot-swissProt-annoation-at-t0 -input2 uniprot-GOA-ann
 
 One specific example run with input1 file uniprot_sprot.dat.38, input2 file gene_association.goa_ref_yeast.38, and taxon id 559292 
 for Saccharomyces Cerevisiae:
-
+'''
 ##### python Mergedb -I1=uniprot_sprot.dat.38 -I2=gene_association.goa_ref_yeast.38 -G 559292
-
+'''
 This command will extract the annotations for taxon id 559292 from the uniprot-swissProt file and append them at the end of the 
 uniprot-GOA file, considering only the entries that are not already in the latter file. It will create a combined file:
 gene_association.goa_ref_yeast.38+sprot.38.1 whose file format would be the same as the uniprot-GOA format.
 
-Multiple run of this program with the same input file versions will create subsequent versions of the output file where the file name will 
-end with subsequent version number, such as 2, 3, 4, etc.
+Multiple run of this program with the same input file versions will create subsequent versions of the output file where the file 
+name will end with subsequent version number, such as 2, 3, 4, etc.
 
 ##### Note 
-The uniprot-swissProt file uniprot_sprot.dat.38 is not stored in gitHub because of its large size. To get this specific file, please do the following: 
+The uniprot-swissProt file uniprot_sprot.dat.38 is not stored in gitHub because of its large size. To get this specific file, please 
+do the following: 
 ```
 1.  downlaod the .gz file at ftp://ftp.uniprot.org/pub/databases/uniprot/previous_releases/release-2014_09/knowledgebase/uniprot_sprot-only2014_09.tar.gz
 2.  gunzip uniprot_sprot-only2014_09.tar.gz
