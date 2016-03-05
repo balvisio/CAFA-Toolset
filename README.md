@@ -152,15 +152,10 @@ as the annotation files at time points t1 and t2, respectively.
 It will create six benchmark files: 
 
 1. gene_association.goa_ref_yeast.52.benchmark_LK_bpo.1
-
 2. gene_association.goa_ref_yeast.52.benchmark_LK_cco.1
-
 3. gene_association.goa_ref_yeast.52.benchmark_LK_mfo.1
-
 4. gene_association.goa_ref_yeast.52.benchmark_NK_bpo.1
-
 5. gene_association.goa_ref_yeast.52.benchmark_NK_cco.1
-
 6. gene_association.goa_ref_yeast.52.benchmark_NK_mfo.1 
 
 Files (1) – (3) are limited knowledge (LK) benchmark files in BPO, CCO, and MFO categories, respectively. Files (4) – (6) are three 
