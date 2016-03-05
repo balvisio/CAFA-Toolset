@@ -83,7 +83,9 @@ experimentally verified functional term in that specific ontology between time t
 The commands in this help file can be found in the script example.sh. One can test the commands for this toolset simply by executing 
 this script at a linux promt as follows: 
 
-##### sh example.sh
+```
+sh example.sh
+```
 
 The details of the usage description of the CAFA Toolset are following. 
 
