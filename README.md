@@ -114,7 +114,7 @@ perform the following steps:
 wget ftp://ftp.uniprot.org/pub/databases/uniprot/previous_releases/release-2014_09/knowledgebase/uniprot_sprot-only2014_09.tar.gz
 gunzip uniprot_sprot-only2014_09.tar.gz
 tar xvf uniprot_sprot-only2014_09.tar 
-mv uniprot_sprot.data uniprot_sprot.dat.38
+mv uniprot_sprot.dat uniprot_sprot.dat.38
 ```
 ### Target Generation
 This tool will create a file for the target set, containing the protein sequences in fasta format. The simplest way to run the 
