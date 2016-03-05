@@ -9,7 +9,7 @@ from Bio.UniProt import GOA
 from collections import defaultdict
 from os.path import basename 
 
-import ArgParser as ap
+import ArgParser_Benchmark as ap
 import Config
 import ConfigParser as cp
 import CreateDataset as cd
