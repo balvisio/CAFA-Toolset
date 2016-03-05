@@ -124,7 +124,9 @@ input1 is a uniprot-swissProt annotation file at a certain time point (on CAFA t
 CAFA community challenge), taxon_id is the taxonomy id for the specific species whose protein sequences are being filtered. Here is an 
 example with uniprot_sprot.dat.38  as the uniprot-swissProt annotation file and 559292 as taxon id for Saccharomyces cerevisiae.
 
-#####   python Filter -I1=uniprot_sprot.dat.38  -G=559292
+```
+python Filter -I1=uniprot_sprot.dat.38  -G=559292
+```
 
 It will create the following target sequence file: 
 
@@ -150,8 +152,9 @@ input 1 and input 2 are two annotation files at time points t1 and t2, respectiv
 GAF 1.0 or GAF 2.0 format. Here is an example with gene_association.goa_ref_yeast.23 and gene_association.goa_ref_yeast.52 
 as the annotation files at time points t1 and t2, respectively.
 
-##### python Benchmark -I1=gene_association.goa_ref_yeast.23 -I2=gene_association.goa_ref_yeast.52
-
+```
+python Benchmark -I1=gene_association.goa_ref_yeast.23 -I2=gene_association.goa_ref_yeast.52
+```
 It will create six benchmark files: 
 
 1. gene_association.goa_ref_yeast.52.benchmark_LK_bpo.1
@@ -175,7 +178,9 @@ input 1 and input 2 are two annotation files at time points t1 and t2, respectiv
 GAF 2.0 format. Here is an example with gene_association.goa_ref_yeast.23 and gene_association.goa_ref_yeast.52 as the input
 annotation files at time points t1 and t2, respectively.
 
-##### python Verify -I1=gene_association.goa_ref_yeast.23 -I2=gene_association.goa_ref_yeast.52
+```
+python Verify -I1=gene_association.goa_ref_yeast.23 -I2=gene_association.goa_ref_yeast.52
+```
 
 The program will find SIX benchmark files of the latest version (obtained from the last run of the Benchmark program) and 
 verify the content in each of them for the correctness of the benchmark entries. To verify the benchmark files of a specific 
@@ -183,7 +188,9 @@ version, you can supply any of the benchmark files as the third input. That way,
 that end with that specific version number available in the work space folder. Here is an example for verifying the benchmark 
 files of a specific version number (version 1):
 
-##### python Verify -I1=gene_association.goa_ref_yeast.23 -I2=gene_association.goa_ref_yeast.52 -I3=gene_association.goa_ref_yeast.52.benchmark_LK_bpo.1
+```
+python Verify -I1=gene_association.goa_ref_yeast.23 -I2=gene_association.goa_ref_yeast.52 -I3=gene_association.goa_ref_yeast.52.benchmark_LK_bpo.1
+```
 
 You must also supply all optional parameters that you supplied while running the Benchmark Creation program to create this 
 version of the benchmark files. This will verify all six benchmark files that end with .1, i.e dot one.
