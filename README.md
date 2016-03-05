@@ -80,8 +80,8 @@ experimentally verified functional term in that specific ontology between time t
 ### Software Usage 
 
 ##### Script to test run the commands for CAFA Toolset
-The commands in this help file can be found in the script example.sh. One can test the commands for this toolset simply by executing 
-the following script at a linux promt. 
+The commands in this help file can be found in the script example.sh. One can test the commands for this toolset by executing 
+the following script at a linux prompt.
 
 ```
 sh example.sh
