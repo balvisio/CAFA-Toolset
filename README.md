@@ -95,9 +95,9 @@ python Mergedb -input1 uniprot-swissProt-annoation-at-t0 -input2 uniprot-GOA-ann
 
 One specific example run with input1 file uniprot_sprot.dat.38, input2 file gene_association.goa_ref_yeast.38, and taxon id 559292 
 for Saccharomyces Cerevisiae:
-'''
+```
 ##### python Mergedb -I1=uniprot_sprot.dat.38 -I2=gene_association.goa_ref_yeast.38 -G 559292
-'''
+```
 This command will extract the annotations for taxon id 559292 from the uniprot-swissProt file and append them at the end of the 
 uniprot-GOA file, considering only the entries that are not already in the latter file. It will create a combined file:
 gene_association.goa_ref_yeast.38+sprot.38.1 whose file format would be the same as the uniprot-GOA format.
