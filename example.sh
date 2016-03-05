@@ -2,6 +2,23 @@
 
 # This is an example shell script to run the CAFA tools 
 
+# Integrating Annotation Datasets
+# The following command will create an output file by appending the protein annotaitons 
+# found in uniprot_sprot.dat.38 but not in gene_association.goa_ref_yeast.38+sprot.38 
+# at the end of the second file
+
+python Mergedb -I1=uniprot_sprot.dat.38 -I2=gene_association.goa_ref_yeast.38 -G 559292 
+
+# Output file: gene_association.goa_ref_yeast.38+sprot.38  
+
+# Target Generation 
+# The following command will create a target file with the protein sequences from the input 
+# file uniprot_sprot.dat.38
+
+python Filter -I1=uniprot_sprot.dat.38  -G=559292 
+
+# Output file name: uniprot_sprot.dat.38.559292.tfa.1 
+
 ## Benchmark Creation
 # The following command creates benchmark files based on two input annotation files
 
@@ -29,18 +46,5 @@ python Verify -I1=gene_association.goa_ref_yeast.23 -I2=gene_association.goa_ref
 # The above code can also be executed as below with one of the benchmark files as the third input:
 
 python Verify -I1=gene_association.goa_ref_yeast.23 -I2=gene_association.goa_ref_yeast.52 -I3=gene_association.goa_ref_yeast.52.benchmark_LK_bpo.1
-
-## Target generation
-# The following command will create target sequence files. 
-# It is commented out because it takes a long time to download the seuqences. 
-# Please, uncomment the following command to generate the target sequences.
-
-# python Benchmark -M TG -I1=gene_association.goa_ref_yeast.23 -I2=gp_information.goa_ref_yeast.23
-
-# This command will generate the following three fasta files: 
-
-# 1. gene_association.goa_ref_yeast.23.target_taxa_559292_bpo.1.fasta
-# 2. gene_association.goa_ref_yeast.23.target_taxa_559292_cco.1.fasta
-# 3. gene_association.goa_ref_yeast.23.target_taxa_559292_mfo.1.fasta
 
 
