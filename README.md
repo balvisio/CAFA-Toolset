@@ -2,7 +2,7 @@
 #####         A software package for managing the CAFA community experiment 
 #### Features 
 * Integration of protein annotation databases: This tool integrates multiple 
-protein annotation datasets in different file format into one larger dataset. 
+protein annotation datasets in different file formats into one larger dataset. 
 Current release merges two datasets, one in unprot-swissProt format and the 
 other in uniprot-GOA format, into a larger single dataset in uniprot-GOA 
 format.
