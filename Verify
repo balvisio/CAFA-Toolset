@@ -221,7 +221,7 @@ iter_handle, GAFFIELDS = create_iterator(t2_input_file) # Creates an iterator ob
 
 t2_exp_handle = open(t2_exp_name, 'w') # Create a file handle to save entries in t2 with experimental evidence codes
 
-print 'Parsing t2 file ' + basename(t2_input_file) + ' ...'
+print 'Parsing t2 file: ' + basename(t2_input_file) + ' ...'
 # This creates the intermediate file: t2.exp 
 for ingen in iter_handle: 
     retval = gc.record_has_forBenchmark(ingen,ann_conf,parsed_dict,
