@@ -1,5 +1,5 @@
 [WORKDIR]
-DEFAULT_PATH : ./wsCafa
+DEFAULT_PATH : ./workspace
 
 [FTP]
 HOSTNAME : ftp.ebi.ac.uk
