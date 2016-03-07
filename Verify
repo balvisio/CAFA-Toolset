@@ -5,7 +5,9 @@ import argparse
 import subprocess
 from collections import defaultdict
 from os.path import basename 
-import ArgParser as ap
+
+
+import ArgParser_Verify as apv
 import CreateDataset as cd
 import PaperTermFrequency as ptf
 import ConfigParser as cp
@@ -13,7 +15,6 @@ import FormatChecker as fc
 import GOAParser_cafa as gc
 from Bio.UniProt import GOA 
 import verifyBenchmark as vb
-import ArgParser_Verify as apv
 
 '''
    The Benchmark verification program verifies the benchmarks created by the Benchmark creation software.
