@@ -26,14 +26,13 @@ def species_filter(fh_sprot, taxon_id, fh_targets, EXP_default=set([])):
                         exp_code = 1
                         break
             if not exp_code: # if the protein does not have any experimental validation, then write out the sequence
-                 outseq = SeqRecord(Seq(rec.sequence),
-                        id="T"+str(target_id),
-                        description = "%s" %
-                        (rec.entry_name))
-                 outseq_list = [outseq]
-                 SeqIO.write(outseq_list,fh_targets, "fasta")
-                 target_id += 1
-
+                outseq = SeqRecord(Seq(rec.sequence),
+                       id="T"+str(target_id),
+                       description = "%s" %
+                       (rec.entry_name))
+                outseq_list = [outseq]
+                SeqIO.write(outseq_list,fh_targets, "fasta")
+                target_id += 1
 
 def species_filter_count(fh_sprot, taxon_id, fh_targets, EXP_default=set([])):
     target_id = int(taxon_id+"0000001")
@@ -51,14 +50,8 @@ def species_filter_count(fh_sprot, taxon_id, fh_targets, EXP_default=set([])):
                         exp_code = 1
                         break
             if not exp_code: # if the protein does not have any experimental validation, then write out the sequence
-#                 outseq = SeqRecord(Seq(rec.sequence),
-#                        id="T"+str(target_id),
-#                       description = "%s" %
-#                        (rec.entry_name))
-#                 outseq_list = [outseq]
-#                 SeqIO.write(outseq_list,fh_targets, "fasta")
-                 target_id += 1
-                 seqCount_exp += 1
+                target_id += 1
+                seqCount_exp += 1
 
     print '# of sequences: ' + str(seqCount)
     print '# of sequences with NO EXP code: ' + str(seqCount_exp)
