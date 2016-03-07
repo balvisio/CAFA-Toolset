@@ -172,12 +172,12 @@ the uniprot-swissProt annotation file and 559292 as taxon id for Saccharomyces
 cerevisiae.
 
 ```
-python Filter -I1=uniprot_sprot.dat.38  -G=559292
+python Filter -I1=uniprot_sprot.dat.2014_09  -G=559292
 ```
 
 It will create the following target sequence file: 
 
-uniprot_sprot.dat.38.559292.tfa.1
+uniprot_sprot.dat.2014_09.559292.tfa.1
 
 * The output file name is created by adding an extension with the name of the 
 input file where the extension is formed in the following way: [taxon id].[tfa].[version #].
