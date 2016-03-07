@@ -149,8 +149,9 @@ following steps:
 
 ```
 wget ftp://ftp.uniprot.org/pub/databases/uniprot/previous_releases/release-2014_09/knowledgebase/uniprot_sprot-only2014_09.tar.gz
-gunzip uniprot_sprot-only2014_09.tar.gz
+gzip -d uniprot_sprot-only2014_09.tar.gz
 tar xvf uniprot_sprot-only2014_09.tar 
+gzip -d uniprot_sprot.dat.gz
 mv uniprot_sprot.dat uniprot_sprot.dat.38
 ```
 ### Target Generation
