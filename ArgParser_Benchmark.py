@@ -38,11 +38,11 @@ def extract_args(args):
                  }
     print "*************************************************"
     if args_dict['Mode'] == 'BC':
-        print "Welcome to the Benchmark Creation tool !!!!!"
+        print "Welcome to Benchmark Creation Tool !!!!!"
     else:
-        print "Welcome to the Target Generation tool !!!!!"
+        print "Welcome to Target Generation Tool !!!!!"
     print "*************************************************\n"
-    print 'Following is a list of user supplied inputs :\n'
+    print 'Following is a list of user supplied inputs:\n'
     for arg in args_dict:
         print arg + ' : ' + str(args_dict[arg])
     print '*********************************************\n'
