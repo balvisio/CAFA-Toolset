@@ -131,8 +131,8 @@ t1_input_file = work_dir + '/' + cd.parse(t1, ConfigParam)
 output_filename = work_dir + '/' + create_output(parsed_dict, 
     outfile_basename, work_dir)
 
-#ft.species_filter(open(t1_input_file, 'r'), parsed_dict['g'], open(output_filename, 'w'), ConfigParam['exp_eec'])
-ft.species_filter_count(open(t1_input_file, 'r'), parsed_dict['g'], open(output_filename, 'w'), ConfigParam['exp_eec'])
+ft.species_filter(open(t1_input_file, 'r'), parsed_dict['g'], open(output_filename, 'w'), ConfigParam['exp_eec'])
+#ft.species_filter_count(open(t1_input_file, 'r'), parsed_dict['g'], open(output_filename, 'w'), ConfigParam['exp_eec'])
 
 
 if os.path.exists(output_filename):
