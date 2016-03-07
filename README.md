@@ -143,9 +143,10 @@ subsequent versions of the output file where the file name will end with
 subsequent version number, such as 2, 3, 4, etc.
 
 ##### Note 
-The uniprot-swissProt file uniprot_sprot.dat.38 is not stored in gitHub 
-because of its large size. To get this specific file, please perform the 
-following steps: 
+The uniprot-swissProt file uniprot_sprot.dat.38 is not stored in gitHub as 
+one of the example input files because of its large size. To retreive this 
+specific file from the uniprot website, please perform the following 
+commands:
 
 ```
 wget ftp://ftp.uniprot.org/pub/databases/uniprot/previous_releases/release-2014_09/knowledgebase/uniprot_sprot-only2014_09.tar.gz
