@@ -184,7 +184,7 @@ input file where the extension is formed in the following way: [taxon id].[tfa].
 subsequent versions of the output file where the file name will end with 
 subsequent version number, such as 2, 3, 4, etc.
 
-The program can also create an output file whose name is supplied by the user:
+The program can also take an output file name as an input parameter:
 
 python Filter  --input1 uniprot-swissProt-annotation-at-t0  -G taxon_id -output output_filename
 
