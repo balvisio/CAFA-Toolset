@@ -47,7 +47,7 @@ and GAF 2.0 format at http://geneontology.org/page/go-annotation-file-format-20
 
 #### uniprot-swissProt 
 This database is one of the two sections of uniprot Knowledgebase (uniprotKB) 
-which is the central accesspoint for extensive curated protein information, 
+which is the central access point for extensive curated protein information, 
 classificatio, and cross-reference. uniprot-swissProt is manually annoated and 
 is reviwed where the other section uniprot-TrEMBL is automatically annotated 
 and is not reviewed. 
@@ -184,8 +184,7 @@ input file where the extension is formed in the following way: [taxon id].[tfa].
 subsequent versions of the output file where the file name will end with 
 subsequent version number, such as 2, 3, 4, etc.
 
-The program can also a user defined supplied output file name if the user 
-supplies such a name as shown here: 
+The program can also create an output file whose name is supplied by the user:
 
 python Filter  --input1 uniprot-swissProt-annotation-at-t0  -G taxon_id -output output_filename
 
