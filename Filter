@@ -5,7 +5,6 @@ import sys
 from os.path import basename 
 
 import argparse
-#import configparser as cp
 import ConfigParser as cp
 import shutil
 import subprocess
@@ -16,6 +15,7 @@ import ArgParser_Filter as ap
 import Config
 import CreateDataset as cd
 import Filter_sp_species as fs
+import Filter_sp_targets as ft
 import FormatChecker as fc
 
 '''
@@ -131,9 +131,7 @@ t1_input_file = work_dir + '/' + cd.parse(t1, ConfigParam)
 output_filename = work_dir + '/' + create_output(parsed_dict, 
     outfile_basename, work_dir)
 
-fs.species_filter(open(t1_input_file, 'r'), parsed_dict['g'],
-    open(output_filename, 'w'))
-   # Filters the sequences from the input file
+ft.species_filter(open(t1_input_file, 'r'), parsed_dict['g'], open(output_filename, 'w'), ConfigParam['exp_eec'])
 
 if os.path.exists(output_filename):
     print (bcolors.OKGREEN + 'The following output file is created: ' + 
