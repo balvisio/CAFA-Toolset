@@ -1,0 +1,140 @@
+#!/usr/bin/env python
+
+import os
+import sys
+from os.path import basename 
+
+import argparse
+#import configparser as cp
+import ConfigParser as cp
+import shutil
+import subprocess
+from collections import defaultdict
+
+import AppendSprot2GOA as as2g
+import Config
+import ArgParser_Merge as ap
+import FormatChecker as fc
+import CreateDataset as cd
+
+#import GOAParser_cafa as gc
+#from Bio.UniProt import GOA
+
+
+'''
+This program takes four inputs: (1) uniprot-swissprot file, (2) a uniprot-GOA file, (3) taxon id, and (4) an output file. 
+The GO terms in the UniProt-SwissProt file that are NOT in the unprot-GOA file for the supplied taxon id, are merged together with 
+the uniprot-GOA file and written to the output file.
+'''
+
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+
+def create_iterator(infile):
+    # Returns an iterator object for an input uniprot-goa file along with a list of all
+    # field names contained in the uniprot-goa file
+    infile_handle = open(infile, 'r')
+    iter_handle = GOA.gafiterator(infile_handle)
+    for ingen in iter_handle:
+        if len(ingen) == 17:
+            GAFFIELDS = GOA.GAF20FIELDS
+            break
+        else:
+            GAFFIELDS = GOA.GAF10FIELDS
+            break
+    infile_handle = open(infile, 'r')
+    iter_handle = GOA.gafiterator(infile_handle)
+    return iter_handle, GAFFIELDS
+
+def create_output(params, outfile, work_dir):
+    # Creates an output filename based on the output file prefix provided by the user
+    
+    if not outfile == '':
+        ob = basename(params['outfile'])
+    else:
+        ob = basename(params['t2']) + '+sprot.' + str(basename(params['t1']).split('.')[-1])
+    index = 1
+    while os.path.exists(work_dir + '/' + ob + '.' + str(index)):
+        index = index + 1
+    output_filename = ob + '.' + str(index)
+    return output_filename
+
+# The first step with using the argparse module is to create a parser object that can 
+# then parse all the user inputs and convert them into python objects based on the user 
+# input types provided
+
+parser = argparse.ArgumentParser(prog='bm.py',description='Merges uniprot-swissprot and uniprot-goa files for some specific organism.')
+parser.add_argument('-I1', '--input1', help='This opton is mandatory. Specifies path to a swissprot file.')
+parser.add_argument('-I2', '--input2', help='This option is mandatory. Specifies path to a uniprot-GOA file.')
+parser.add_argument('-G','--organism', help='This opton is mandatory. Specifies an organism id, for example, 559292 for Saccharomyces cerevisiae.')
+parser.add_argument('-O', '--output', default='', help='Provides user an option to specify an output filename prefix.')
+
+# Search for config file in the current directory. If not present, creates a new config file
+fname_ind = 0
+for root,dirs,files in os.walk('.'):
+    for fname in files:
+        if fname == '.cafarc':
+            fname_ind = 1
+    if fname_ind == 0:
+        print ('Configuration file not found')
+        print ('Creating new configuration file ...')
+        print ('***************************************************************\n')
+        Config.create()
+    break
+    
+# Reads the config file and stores values in a dictionary
+Config_handle = cp.ConfigParser()
+Config_handle.read('.cafarc')
+ConfigParam = defaultdict()
+
+ConfigParam = {'workdir' : Config_handle.get('WORKDIR', 'DEFAULT_PATH'),
+               'ftp_host' : Config_handle.get('FTP', 'HOSTNAME'),
+               'ftp_curr_path' : Config_handle.get('FTP', 'CURRENT_FILE_PATH'),
+               'ftp_old_path' : Config_handle.get('FTP', 'OLD_FILE_PATH'),
+               'exp_eec' : Config_handle.get('DEFAULTS', 'EXP_EVIDENCE_CODES'),
+               'ont_def' : Config_handle.get('DEFAULTS', 'ONTOLOGIES'),
+               'tax_file' : Config_handle.get('DEFAULTS', 'TAXONOMY_FILENAME'),
+               'uniprot_path' : Config_handle.get('SEQUENCE', 'BASE_URL'),
+               'ftp_date' : Config_handle.get('REGEX', 'FTP_DATE'),
+               'ftp_file_start' : Config_handle.get('REGEX', 'FTP_FILE_START')
+               }
+
+work_dir = ConfigParam['workdir']
+work_dir = work_dir.rstrip('/')
+uniprot_path = ConfigParam['uniprot_path'] .rstrip('/')
+
+# In case the working directory is not found, the program will create one in this step
+if not os.path.exists(work_dir):
+    os.makedirs(work_dir) # create the working directory
+
+# Parses the set of user given parameters and returns a dictionary of the same.
+parsed_dict = ap.parse(parser, ConfigParam)
+t1 = parsed_dict['t1']
+t2 = parsed_dict['t2']
+outfile_basename = basename(parsed_dict['outfile'])
+
+t1_input_file = work_dir + '/' + cd.parse(t1, ConfigParam) 
+t2_input_file = work_dir + '/' + cd.parse(t2, ConfigParam) # parse t2 file.
+
+fc.check_gaf_format(t2_input_file)
+
+output_filename = work_dir + '/' + create_output(parsed_dict, outfile_basename, work_dir)
+
+# Merge the GOA records from uniprot-swissProt file at the of uniprot-GOA file:
+cmd = "cp " + t2_input_file + " " + output_filename # Step 1: Copy the gene association file to the output file
+subprocess.call(cmd, shell=True)
+as2g.appendSprot2goa(open(t1_input_file, 'r'), t2_input_file, parsed_dict['g'], open(output_filename, 'a'))
+# Step 2: Create GOA records from uniprot-sprot file and append them at the end of the output file
+
+if os.path.exists(output_filename):
+    print (bcolors.OKGREEN + 'The following output file is created: ' + basename(output_filename) + bcolors.ENDC)
+else:
+    print (bcolors.WARNING + 'No output file is created with the given input parameters' + bcolors.ENDC)
+print (bcolors.OKGREEN + 'Thank you for using the Merge Database Software' + bcolors.ENDC)
