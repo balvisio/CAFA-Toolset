@@ -51,6 +51,8 @@ which is the central access point for extensive curated protein information,
 classificatio, and cross-reference. uniprot-swissProt is manually annoated and 
 is reviwed where the other section uniprot-TrEMBL is automatically annotated 
 and is not reviewed. 
+* uniprot-swissProt dataset current release: ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/
+* detailed release statistics: http://web.expasy.org/docs/relnotes/relstat.html
 * uniprot-swissProt dataset archive (release 9 to 45): 
 ftp://ftp.ebi.ac.uk/pub/databases/swissprot/sw_old_releases/ 
 * uniprot-swissProt dataset archive (release 46 and greater ): 
