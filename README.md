@@ -46,13 +46,13 @@ and GAF 2.0 format at http://geneontology.org/page/go-annotation-file-format-20
 * More details about uniprot-GOA project: http://www.geneontology.org/gene-associations/readme/goa.README  
 
 #### uniprot-swissProt 
-This database is one of the two sections of uniprot Knowledgebase (uniprotKB) 
-which is the central access point for extensive curated protein information, 
-classificatio, and cross-reference. uniprot-swissProt is manually annoated and 
-is reviwed where the other section uniprot-TrEMBL is automatically annotated 
-and is not reviewed. 
+This is a non-redundant protein sequence database. Each entry in this database 
+is manually annotated involving detailed analysis of the protein sequence and 
+of the scientific literature. This database is recognized as the central access point 
+of the extensive curated protein information, classification, and cross-reference. 
+
 * uniprot-swissProt dataset current release: ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/
-* detailed release statistics: http://web.expasy.org/docs/relnotes/relstat.html
+* Detailed release statistics: http://web.expasy.org/docs/relnotes/relstat.html
 * uniprot-swissProt dataset archive (release 9 to 45): 
 ftp://ftp.ebi.ac.uk/pub/databases/swissprot/sw_old_releases/ 
 * uniprot-swissProt dataset archive (release 46 and greater ): 
