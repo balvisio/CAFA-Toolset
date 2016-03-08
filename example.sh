@@ -1,13 +1,17 @@
-#!/bin/sh
+#!/bin/sh 
 
 # This is an example shell script to run the CAFA tools 
 
 #Download the uniprot_sprot.dat.2014_09 file that will be used by the software
-wget ftp://ftp.uniprot.org/pub/databases/uniprot/previous_releases/release-2014_09/knowledgebase/uniprot_sprot-only2014_09.tar.gz
-gzip -d uniprot_sprot-only2014_09.tar.gz
-tar xvf uniprot_sprot-only2014_09.tar 
-gzip -d uniprot_sprot.dat.gz
-mv uniprot_sprot.dat uniprot_sprot.dat.2014_09
+curDir=$(pwd)
+fileName="/uniprot_sprot.dat.2014_09"
+if [ ! -f ${curDir}${fileName} ] && [ ! -f ${curDir}'/workspace'${fileName} ]; then
+   wget ftp://ftp.uniprot.org/pub/databases/uniprot/previous_releases/release-2014_09/knowledgebase/uniprot_sprot-only2014_09.tar.gz
+   gzip -d uniprot_sprot-only2014_09.tar.gz
+   tar xvf uniprot_sprot-only2014_09.tar 
+   gzip -d uniprot_sprot.dat.gz
+   mv uniprot_sprot.dat uniprot_sprot.dat.2014_09
+fi
 
 # Integrating Annotation Datasets
 # The following command will create an output file by appending the protein annotaitons 
