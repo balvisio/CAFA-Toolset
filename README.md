@@ -1,6 +1,7 @@
 ## CAFA Toolset
 #####         A software package for managing the CAFA community experiment 
 #### Features 
+```
 * Integration of protein annotation databases: This tool integrates multiple 
 protein annotation datasets in different file formats into one larger dataset. 
 Current release merges two datasets, one in unprot-swissProt format and the 
@@ -14,7 +15,7 @@ sets for the CAFA challenge.
 * Assessment of protein annotation prediction models: This tool evaluates the 
 protein annotation prediction models submitted by the participants in the CAFA 
 challenge.
-
+```
 ### Introduction
 
 This software is developed to facilitate the Critical Annotation of protein 
