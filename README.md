@@ -2,17 +2,17 @@
 #####         A software package for managing the CAFA community experiment 
 #### Features 
 
-##### 1. Integration of protein annotation databases 
+1. Integration of protein annotation databases 
 This tool integrates multiple protein annotation datasets in different file 
 formats into one larger dataset. Current release merges two datasets, one 
 in unprot-swissProt format and the other in uniprot-GOA format, into a 
 larger single dataset in uniprot-GOA format.
-##### 2. Target generation 
+2. Target generation 
 This tool generates a set of protein sequences in fasta file format that will 
 be sent out to the community participating in the CAFA challenge.
-##### 3. Benchmark creation and verification 
+3. Benchmark creation and verification 
 This tool creates the benchmark protein sets for the CAFA challenge.
-##### 4. Assessment of protein annotation prediction models 
+4. Assessment of protein annotation prediction models 
 This tool evaluates the protein annotation prediction models submitted by 
 the participants in the CAFA challenge.
 
