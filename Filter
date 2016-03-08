@@ -123,16 +123,24 @@ if not os.path.exists(work_dir):
 # Parses the set of user given parameters and returns a dictionary of the same.
 parsed_dict = ap.parse(parser, ConfigParam)
 
-t1 = parsed_dict['t1'] 
-outfile_basename = basename(parsed_dict['outfile'])  
+t1 = parsed_dict['t1']
+outfile_basename = basename(parsed_dict['outfile'])
 
-t1_input_file = work_dir + '/' + cd.parse(t1, ConfigParam) 
+t1_input_file = work_dir + '/' + cd.parse(t1, ConfigParam)
 output_filename = work_dir + '/' + create_output(parsed_dict, 
     outfile_basename, work_dir)
 
-ft.species_filter(open(t1_input_file, 'r'), parsed_dict['g'], open(output_filename, 'w'), ConfigParam['exp_eec'])
-#ft.species_filter_count(open(t1_input_file, 'r'), parsed_dict['g'], open(output_filename, 'w'), ConfigParam['exp_eec'])
+seqCount, seqCount_exp = ft.species_filter(open(t1_input_file, 'r'), 
+                        parsed_dict['g'], 
+                        open(output_filename, 'w'), 
+                        ConfigParam['exp_eec'])
 
+#seqCount, seqCount_exp = ft.species_filter_count(open(t1_input_file, 'r'), 
+#                        parsed_dict['g'], 
+#                        ConfigParam['exp_eec'])
+
+print 'Total # of sequences for the given organsism with taxonomy id ' + parsed_dict['g'] + ': ' + str(seqCount)
+print '# of sequences with NO EXP code: ' + str(seqCount_exp)
 
 if os.path.exists(output_filename):
     print (bcolors.OKGREEN + 'The following output file is created: ' + 
