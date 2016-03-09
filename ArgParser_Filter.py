@@ -7,9 +7,9 @@ import re
 from collections import defaultdict
 
 '''
-   This script parses, verifies a bunch of user input parameters using argparse
-   module. Finally creates a dictionary with all parameter values and then 
-   returns it.
+   This script parses, verifies a bunch of user input parameters using 
+   argparse module. Finally creates a dictionary with all parameter 
+   values and then returns it.
 '''
 
 def extract_args(args):
@@ -24,7 +24,7 @@ def extract_args(args):
                  't1' : args.input1,
                  }
     print ("*************************************************")
-    print ("Welcome to the Target generatin tool !!!!!")
+    print ("Welcome to the Target Generatin Tool !!!!!")
     print ("*************************************************\n")
     print ('Following is a list of user supplied inputs :\n')
     for arg in args_dict:
