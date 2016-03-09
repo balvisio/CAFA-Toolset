@@ -274,4 +274,4 @@ else:
         print basename(benchmark_NK_cco)
     if os.path.exists(benchmark_NK_mfo) and os.stat(benchmark_NK_mfo).st_size != 0:
         print basename(benchmark_NK_mfo)
-print bcolors.OKGREEN + 'Thank you for using the Benchmark Verification Software' + bcolors.ENDC
+print bcolors.OKGREEN + 'Thank you for using the Benchmark Verification Tool' + bcolors.ENDC
