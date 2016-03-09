@@ -20,11 +20,11 @@ t1 : uniprot_sprot.dat.2014_09
 
 uniprot_sprot.dat.2014_09 has been moved to the work directory
 The following output file is created: gene_association.goa_ref_yeast.38+sprot.2014_09.2
-Thank you for using the Merge Database Tool 
+Thank you for using Merge Database Tool 
 
 
 *************************************************
-Welcome to the Target Generatin Tool !!!!!
+Welcome to Target Generatin Tool !!!!!
 *************************************************
 
 Following is a list of user supplied inputs :
@@ -37,7 +37,7 @@ t1 : uniprot_sprot.dat.2014_09
 Total # of sequences for the given organsism with taxonomy id 559292: 6621
 # of sequences with NO EXP code: 1717
 The following output file is created: uniprot_sprot.dat.2014_09.559292.tfa.2
-Thank you for using the Target Generation Tool 
+Thank you for using Target Generation Tool 
 
 
 *************************************************
@@ -74,7 +74,7 @@ gene_association.goa_ref_yeast.52.benchmark_LK_mfo.2
 gene_association.goa_ref_yeast.52.benchmark_NK_bpo.2
 gene_association.goa_ref_yeast.52.benchmark_NK_cco.2
 gene_association.goa_ref_yeast.52.benchmark_NK_mfo.2
-Thank you for using the Benchmark Creation Tool 
+Thank you for using Benchmark Creation Tool 
 
 
 *************************************************
@@ -142,4 +142,4 @@ gene_association.goa_ref_yeast.52.benchmark_LK_mfo.1
 gene_association.goa_ref_yeast.52.benchmark_NK_bpo.1
 gene_association.goa_ref_yeast.52.benchmark_NK_cco.1
 gene_association.goa_ref_yeast.52.benchmark_NK_mfo.1
-Thank you for using the Benchmark Verification Tool 
+Thank you for using Benchmark Verification Tool 
