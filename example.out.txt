@@ -1,7 +1,9 @@
+Downloading ...
 uniprot_sprot.dat.gz
 uniprot_sprot.fasta.gz
 uniprot_sprot_varsplic.fasta.gz
 uniprot_sprot.xml.gz
+Renaming  uniprot_sprot.dat.gz  to  /uniprot_sprot.dat.2014_09
 
 
 *************************************************
@@ -107,7 +109,6 @@ gene_association.goa_ref_yeast.52.benchmark_NK_bpo.2
 gene_association.goa_ref_yeast.52.benchmark_NK_cco.2
 gene_association.goa_ref_yeast.52.benchmark_NK_mfo.2
 Thank you for using the Benchmark Verification Software
-
 
 
 *************************************************
