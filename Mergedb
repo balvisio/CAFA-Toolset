@@ -137,4 +137,4 @@ if os.path.exists(output_filename):
     print (bcolors.OKGREEN + 'The following output file is created: ' + basename(output_filename) + bcolors.ENDC)
 else:
     print (bcolors.WARNING + 'No output file is created with the given input parameters' + bcolors.ENDC)
-print (bcolors.OKGREEN + 'Thank you for using the Merge Database Tool' + bcolors.ENDC)
+print (bcolors.OKGREEN + 'Thank you for using Merge Database Tool' + bcolors.ENDC)
