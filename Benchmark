@@ -404,4 +404,4 @@ if os.path.exists(output_filename_NK_cco):
     print basename(output_filename_NK_cco)
 if os.path.exists(output_filename_NK_mfo):
     print basename(output_filename_NK_mfo)
-print bcolors.OKGREEN + 'Thank you for using the Benchmark Creator Software' + bcolors.ENDC 
+print bcolors.OKGREEN + 'Thank you for using the Benchmark Creation Software' + bcolors.ENDC 
