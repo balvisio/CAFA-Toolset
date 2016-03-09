@@ -78,7 +78,8 @@ algorithms. Subsequently, after the submission of the prediction models is
 closed at time t1, the annotation databases are given an ample amount of 
 time from t1 to t2 before collecting the benchmarks so that those databases 
 can accumulate enough annotations with experimental evidence codes. At time 
-point t3, results from the evaluation of the submitted predictions are announced.
+point t3, the results of the evaluation of the submitted prediction models are 
+announced.
 
 #### Target set
 It is the large collection of protein sequences released at time point t0 when 
