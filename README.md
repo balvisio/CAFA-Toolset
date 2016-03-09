@@ -119,7 +119,7 @@ test the commands for this toolset by executing the following script at a
 linux prompt.
 
 ```
-sh example.sh > example.out
+sh example.sh > example.out.txt
 ```
 
 The details of the usage description of the CAFA Toolset are following. 
