@@ -74,7 +74,7 @@ gene_association.goa_ref_yeast.52.benchmark_LK_mfo.2
 gene_association.goa_ref_yeast.52.benchmark_NK_bpo.2
 gene_association.goa_ref_yeast.52.benchmark_NK_cco.2
 gene_association.goa_ref_yeast.52.benchmark_NK_mfo.2
-Thank you for using the Benchmark Creator Software
+Thank you for using the Benchmark Creation Software
 
 
 *************************************************
@@ -142,4 +142,4 @@ gene_association.goa_ref_yeast.52.benchmark_LK_mfo.1
 gene_association.goa_ref_yeast.52.benchmark_NK_bpo.1
 gene_association.goa_ref_yeast.52.benchmark_NK_cco.1
 gene_association.goa_ref_yeast.52.benchmark_NK_mfo.1
-Thank you for using the Benchmark Verification Software
+Thank you for using the Target Generation Software
