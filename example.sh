@@ -6,10 +6,12 @@
 curDir=$(pwd)
 fileName="/uniprot_sprot.dat.2014_09"
 if [ ! -f ${curDir}${fileName} ] && [ ! -f ${curDir}'/workspace'${fileName} ]; then
+   echo 'Downloading ...'
    wget ftp://ftp.uniprot.org/pub/databases/uniprot/previous_releases/release-2014_09/knowledgebase/uniprot_sprot-only2014_09.tar.gz
    gzip -d uniprot_sprot-only2014_09.tar.gz
    tar xvf uniprot_sprot-only2014_09.tar 
    gzip -d uniprot_sprot.dat.gz
+   echo 'Renaming '  uniprot_sprot.dat.gz ' to ' $fileName 
    mv uniprot_sprot.dat uniprot_sprot.dat.2014_09
 fi
 
