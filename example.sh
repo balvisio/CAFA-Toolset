@@ -49,7 +49,7 @@ python Benchmark -I1=gene_association.goa_ref_yeast.23 -I2=gene_association.goa_
 # and mfo), respectively.
 
 
-## Benchmark verification
+## Benchmark Verification
 # This following command will verify the benchmark files just created
 
 python Verify -I1=gene_association.goa_ref_yeast.23 -I2=gene_association.goa_ref_yeast.52
