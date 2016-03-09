@@ -24,7 +24,7 @@ def extract_args(args):
                  't1' : args.input1,
                  }
     print ("*************************************************")
-    print ("Welcome to the Target Generatin Tool !!!!!")
+    print ("Welcome to Target Generatin Tool !!!!!")
     print ("*************************************************\n")
     print ('Following is a list of user supplied inputs :\n')
     for arg in args_dict:
