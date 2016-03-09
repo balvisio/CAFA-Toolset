@@ -148,5 +148,5 @@ if os.path.exists(output_filename):
 else:
     print (bcolors.WARNING + 'No output file is created with the given input \
         parameters' + bcolors.ENDC)
-print (bcolors.OKGREEN + 'Thank you for using the Target Generation Software' + 
+print (bcolors.OKGREEN + 'Thank you for using the Target Generation Tool' + 
         bcolors.ENDC)
