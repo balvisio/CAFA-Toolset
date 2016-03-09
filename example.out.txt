@@ -36,6 +36,8 @@ Total # of sequences for the given organsism with taxonomy id 559292: 6621
 # of sequences with NO EXP code: 1717
 The following output file is created: uniprot_sprot.dat.2014_09.559292.tfa.2
 Thank you for using the Merge Database Software
+
+
 *************************************************
 Welcome to Benchmark Creation Tool !!!!!
 *************************************************
