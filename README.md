@@ -64,7 +64,7 @@ ftp://ftp.uniprot.org/pub/databases/uniprot/previous_releases/
 http://arep.med.harvard.edu/labgc/jong/Fetch/SwissProtAll.html
 
 
-#### Time points t0, t1, t2, and t4
+#### Time points t0, t1, t2, and t3
 t0 is the time point when a CAFA experiment is launched and targets are made
 accessible to the community, whereas t1 is the time point set as the deadline 
 for submitting the prediction models by the CAFA participants. Farther along 
