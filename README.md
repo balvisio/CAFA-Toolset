@@ -64,7 +64,7 @@ ftp://ftp.uniprot.org/pub/databases/uniprot/previous_releases/
 http://arep.med.harvard.edu/labgc/jong/Fetch/SwissProtAll.html
 
 
-#### Time points t0, t1, and t2
+#### Time points t0, t1, t2, and t4
 t0 is the time point when a CAFA experiment is launched and targets are made
 accessible to the community, whereas t1 is the time point set as the deadline 
 for submitting the prediction models by the CAFA participants. Farther along 
@@ -77,7 +77,8 @@ are given some time to use this property for developing and testing their
 algorithms. Subsequently, after the submission of the prediction models is 
 closed at time t1, the annotation databases are given an ample amount of 
 time from t1 to t2 before collecting the benchmarks so that those databases 
-can accumulate enough annotations with experimental evidence codes.
+can accumulate enough annotations with experimental evidence codes. At time 
+point t3, results from the evaluation of the submitted predictions are announced.
 
 #### Target set
 It is the large collection of protein sequences released at time point t0 when 
