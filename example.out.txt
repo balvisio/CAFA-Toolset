@@ -3,7 +3,8 @@ uniprot_sprot.dat.gz
 uniprot_sprot.fasta.gz
 uniprot_sprot_varsplic.fasta.gz
 uniprot_sprot.xml.gz
-Renaming  uniprot_sprot.dat.gz  to  /uniprot_sprot.dat.2014_09
+Renaming uniprot_sprot.dat.gz to uniprot_sprot.dat.2014_09
+Deleting redundant downloaded files
 
 
 *************************************************
