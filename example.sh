@@ -11,7 +11,7 @@ if [ ! -f ${curDir}'/'${fileName} ] && [ ! -f ${curDir}'/workspace/'${fileName} 
    gzip -d uniprot_sprot-only2014_09.tar.gz
    tar xvf uniprot_sprot-only2014_09.tar
    gzip -d uniprot_sprot.dat.gz
-   echo 'Renaming '  uniprot_sprot.dat.gz 'to ' $fileName 
+   echo 'Renaming'  uniprot_sprot.dat.gz 'to' $fileName 
    mv uniprot_sprot.dat uniprot_sprot.dat.2014_09
    echo 'Deleting redundant downloaded files ...'
    rm uniprot_sprot-only2014_09.tar
