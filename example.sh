@@ -4,15 +4,20 @@
 
 #Download the uniprot_sprot.dat.2014_09 file that will be used by the software
 curDir=$(pwd)
-fileName="/uniprot_sprot.dat.2014_09"
-if [ ! -f ${curDir}${fileName} ] && [ ! -f ${curDir}'/workspace'${fileName} ]; then
+fileName="uniprot_sprot.dat.2014_09"
+if [ ! -f ${curDir}'/'${fileName} ] && [ ! -f ${curDir}'/workspace/'${fileName} ]; then
    echo 'Downloading ...'
    wget ftp://ftp.uniprot.org/pub/databases/uniprot/previous_releases/release-2014_09/knowledgebase/uniprot_sprot-only2014_09.tar.gz
    gzip -d uniprot_sprot-only2014_09.tar.gz
-   tar xvf uniprot_sprot-only2014_09.tar 
+   tar xvf uniprot_sprot-only2014_09.tar
    gzip -d uniprot_sprot.dat.gz
-   echo 'Renaming '  uniprot_sprot.dat.gz ' to ' $fileName 
+   echo 'Renaming '  uniprot_sprot.dat.gz 'to ' $fileName 
    mv uniprot_sprot.dat uniprot_sprot.dat.2014_09
+   echo 'Deleting redundant downloaded files ...'
+   rm uniprot_sprot-only2014_09.tar
+   rm uniprot_sprot_varsplic.fasta.gz 
+   rm uniprot_sprot.xml.gz
+   rm uniprot_sprot.fasta.gz
 fi
 
 # Integrating Annotation Datasets
