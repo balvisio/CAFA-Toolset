@@ -109,7 +109,7 @@ time point t1 but have gained at least one experimentally verified functional
 term in that specific ontology between time t1 and t2. Therefore, we will have 
 three LK-benchmark sets – one for each ontology.
 
-### Python Requirements
+### Requirements
 * Python 2.7 
 * Biopython 1.66 or greater 
 
