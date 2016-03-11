@@ -13,7 +13,7 @@ import ArgParser_Benchmark as ap
 import Config
 import ConfigParser as cp
 import CreateDataset as cd
-import CreateBenchmark as cb
+import FilterBenchmark as fb
 import FormatChecker as fc
 import GOAParser_cafa as gc
 import PaperTermFrequency as ptf
@@ -44,8 +44,8 @@ class bcolors:
     UNDERLINE = '\033[4m'
 
 def paper_term_freq(params, infile):
-    # Given an input uniprot-goa file, this method computes the number of proteins annotated
-    # in every pubmed id mentioned in that file
+    # Given an input uniprot-goa file, this method computes the number of 
+    # proteins annotated in every pubmed id mentioned in that file
 
     if params['Confidence'] == 'T':
         paper_threshold = params['Threshold']
@@ -90,7 +90,8 @@ def create_iterator(infile):
     return iter_handle, GAFFIELDS
 
 def create_output(params, outfile, infile, work_dir, ontType):
-    # Creates an output filename based on the output file prefix provided by the user
+    # Creates an output filename based on the output file prefix 
+    # provided by the user
     if not outfile == '':
         ob = basename(params['outfile'])
     else:
@@ -191,8 +192,7 @@ if parsed_dict['t1'] == parsed_dict['t2']:
     print 'Program quiting ...'
     sys.exit(1)
 
-t1_input_file = work_dir + '/' + cd.parse(t1, ConfigParam) 
-# parse t1 file in non-CAFA mode. It does not create t1.iea file at this stage.
+t1_input_file = work_dir + '/' + cd.parse(t1, ConfigParam) # Parse t1 file. 
 t2_input_file = work_dir + '/' + cd.parse(t2, ConfigParam) # parse t2 file.
 
 # Filename initialization
@@ -210,11 +210,14 @@ output_filename_NK_mfo = work_dir + '/' + create_output(
     parsed_dict, outfile_basename, t2_input_file, work_dir, 'NK_mfo')
 
 t1_iea_name = t1_input_file + '.iea' 
-                           # this file will be used for recording entries in t1 file with non-experimental evidence codes
+      # This file will be used for recording entries in t1 file with 
+      # non-experimental evidence codes
 t1_exp_name = t1_input_file + '.exp'
-                           # this file will be used for recording entries in t1 file with experimental evidence codes
+      # This file will be used for recording entries in t1 file with 
+      # experimental evidence codes
 t2_exp_name = t2_input_file + '.exp'
-                           # this will file will be used for recording entries in t2 file with experimental evidence codes
+      # This file will be used for recording entries in t2 file 
+      # with experimental evidence codes
 
 filename_LK_bpo = t2_exp_name + '.bpo_LK_bench.txt'
 filename_LK_cco = t2_exp_name + '.cco_LK_bench.txt'
@@ -223,12 +226,8 @@ filename_NK_bpo = t2_exp_name + '.bpo_NK_bench.txt'
 filename_NK_cco = t2_exp_name + '.cco_NK_bench.txt'
 filename_NK_mfo = t2_exp_name + '.mfo_NK_bench.txt'
 
-# Add format checker module here
-#fc.check(t1_input_file, t2_input_file,parsed_dict['Program'])
-fc.check(t1_input_file, t2_input_file,'F')
-
-#fc.check_gaf_format(t1_input_file) 
-#fc.check_gaf_format(t2_input_file) 
+fc.check_gaf_format(t1_input_file) # Format checker module for input file t1
+fc.check_gaf_format(t2_input_file) # Format checker module for input file t2
 
 # Create paper-term frequency file
 ann_conf = paper_term_freq(parsed_dict, t2_input_file)
@@ -244,16 +243,15 @@ tax_id_name_mapping = gc.parse_tax_file(ConfigParam['tax_file'])
 
 print 'Parsing t2 file: ' + basename(t2_input_file) + ' ...'
 t2_exp_handle = open(t2_exp_name, 'w')
-for ingen in iter_handle: # iterate through t2 file 
-    retval = gc.record_has_forBenchmark(ingen,ann_conf,parsed_dict,
-        tax_id_name_mapping,ConfigParam['exp_eec'],GAFFIELDS)
+for ingen in iter_handle: # iterate through t2 file
+    retval = gc.record_has_forBenchmark(ingen,ann_conf, parsed_dict,
+        tax_id_name_mapping, ConfigParam['exp_eec'], GAFFIELDS)
     if retval: # if retval is TRUE, write out the record to t2.exp file 
         GOA.writerec(ingen,t2_exp_handle,GAFFIELDS) # creates t2.exp file
 t2_exp_handle.close()
     
-# If the filtered t2 file is empty, it would end up producing an empty 
-# benchmark file. To prevent this, the program will quit here with a message
-
+# If t2.exp file is empty, it would end up producing an empty benchmark file. 
+# To prevent this, the program will quit here with a message.
 if os.stat(t2_exp_name).st_size == 0:
     print 'Your benchmark set will be empty with the parameters provided. Quiting ...'
     sys.exit(1)
@@ -264,13 +262,18 @@ print 'Parsing t1 file: ' + basename(t1_input_file) + ' ...'
 gc.t1_filter(
     iter_handle, t1_iea_name, t1_exp_name, t2_exp_name, GAFFIELDS, ConfigParam['exp_eec'])
            # This methods creats the t1.iea and t1.exp files
+
 print 'Creating benchmark set ...'
-cb.parse(
-    t1_iea_name, t1_exp_name, t2_exp_name, ConfigParam['exp_eec'])
+fb.filter_benchmarks(t1_iea_name, t1_exp_name, t2_exp_name) 
+          # Filters benchmarks and create SIX benchmark files
 
 #sd.down(output_filename, uniprot_path, unique_proteins)
 
-# Checks the size of the benchmark file created. If empty, program will quit with a message.
+# Checks the size of the benchmark files created in cb.filter_benchmark method.
+# If any file is found to be empty, the program will print a message saying so. 
+# Otherwise, it will remove the redundant entries in that file and create a 
+# final benchmark file with unique benchmark entries. It will do so for each of
+# the SIX benchmark files.
 if os.stat(filename_LK_bpo).st_size == 0:
     print 'Your benchmark set for Biological Process Ontology is empty.'
 else:
@@ -307,9 +310,11 @@ else:
     cmd = "awk -F \'\t\' '{print;}' " + filename_NK_mfo +  " | sort | uniq " + " > " + output_filename_NK_mfo
     subprocess.call(cmd, shell=True)
 
-# Cleans the working directory by removing files created in the intermediate steps
+# Cleans the working directory by removing files created in the 
+# intermediate steps. These files include files for iea and exp from 
+# t1 and t2 input files and filter benchmark files
 print 'Cleaning working directory ...'
-#Removing the temporary benchmark files created by CreateBenchmark() method
+# Removing the temporary benchmark files created by fb.filter_benchmark() method
 os.remove(filename_LK_bpo)
 os.remove(filename_LK_cco)
 os.remove(filename_LK_mfo)
