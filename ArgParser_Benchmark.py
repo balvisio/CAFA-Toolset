@@ -33,7 +33,7 @@ def extract_args(args):
     print "*************************************************\n"
     print 'Following is a list of user supplied inputs:\n'
     for arg in args_dict:
-        print arg + ' : ' + str(args_dict[arg])
+        print arg + ': ' + str(args_dict[arg])
     print '*********************************************\n'
     return args_dict
     
