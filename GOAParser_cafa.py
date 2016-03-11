@@ -34,20 +34,20 @@ def parse_tax_file(tax_filename):
 
 def record_has_forBenchmark(inupgrec, ann_freq, allowed, tax_name_id_mapping, 
                             EEC_default, GAFFIELDS):
-    """                                                                                                                                   
+    """
        Accepts a gaf record, a dictionary of allowed field values and other
        user specified parameters.                                                                                         
        If any field in the record does not have an allowed value, the function
-       stops search and returns fals. Otherwise, the function returns true.
+       stops search and returns false. Otherwise, the function returns true.
     """
-
     retval=True
     organism = ''
     for field in allowed:
-        if inupgrec['Evidence'] not in EEC_default:
-            retval=False
+        if inupgrec['Evidence'] not in EEC_default: 
+            retval=False  # No EXP validation. retval set to FALSE
             break
-        if not inupgrec.has_key(field):
+        if field not in inupgrec:
+
             if field == 'Pubmed':
                 rec_set = set([])
                 if type(inupgrec['DB:Reference']) is type(''):
@@ -61,10 +61,10 @@ def record_has_forBenchmark(inupgrec, ann_freq, allowed, tax_name_id_mapping,
                     retval=False
                     break
             elif field == 'Confidence':
-                db_id = inupgrec['DB_Object_ID']                                                                                             
-                go_id = inupgrec['GO_ID']                                                                                                   
-                if allowed[field] == 'T' and len(ann_freq[db_id][go_id]) < allowed['Threshold']:                                             
-                    retval=False                                                                                                            
+                db_id = inupgrec['DB_Object_ID'] 
+                go_id = inupgrec['GO_ID'] 
+                if allowed[field] == 'T' and len(ann_freq[db_id][go_id]) < allowed['Threshold']: 
+                    retval=False
                     break
             elif field == 'Blacklist':
                 rec_set = set([])
@@ -75,7 +75,6 @@ def record_has_forBenchmark(inupgrec, ann_freq, allowed, tax_name_id_mapping,
                         if x.startswith('PMID'):
                             x = x.split(':')[1]
                             rec_set.add(x)
-                
                 if len(rec_set & allowed[field]) > 0:
                      retval=False
                      break
@@ -90,12 +89,11 @@ def record_has_forBenchmark(inupgrec, ann_freq, allowed, tax_name_id_mapping,
             if type(inupgrec[field]) is type(''):
                 rec_set =set([inupgrec[field]])
             else:
-                rec_set = set(inupgrec[field])
-
+                rec_set = set(inupgrec[field]) # Extracting Taxon_ID field 
             for rec in rec_set:
-                if tax_name_id_mapping.has_key(rec.split(':')[1]):
+                if rec.split(':')[1] in tax_name_id_mapping:
                     organism = tax_name_id_mapping[rec.split(':')[1]]
-                if organism in allowed[field] or rec.split(':')[1] in allowed[field]:
+                if organism in allowed[field] or rec.split(':')[1] in allowed[field]:  
                     retval=True
                     break
                 else:
@@ -106,7 +104,6 @@ def record_has_forBenchmark(inupgrec, ann_freq, allowed, tax_name_id_mapping,
             if inupgrec[field] not in allowed[field]:
                 retval=False
                 break        
-
     return retval  
 
 def t1_filter(t1_iter, t1_iea_name, t1_exp_name, t2_exp_name, GAFFIELDS,EXP_default=set([])):
