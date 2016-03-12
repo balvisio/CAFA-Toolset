@@ -180,9 +180,12 @@ cerevisiae.
 python Filter -I1=uniprot_sprot.dat.2014_09  -G=559292
 ```
 
-It will create the following target sequence file: 
+It will create the following two output files - one for the target sequences and 
+one for the target id and protein name mapping which is used in the first output 
+file: 
 
 uniprot_sprot.dat.2014_09.559292.tfa.1
+uniprot_sprot.dat.2014_09.559292.tfa.1.map
 
 * The output file name is created by adding an extension with the name of the 
 input file where the extension is formed in the following way: [taxon id].[tfa].[version #].
