@@ -8,19 +8,23 @@ from Bio.SeqRecord import SeqRecord
 from Bio import SwissProt as sp
 
 '''
-This species_filter method takes four input arguments: (1) a uniprot-swissProt 
-file handle, (2) a taxonomy id, (3) an output file handle, and (4) the set of 
-EXP codes. If the function finds a protein that does NOT have any EXP evidence 
-code, it writes the protein sequence for that protein to the output file.
+     This species_filter method takes four input arguments: (1) a 
+     uniprot-swissProt file handle, (2) a taxonomy id, (3) an output file 
+     handle for writing target sequences, (4) an output file handle for 
+     writing the mapping between target id and protein name, and (5) the 
+     set of EXP codes. If the function finds a protein that does NOT have 
+     any EXP evidence code, it writes the protein sequence for that protein 
+     to the output file. It also writes the mapping of target id and protein 
+     name to the map file.
 '''
 
-def species_filter(fh_sprot, taxon_id, fh_targets, EXP_default=set([])):
+def species_filter(fh_sprot, taxon_id, fh_targets, fh_map, EXP_default=set([])):
     target_id = int(taxon_id+"0000001")
     outseq_list = []
     seqCount = 0
     seqCount_exp = 0 
     for rec in sp.parse(fh_sprot):
-        if taxon_id in rec.taxonomy_id: # SELECTS records that are related to a specific taxon_id such as 559292 for yeast
+        if taxon_id in rec.taxonomy_id: # Selects records that are related to a specific taxon_id such as 559292 for yeast
             exp_code = 0 
             seqCount += 1
             for crossRef in rec.cross_references: # Going over the list of GO information
@@ -35,7 +39,11 @@ def species_filter(fh_sprot, taxon_id, fh_targets, EXP_default=set([])):
                        description = "%s" %
                        (rec.entry_name))
                 outseq_list = [outseq]
-                SeqIO.write(outseq_list,fh_targets, "fasta")
+                SeqIO.write(outseq_list,fh_targets, "fasta") 
+                                      # write out the sequence
+                mapStr = "T"+str(target_id) + '\t' + str(rec.entry_name) + '\n'
+                fh_map.write("%s" % mapStr)
+                            # write out the mapping (target id -> protein name)
                 target_id += 1
                 seqCount_exp += 1
     return (seqCount, seqCount_exp)
