@@ -28,9 +28,11 @@ import FormatChecker as fc
 
       How to run this program: 
          > python Filter -I1=uniprot_sprot.dat.2014_09 -G=55929  
-      This will generate an output file named  uniprot_sprot.dat.2014_09.559292.tfa.1 
-      which will contain the target sequences specific to organism 55929.  
-
+      Two output files will be create. 
+      One target sequence file: uniprot_sprot.dat.2014_09.559292.tfa.1 which will 
+      contain the target sequences specific to organism 55929.   
+      One target id and protein name mapping file: uniprot_sprot.dat.2014_09.559292.tfa.1.map 
+      which will contain the mapping of target sequence id and protein name. 
 '''
 
 class bcolors:
