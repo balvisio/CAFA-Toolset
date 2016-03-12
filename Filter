@@ -18,12 +18,19 @@ import Filter_sp_targets as ft
 import FormatChecker as fc
 
 '''
-This program takes three inputs: (1) uniprot-swissProt file, (2) a taxon id and
-(3) an optional output file name. It extracts the protein sequences for the 
-species identified by the taxon id and writes them to an output file. When an 
-output file name is not given, it construct an output file name by combining 
-the a portion of the uniprot-swissProt file name given as the first argument 
-and the taxon id given as the second argument.
+      This program takes three inputs: (1) uniprot-swissProt file, (2) a 
+      taxon id and (3) an optional output file name. It extracts the 
+      protein sequences for the species identified by the taxon id and 
+      writes them to an output file. When an output file name is not given, 
+      it construct an output file name by combining the a portion of the 
+      uniprot-swissProt file name given as the first argument and the taxon 
+      id given as the second argument.
+
+      How to run this program: 
+         > python Filter -I1=uniprot_sprot.dat.2014_09 -G=55929  
+      This will generate an output file named  uniprot_sprot.dat.2014_09.559292.tfa.1 
+      which will contain the target sequences specific to organism 55929.  
+
 '''
 
 class bcolors:
@@ -65,8 +72,9 @@ def create_output(params, outfile, work_dir):
     index = 1
     while os.path.exists(work_dir + '/' + ob + '.' + str(index)):
         index = index + 1
-    output_filename = ob + '.' + str(index)
-    return output_filename
+    output_filename = work_dir + '/' + ob + '.' + str(index)
+    output_map_filename =  output_filename + '.map'
+    return (output_filename, output_map_filename)
 
 # The first step with using the argparse module is to create a parser object 
 # that can then parse all the user inputs and convert them into python objects
@@ -127,12 +135,14 @@ t1 = parsed_dict['t1']
 outfile_basename = basename(parsed_dict['outfile'])
 
 t1_input_file = work_dir + '/' + cd.parse(t1, ConfigParam)
-output_filename = work_dir + '/' + create_output(parsed_dict, 
-    outfile_basename, work_dir)
+
+output_filename, output_map_filename = create_output(parsed_dict, 
+                                      outfile_basename, work_dir)
 
 seqCount, seqCount_exp = ft.species_filter(open(t1_input_file, 'r'), 
                         parsed_dict['g'], 
                         open(output_filename, 'w'), 
+                        open(output_map_filename, 'w'), 
                         ConfigParam['exp_eec'])
 
 #seqCount, seqCount_exp = ft.species_filter_count(open(t1_input_file, 'r'), 
@@ -143,10 +153,18 @@ print 'Total # of sequences for the given organsism with taxonomy id ' + parsed_
 print '# of sequences with NO EXP code: ' + str(seqCount_exp)
 
 if os.path.exists(output_filename):
-    print (bcolors.OKGREEN + 'The following output file is created: ' + 
+    print (bcolors.OKGREEN + 'Target sequence file created: ' + 
         basename(output_filename) + bcolors.ENDC)
 else:
-    print (bcolors.WARNING + 'No output file is created with the given input \
+    print (bcolors.WARNING + 'No target file is created with the given input \
         parameters' + bcolors.ENDC)
+
+if os.path.exists(output_map_filename):
+    print (bcolors.OKGREEN + 'Map file created: ' + 
+        basename(output_map_filename) + bcolors.ENDC)
+else:
+    print (bcolors.WARNING + 'No map file is created with the given input \
+        parameters' + bcolors.ENDC)
+
 print (bcolors.OKGREEN + 'Thank you for using Target Generation Tool' + 
         bcolors.ENDC)
