@@ -181,14 +181,19 @@ python Filter -I1=uniprot_sprot.dat.2014_09  -G=559292
 ```
 
 It will create the following two output files - one for the target sequences and 
-one for the target id and protein name mapping which is used in the first output 
-file: 
+one for the target id and protein name mapping used in the target sequence 
+output file:
 
 uniprot_sprot.dat.2014_09.559292.tfa.1
+
 uniprot_sprot.dat.2014_09.559292.tfa.1.map
 
-* The output file name is created by adding an extension with the name of the 
-input file where the extension is formed in the following way: [taxon id].[tfa].[version #].
+* The target sequence output file name is created by adding an extension with 
+the name of the input file where the extension is formed in the following way: 
+[taxon id].[tfa].[version #]. 
+
+* The map file name is created by adding '.map' at the end of the target sequence 
+output file name: [taxon id].[tfa].[version #]. map
 
 * Multiple run of this program with the same input file name will create 
 subsequent versions of the output file where the file name will end with 
