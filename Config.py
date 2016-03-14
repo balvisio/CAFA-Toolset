@@ -7,28 +7,28 @@ import ConfigParser as cp
 from collections import OrderedDict
 
 '''
-   This module has two methods - creat_config and read_config. 
+   This module has two methods - creat_config and read_config: 
 
-   create_config: This method creates a configureation file where file name 
-                  is passed as an argument. This file stores the i
-                  configuration: 
-       DEFAULT_PATH: the default workspace 
+   create_config: This method creates a configureation file which 
+                  is passed as an argument. This file stores the
+                  configuration:
+       DEFAULT_PATH: the default workspace
        HOSTNAME: ftp.ebi.ac.uk
        CURRENT_FILE_PATH: file path for current GOA release
-       OLD_FILE_PATH: file path for old GOA releases 
+       OLD_FILE_PATH: file path for old GOA releases
        EXP_EVIDENCE_CODES: the set of GO annotation exeperimental evidence 
                       codes
-       ONTOLOGIES: the thre ontology names 
-       TAXONOMOY_FILENAME: the file name for taxonomy definitions 
-       BASE_URL: www.uniprot.org/uniprot 
-       FTP_DATE: regular expression for ftp dates 
-       FTP_FILE_START: gene_association     
+       ONTOLOGIES: the thre ontology names
+       TAXONOMOY_FILENAME: the file name for taxonomy definitions
+       BASE_URL: www.uniprot.org/uniprot
+       FTP_DATE: regular expression for ftp dates
+       FTP_FILE_START: gene_association
         
    read_config: This method reads the configuration and returns it as 
          an ordered dictionary. 
    
-   This module can be invoked directy to create a configuration file as shown 
-   here:
+   This module can be invoked directly to create a configuration file as shown 
+   below:
         python Config config_filename
 '''
 
@@ -99,7 +99,6 @@ def read_config(config_filename):
     ConfigParam['uniprot_path'] = Config_handle.get('SEQUENCE', 'BASE_URL')
     ConfigParam['ftp_date'] = Config_handle.get('REGEX', 'FTP_DATE')
     ConfigParam['ftp_file_start'] = Config_handle.get('REGEX', 'FTP_FILE_START')
-                    
     return ConfigParam
 
 if __name__ == '__main__':
