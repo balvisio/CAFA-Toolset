@@ -5,13 +5,12 @@ import sys
 import argparse
 import shutil
 import subprocess
-from Bio.UniProt import GOA
-from collections import defaultdict
 from os.path import basename 
+
+from Bio.UniProt import GOA
 
 import ArgParser_Benchmark as ap
 import Config
-import ConfigParser as cp
 import CreateDataset as cd
 import FilterBenchmark as fb
 import FormatChecker as fc
@@ -33,6 +32,7 @@ import PaperTermFrequency as ptf
    THREE no-knowledge (NK) files - one in each ontology.
 '''
 
+config_filename='.cafarc' # default configuration file name
 class bcolors:
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
@@ -43,34 +43,21 @@ class bcolors:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
-def paper_term_freq(params, infile):
-    # Given an input uniprot-goa file, this method computes the number of 
-    # proteins annotated in every pubmed id mentioned in that file
-
-    if params['Confidence'] == 'T':
-        paper_threshold = params['Threshold']
-        ann_conf_filter = True
+def create_output(params, outfile, infile, work_dir, ontType):
+    # Creates an output filename based on the output file prefix 
+    # provided by the user
+    if not outfile == '':
+        ob = basename(params['outfile'])
     else:
-        ann_conf_filter = False
-        paper_threshold = 0
-    if not os.path.exists(infile + '_with_annotations_per_paper.txt'):
-        paper_annotation_freq  = infile + '_with_annotations_per_paper.txt'
-        paper_conf_filter = True
-        paper_ann_freq_handle = open(paper_annotation_freq, 'w')
-    else:
-        paper_conf_filter = False
-    
-    if ann_conf_filter or paper_conf_filter : 
-        [ann_conf, paper_conf] = ptf.count(infile, params['Evidence'], 
-                                                          ann_conf_filter, paper_conf_filter)
-        if len(paper_conf) > 0:
-            for i in paper_conf:
-                print >> paper_ann_freq_handle, i + '\t' + str(len(paper_conf[i]))
-
-            paper_conf.clear()
-    else:
-        ann_conf = defaultdict(lambda:defaultdict(set))
-    return ann_conf
+        if ontType == '':
+            ob = basename(infile + '.benchmark')
+        else: 
+            ob = basename(infile + '.benchmark' + '_' + ontType)
+    index = 1
+    while os.path.exists(work_dir + '/' + ob + '.' + str(index)):
+        index = index + 1
+    output_filename = ob + '.' + str(index)
+    return output_filename
 
 def create_iterator(infile):
     # Returns an iterator object for an input uniprot-goa file along with a 
@@ -89,85 +76,36 @@ def create_iterator(infile):
     iter_handle = GOA.gafiterator(infile_handle)
     return iter_handle, GAFFIELDS
 
-def create_output(params, outfile, infile, work_dir, ontType):
-    # Creates an output filename based on the output file prefix 
-    # provided by the user
-    if not outfile == '':
-        ob = basename(params['outfile'])
+def paper_term_freq(params, infile):
+    # Given an input uniprot-goa file, this method computes the number of 
+    # proteins annotated in every pubmed id mentioned in that file
+    if params['Confidence'] == 'T':
+        paper_threshold = params['Threshold']
+        ann_conf_filter = True
     else:
-        if ontType == '':
-            ob = basename(infile + '.benchmark')
-        else: 
-            ob = basename(infile + '.benchmark' + '_' + ontType)
-    index = 1
-    while os.path.exists(work_dir + '/' + ob + '.' + str(index)):
-        index = index + 1
-    output_filename = ob + '.' + str(index)
-    return output_filename
-
-# The first step with using the argparse module is to create a parser object 
-# that can then parse all the user inputs and convert them into python objects 
-# based on the user input types provided
-
-parser = argparse.ArgumentParser(prog='bm.py',description='Creates target sets and benchmark protein sets.')
-parser.add_argument('-I1', '--input1', help='This opton is mandatory. Specifies path to first input file.')
-parser.add_argument('-I2', '--input2', help='This option is mandatory. Specifies path to second input file.')
-parser.add_argument('-O', '--output', default='', help='Provides user an option to specify an output filename prefix.')
-parser.add_argument('-G','--organism',nargs='*', default=['all'],help='Provides user a choice ' + \
-                        'to specify a set of organisms (example:Saccharomyces cerevisiae or 7227) ' + \
-                        'separated by space. Default is all.')
-parser.add_argument('-N','--ontology',nargs='*', default=['all'],help='Provides user a choice to ' + \
-                        'specify a set of ontologies (F, P, C) separated by space. Default is all.')
-parser.add_argument('-V','--evidence',nargs='*', default=['all'],help='Provides user a choice to ' + \
-                        'specify a set of GO experimental evidence codes (example: IPI, IDA, EXP) ' + \
-                        'separated by space.Default is all.')
-parser.add_argument('-S', '--source',action='store' ,nargs='*',default=['all'],help='Provides user ' + \
-                        'a choice to specify sources (example: UniProt, InterPro) separated by spaces. Default is all.')
-parser.add_argument('-P', '--pubmed',default='F',help='Allows user to turn on the pubmed filter. ' + \
-                        'If turned on, GO terms w/o any Pubmed references will not be considered ' + \
-                        'part of the benchmark set. By default, it is turned off.')
-parser.add_argument('-F', '--confidence',default='F',help='Allows user to turn on the annotation ' + \
-                        'confidence filter. If turned on, GO terms assignments to proteins that are ' + \
-                        'documented in few papers (4 or less by default) will not be considered part ' + \
-                        'of the benchmark set.By default, it is turned off.')
-parser.add_argument('-T', '--threshold',type=int, default=4,help='Allows users to specify a threshold ' + \
-                        'for the minimum number of papers to be used for having a confident annotation. ' + \
-                        'If not specified, defaults to a value of 4.')
-parser.add_argument('-B', '--blacklist', nargs='*',default=[], help='This parameter can take in a list of ' + \
-                        'pubmed ids and all GO terms and proteins annotated in them will be eliminated from ' + \
-                        'the benchmark set.Default is an empty list.')
-
-# Search for config file in the current directory. If not present, creates a 
-# new config file
-
-fname_ind = 0
-for root,dirs,files in os.walk('.'):
-    for fname in files:
-        if fname == '.cafarc':
-            fname_ind = 1
-    if fname_ind == 0:
-        print 'Configuration file not found'
-        print 'Creating new configuration file ...'
-        print '***************************************************************\n'
-        Config.create()
-    break
+        ann_conf_filter = False
+        paper_threshold = 0
+    if not os.path.exists(infile + '_with_annotations_per_paper.txt'):
+        paper_annotation_freq  = infile + '_with_annotations_per_paper.txt'
+        paper_conf_filter = True
+        paper_ann_freq_handle = open(paper_annotation_freq, 'w')
+    else:
+        paper_conf_filter = False
     
-# Reads the config file and stores values in a dictionary
-Config_handle = cp.ConfigParser()
-Config_handle.read('.cafarc')
-ConfigParam = defaultdict()
+    if ann_conf_filter or paper_conf_filter:
+        [ann_conf, paper_conf] = ptf.count(infile, params['Evidence'], 
+                                                          ann_conf_filter, paper_conf_filter)
+        if len(paper_conf) > 0:
+            for i in paper_conf:
+                print >> paper_ann_freq_handle, i + '\t' + str(len(paper_conf[i]))
 
-ConfigParam = {'workdir' : Config_handle.get('WORKDIR', 'DEFAULT_PATH'),
-               'ftp_host' : Config_handle.get('FTP', 'HOSTNAME'),
-               'ftp_curr_path' : Config_handle.get('FTP', 'CURRENT_FILE_PATH'),
-               'ftp_old_path' : Config_handle.get('FTP', 'OLD_FILE_PATH'),
-               'exp_eec' : Config_handle.get('DEFAULTS', 'EXP_EVIDENCE_CODES'),
-               'ont_def' : Config_handle.get('DEFAULTS', 'ONTOLOGIES'),
-               'tax_file' : Config_handle.get('DEFAULTS', 'TAXONOMY_FILENAME'),
-               'uniprot_path' : Config_handle.get('SEQUENCE', 'BASE_URL'),
-               'ftp_date' : Config_handle.get('REGEX', 'FTP_DATE'),
-               'ftp_file_start' : Config_handle.get('REGEX', 'FTP_FILE_START')
-               }
+            paper_conf.clear()
+    else:
+        ann_conf = defaultdict(lambda:defaultdict(set))
+    return ann_conf
+
+parser = ap.parse_argument()
+ConfigParam = Config.read_config(config_filename)
 
 work_dir = ConfigParam['workdir']
 work_dir = work_dir.rstrip('/')
@@ -183,16 +121,13 @@ t1 = parsed_dict['t1']
 t2 = parsed_dict['t2']
 outfile_basename = basename(parsed_dict['outfile'])
 
-# The conditional statement below checks if the user called the program in the default 
-# mode or in Target Generation mode and proceeds further accordingly.
-
 # Create input datasets based on whether the user chose CAFA or non-CAFA mode 
 if parsed_dict['t1'] == parsed_dict['t2']:
     print 'Both input files are from the same time point. This will not create a valid benchmark set.'
     print 'Program quiting ...'
     sys.exit(1)
 
-t1_input_file = work_dir + '/' + cd.parse(t1, ConfigParam) # Parse t1 file. 
+t1_input_file = work_dir + '/' + cd.parse(t1, ConfigParam) # Parse t1 file.
 t2_input_file = work_dir + '/' + cd.parse(t2, ConfigParam) # parse t2 file.
 
 # Filename initialization
