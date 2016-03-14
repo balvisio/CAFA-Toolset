@@ -4,63 +4,55 @@ uniprot_sprot.fasta.gz
 uniprot_sprot_varsplic.fasta.gz
 uniprot_sprot.xml.gz
 Renaming uniprot_sprot.dat.gz to uniprot_sprot.dat.2014_09
-Deleting redundant downloaded files
-
-
+Deleting redundant downloaded files ...
 *************************************************
 Welcome to Merge Database Tool !!!!!
 *************************************************
 
 Following is a list of user supplied inputs:
 
-outfile : 
-t2 : gene_association.goa_ref_yeast.38
-g : 559292
-t1 : uniprot_sprot.dat.2014_09
+outfile: 
+t2: gene_association.goa_ref_yeast.38
+g: 559292
+t1: uniprot_sprot.dat.2014_09
 *********************************************
 
-uniprot_sprot.dat.2014_09 has been moved to the work directory
+uniprot_sprot.dat.2014_09 has been moved to work directory
 The following output file is created: gene_association.goa_ref_yeast.38+sprot.2014_09.2
-Thank you for using Merge Database Tool 
-
-
+Thank you for using Merge Database Tool
 *************************************************
 Welcome to Target Generatin Tool !!!!!
 *************************************************
 
 Following is a list of user supplied inputs :
 
-outfile : 
-g : 559292
-t1 : uniprot_sprot.dat.2014_09
+outfile: 
+g: 559292
+t1: uniprot_sprot.dat.2014_09
 *********************************************
 
 Total # of sequences for the given organsism with taxonomy id 559292: 6621
 # of sequences with NO EXP code: 1717
-The following output file is created: uniprot_sprot.dat.2014_09.559292.tfa.2
-Thank you for using Target Generation Tool 
-
-
+Target sequence file created: uniprot_sprot.dat.2014_09.559292.tfa.2
+Map file created: uniprot_sprot.dat.2014_09.559292.tfa.2.map
+Thank you for using Target Generation Tool
 *************************************************
 Welcome to Benchmark Creation Tool !!!!!
 *************************************************
 
 Following is a list of user supplied inputs:
 
-Confidence : F
-Target : 0
-Assigned_By : ['all']
-outfile : 
-Program : F
-Mode : BC
-Taxon_ID : ['all']
-Evidence : ['all']
-t2 : gene_association.goa_ref_yeast.52
-t1 : gene_association.goa_ref_yeast.23
-Blacklist : []
-Pubmed : F
-Aspect : ['all']
-Threshold : 4
+Confidence: F
+Assigned_By: ['all']
+outfile: 
+Taxon_ID: ['all']
+t1: gene_association.goa_ref_yeast.23
+t2: gene_association.goa_ref_yeast.52
+Evidence: ['all']
+Blacklist: []
+Pubmed: F
+Aspect: ['all']
+Threshold: 4
 *********************************************
 
 Creating paper-term frequency file.....
@@ -75,26 +67,23 @@ gene_association.goa_ref_yeast.52.benchmark_LK_mfo.2
 gene_association.goa_ref_yeast.52.benchmark_NK_bpo.2
 gene_association.goa_ref_yeast.52.benchmark_NK_cco.2
 gene_association.goa_ref_yeast.52.benchmark_NK_mfo.2
-Thank you for using Benchmark Creation Tool 
-
-
+Thank you for using Benchmark Creation Tool
 *************************************************
 Welcome to Benchmark Verification Tool !!!!!
 *************************************************
 
 Following is a list of user supplied inputs:
-Confidence : F
-Assigned_By : ['all']
-Program : F
-Taxon_ID : ['all']
-Evidence : ['all']
-t2 : gene_association.goa_ref_yeast.52
-t3 : 
-t1 : gene_association.goa_ref_yeast.23
-Blacklist : []
-Pubmed : F
-Aspect : ['all']
-Threshold : 4
+Confidence: F
+Assigned_By: ['all']
+Taxon_ID: ['all']
+Evidence: ['all']
+t2: gene_association.goa_ref_yeast.52
+t3: 
+t1: gene_association.goa_ref_yeast.23
+Blacklist: []
+Pubmed: F
+Aspect: ['all']
+Threshold: 4
 *********************************************
 
 Creating paper-term frequency file.....
@@ -109,26 +98,23 @@ gene_association.goa_ref_yeast.52.benchmark_LK_mfo.2
 gene_association.goa_ref_yeast.52.benchmark_NK_bpo.2
 gene_association.goa_ref_yeast.52.benchmark_NK_cco.2
 gene_association.goa_ref_yeast.52.benchmark_NK_mfo.2
-Thank you for using the Benchmark Verification Tool 
-
-
+Thank you for using Benchmark Verification Tool
 *************************************************
 Welcome to Benchmark Verification Tool !!!!!
 *************************************************
 
 Following is a list of user supplied inputs:
-Confidence : F
-Assigned_By : ['all']
-Program : F
-Taxon_ID : ['all']
-Evidence : ['all']
-t2 : gene_association.goa_ref_yeast.52
-t3 : gene_association.goa_ref_yeast.52.benchmark_LK_bpo.1
-t1 : gene_association.goa_ref_yeast.23
-Blacklist : []
-Pubmed : F
-Aspect : ['all']
-Threshold : 4
+Confidence: F
+Assigned_By: ['all']
+Taxon_ID: ['all']
+Evidence: ['all']
+t2: gene_association.goa_ref_yeast.52
+t3: gene_association.goa_ref_yeast.52.benchmark_LK_bpo.1
+t1: gene_association.goa_ref_yeast.23
+Blacklist: []
+Pubmed: F
+Aspect: ['all']
+Threshold: 4
 *********************************************
 
 Creating paper-term frequency file.....
@@ -143,4 +129,4 @@ gene_association.goa_ref_yeast.52.benchmark_LK_mfo.1
 gene_association.goa_ref_yeast.52.benchmark_NK_bpo.1
 gene_association.goa_ref_yeast.52.benchmark_NK_cco.1
 gene_association.goa_ref_yeast.52.benchmark_NK_mfo.1
-Thank you for using Benchmark Verification Tool 
+Thank you for using Benchmark Verification Tool
