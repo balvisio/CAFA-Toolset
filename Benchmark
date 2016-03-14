@@ -27,7 +27,7 @@ import PaperTermFrequency as ptf
 
    python Benchmark --help
 
-   Output for Benchmark mode are SIX benchmark files: THREE limited-knolwedge 
+   Running this program creates SIX benchmark files: THREE limited-knolwedge 
    (LK) files - one in each of the three ontolgies (MFO, BPO, and CCO) and 
    THREE no-knowledge (NK) files - one in each ontology.
 '''
