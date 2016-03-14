@@ -3,24 +3,38 @@
 import os
 import sys
 import re
+import ConfigParser as cp
+from collections import OrderedDict
 
 '''
-   In the event that a user does not have a .cafarc file in his main
-   directory, this script will go ahead and create one for the user
-   and then proceed with running the benchmark program.
+   This module has two methods - creat_config and read_config. 
 
-   The .cafarc file basically details path and directory that will be used 
-   throughout the program.
-
-   If there is a change in the evidence codes being used or if uniprot-goa
-   changes its ftp path, changes need to be made in the .cafarc file and
-   it should get reflected throughout the program.
+   create_config: This method creates a configureation file where file name 
+                  is passed as an argument. This file stores the i
+                  configuration: 
+       DEFAULT_PATH: the default workspace 
+       HOSTNAME: ftp.ebi.ac.uk
+       CURRENT_FILE_PATH: file path for current GOA release
+       OLD_FILE_PATH: file path for old GOA releases 
+       EXP_EVIDENCE_CODES: the set of GO annotation exeperimental evidence 
+                      codes
+       ONTOLOGIES: the thre ontology names 
+       TAXONOMOY_FILENAME: the file name for taxonomy definitions 
+       BASE_URL: www.uniprot.org/uniprot 
+       FTP_DATE: regular expression for ftp dates 
+       FTP_FILE_START: gene_association     
+        
+   read_config: This method reads the configuration and returns it as 
+         an ordered dictionary. 
+   
+   This module can be invoked directy to create a configuration file as shown 
+   here:
+        python Config config_filename
 '''
 
-def create():
-    outfile_handle = open('.cafarc', 'w')
+def create_config(config_filename):
+    outfile_handle = open(config_filename, 'w')
     outfile_handle.write('[WORKDIR]\n')
-    
     work_dir_response = raw_input('Provide a path to your working directory (If left blank, defaults  to current directory) : ')
     if work_dir_response == '':
         outfile_handle.write('DEFAULT_PATH : .\n') 
@@ -53,5 +67,41 @@ def create():
     outfile_handle.write('FTP_DATE : [a-zA-Z]+\_\d+\n')
     outfile_handle.write('FTP_FILE_START : gene_association\n')
 
+def read_config(config_filename):
+    # reads the conig file supplied by config_filename and returns
+    # the configuration as an ordered dictionary  
+    # If the config file is not found in the current direcotry or 
+    # any subdirectory, it creates one by invoking create_config method
+    fname_ind = 0
+    # Search for configuration file. 
+    # current directory -> workspace -> create one 
+    for root,dirs,files in os.walk('.'):
+        for fname in files:
+            if fname == config_filename:
+                fname_ind = 1
+        if fname_ind == 0:
+            print 'Configuration file not found'
+            print 'Creating new configuration file ...'
+            print '************************************'
+            create_config(config_filename) # Creates a configuration file
+        break
+    # Reads the config file and stores values in a dictionary
+    Config_handle = cp.ConfigParser()
+    Config_handle.read(config_filename)
+    ConfigParam = OrderedDict()
+    ConfigParam['workdir'] = Config_handle.get('WORKDIR', 'DEFAULT_PATH')
+    ConfigParam['ftp_host'] = Config_handle.get('FTP', 'HOSTNAME')
+    ConfigParam['ftp_curr_path'] = Config_handle.get('FTP', 'CURRENT_FILE_PATH')
+    ConfigParam['ftp_old_path'] = Config_handle.get('FTP', 'OLD_FILE_PATH')
+    ConfigParam['exp_eec'] = Config_handle.get('DEFAULTS', 'EXP_EVIDENCE_CODES')
+    ConfigParam['ont_def'] = Config_handle.get('DEFAULTS', 'ONTOLOGIES')
+    ConfigParam['tax_file'] = Config_handle.get('DEFAULTS', 'TAXONOMY_FILENAME')
+    ConfigParam['uniprot_path'] = Config_handle.get('SEQUENCE', 'BASE_URL')
+    ConfigParam['ftp_date'] = Config_handle.get('REGEX', 'FTP_DATE')
+    ConfigParam['ftp_file_start'] = Config_handle.get('REGEX', 'FTP_FILE_START')
+                    
+    return ConfigParam
+
 if __name__ == '__main__':
-    create()
+    config_filename = sys.argv[1]
+    create_config(config_filename)
