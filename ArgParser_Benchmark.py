@@ -9,12 +9,56 @@ from collections import defaultdict
 '''
    This script parses, verifies a bunch of user input parameters using argparse module.
    Finally creates a dictionary with all parameter values and returns it
-
 '''
+
+def parse_argument():
+    # Argument list:
+    parser = argparse.ArgumentParser(description='Creates benchmark protein sets \
+                    from two annotation files at two time points')
+    parser.add_argument('-I1', '--input1', help='This opton is mandatory. \
+                    Specifies path to the first input file.')
+    parser.add_argument('-I2', '--input2', help='This option is mandatory. \
+                    Specifies path to the second input file.')
+    parser.add_argument('-O', '--output', default='', help='Provides user an \
+                    option to specify an output filename.')
+    parser.add_argument('-G','--organism',nargs='*', default=['all'],help='Provides \
+                    user a choice to specify a set of organisms  \
+                    (example:Saccharomyces cerevisiae or 7227) separated by \
+                    space. Default is all.')
+    parser.add_argument('-N','--ontology',nargs='*', default=['all'],help='Provides \
+                    user a choice to specify a set of ontologies (F, P, C) \
+                    separated by space. Default is all.')
+    parser.add_argument('-V','--evidence',nargs='*', default=['all'],help='Provides \
+                    user a choice to specify a set of GO experimental evidence \
+                    codes (example: IPI, IDA, EXP) separated by space.Default \
+                    is all.')
+    parser.add_argument('-S', '--source',action='store' ,nargs='*',default=\
+                    ['all'],help='Provides user a choice to specify sources \
+                    (example: UniProt, InterPro) separated by spaces. Default \
+                    is all.')
+    parser.add_argument('-P', '--pubmed',default='F',help='Allows user to turn on \
+                    the pubmed filter. If turned on, GO terms w/o any Pubmed \
+                    references will not be considered part of the benchmark \
+                    set. By default, it is turned off.')
+    parser.add_argument('-F', '--confidence',default='F',help='Allows user to turn \
+                    on the annotation confidence filter. If turned on, GO \
+                    terms assignments to proteins that are documented in few \
+                    papers (4 or less by default) will not be considered part \
+                    of the benchmark set.By default, it is turned off.')
+    parser.add_argument('-T', '--threshold',type=int, default=4,help='Allows \
+                    users to specify a threshold for the minimum number of \
+                    papers to be used for having a confident annotation. If \
+                    not specified, defaults to a value of 4.')
+    parser.add_argument('-B', '--blacklist', nargs='*',default=[], help='This \
+                    parameter can take in a list of pubmed ids and all GO \
+                    terms and proteins annotated in them will be eliminated \
+                    from the benchmark set.Default is an empty list.')
+    return parser
+
 def extract_args(args):
-    # This dictionary below contains the values of all arguments available to the program. 
-    #If they have been passed, it will take the values passed. Else, will assume default values. 
-    #If a new parameter is to be added to the program, it should be added into this dictionary
+    # This dictionary bellow contains the values of all arguments available to the program.
+    # If they have been passed, it will take the values passed. Else, will assume default values.
+    # If a new parameter is to be added to the program, it should be added into this dictionary
     args_dict = {}
     args_dict = {'t1' : args.input1,
                  't2' : args.input2,
@@ -37,9 +81,10 @@ def extract_args(args):
     print '*********************************************\n'
     return args_dict
     
-def check_args(args_dict,parser):
-    # This method checks the values for each of the arguments provided to look for inconsistent input
-    # At the end, it creates a final dictionary of input argument values and gives it back to the main script
+def check_args(args_dict, parser):
+    # This method checks the values for each of the arguments provided to look
+    # for inconsistent input. It creates a dictionary of input arguments and 
+    # returns the created dictionary.
 
     user_dict = {}
     for arg in args_dict:
@@ -85,7 +130,7 @@ def parse(parser, ConfigParam=defaultdict()):
         print '\n*********************************'
         print "Invalid Arguments"
         print '*********************************\n'
-        print parser.parse_args(['--help'])
+        print parser.parse_args(['--help']) # Shows help messages and quits
     args_dict = extract_args(args)
     user_dict = check_args(args_dict,parser)
     return user_dict
