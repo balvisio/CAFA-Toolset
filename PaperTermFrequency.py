@@ -15,7 +15,7 @@ import re
    considered confident over others.
 '''
 
-def count(infile, EEC=set([]), ann_conf_filter=False, paper_conf_filter=False):
+def count_freq(infile, EEC=set([]), ann_conf_filter=False, paper_conf_filter=False):
     paper_conf = defaultdict(lambda:defaultdict(set))
     ann_conf = defaultdict(lambda:defaultdict(set))
     infile_handle = open(infile, 'r')
@@ -37,10 +37,39 @@ def count(infile, EEC=set([]), ann_conf_filter=False, paper_conf_filter=False):
                     ann_conf[fields[1]][fields[4]].add(str(paper_id))
                 elif paper_conf_filter:
                     paper_conf[paper_id][fields[4]] = 1
-    
     infile_handle.close()
     return ann_conf, paper_conf
 
+def paper_term_freq(params, infile):
+    # Given an input uniprot-goa file, this method computes the number of 
+    # proteins annotated in every pubmed id mentioned in that file
+    if params['Confidence'] == 'T':
+        paper_threshold = params['Threshold']
+        ann_conf_filter = True
+    else:
+        ann_conf_filter = False
+        paper_threshold = 0
+
+    if not os.path.exists(infile + '_with_annotations_per_paper.txt'):
+        paper_annotation_freq  = infile + '_with_annotations_per_paper.txt'
+        paper_conf_filter = True
+        paper_ann_freq_handle = open(paper_annotation_freq, 'w')
+    else:
+        paper_conf_filter = False
+    
+    if ann_conf_filter or paper_conf_filter:
+        [ann_conf, paper_conf] = count_freq(infile, params['Evidence'], 
+                                                     ann_conf_filter, paper_conf_filter)
+#        print ann_conf
+#        print paper_conf
+#        print 'here'
+        if len(paper_conf) > 0:
+            for i in paper_conf:
+                print >> paper_ann_freq_handle, i + '\t' + str(len(paper_conf[i]))
+            paper_conf.clear()
+    else:
+        ann_conf = defaultdict(lambda:defaultdict(set))
+    return ann_conf
 
 if __name__ == '__main__':
     infile = sys.argv[1]
