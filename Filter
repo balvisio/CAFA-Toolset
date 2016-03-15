@@ -13,8 +13,9 @@ from collections import defaultdict
 import AppendSprot2GOA as as2g
 import ArgParser_Filter as ap
 import Config
-import CreateDataset as cd
+#import CreateDataset as cd
 import Filter_sp_targets as ft
+import FindDataset as fd
 import FormatChecker as fc
 
 '''
@@ -136,7 +137,9 @@ parsed_dict = ap.parse(parser, ConfigParam)
 t1 = parsed_dict['t1']
 outfile_basename = basename(parsed_dict['outfile'])
 
-t1_input_file = work_dir + '/' + cd.parse(t1, ConfigParam)
+#t1_input_file = work_dir + '/' + cd.parse(t1, ConfigParam)
+t1_input_file =  fd.find_dataset(t1, work_dir, ConfigParam)
+
 
 output_filename, output_map_filename = create_output(parsed_dict, 
                                       outfile_basename, work_dir)
