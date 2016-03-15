@@ -44,7 +44,7 @@ def parse_argument():
                     on the annotation confidence filter. If turned on, GO \
                     terms assignments to proteins that are documented in few \
                     papers (4 or less by default) will not be considered part \
-                    of the benchmark set.By default, it is turned off.')
+                    of the benchmark set. By default, it is turned off.')
     parser.add_argument('-T', '--threshold',type=int, default=4,help='Allows \
                     users to specify a threshold for the minimum number of \
                     papers to be used for having a confident annotation. If \
