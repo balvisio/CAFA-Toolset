@@ -7,12 +7,13 @@ from collections import defaultdict
 from os.path import basename 
 
 import ArgParser_Verify as apv
-import CreateDataset as cd
-import PaperTermFrequency as ptf
+#import CreateDataset as cd
 import ConfigParser as cp
+import FindDataset as fd
 import FormatChecker as fc
 import GOAParser_cafa as gc
 from Bio.UniProt import GOA 
+import PaperTermFrequency as ptf
 import verifyBenchmark as vb
 
 '''
@@ -200,8 +201,12 @@ t3 = parsed_dict['t3']
 #else:
 #    t1_input_file = work_dir + '/' + cd.parse(t1, ConfigParam)
 
-t1_input_file = work_dir + '/' + cd.parse(t1, ConfigParam)
-t2_input_file = work_dir + '/' + cd.parse(t2, ConfigParam)
+#t1_input_file = work_dir + '/' + cd.parse(t1, ConfigParam)
+#t2_input_file = work_dir + '/' + cd.parse(t2, ConfigParam)
+
+t1_input_file = fd.find_dataset(t1, work_dir, ConfigParam)
+t2_input_file = fd.find_dataset(t2, work_dir, ConfigParam)
+
 
 # Filename initialization
 t1_iea_name = t1_input_file + '.iea'
@@ -230,7 +235,9 @@ fc.check_gaf_format(t1_input_file)
 fc.check_gaf_format(t2_input_file)
 
 # Create the following two parameters that will be needed for t2 file parsing
-ann_conf = paper_term_freq(parsed_dict, t2_input_file) # Create paper-term frequency file
+#ann_conf = paper_term_freq(parsed_dict, t2_input_file) # Create paper-term frequency file
+ann_conf = ptf.paper_term_freq(parsed_dict, t2_input_file) # Create paper-term frequency file
+
 tax_id_name_mapping = gc.parse_tax_file(ConfigParam['tax_file']) # Creates a dictionary of taxon id-name mapping
 
 # Filtering t2 file for all proteins with experimentally annotated terms based on user defined parameters ...
