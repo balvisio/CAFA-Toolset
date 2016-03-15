@@ -6,13 +6,13 @@ import argparse
 import shutil
 import subprocess
 from os.path import basename 
-
+from collections import defaultdict
 from Bio.UniProt import GOA
 
 import ArgParser_Benchmark as ap
 import Config
-import CreateDataset as cd
-import FilterBenchmark as fb
+import CreateBenchmark as cb
+import FindDataset as fd
 import FormatChecker as fc
 import GOAParser_cafa as gc
 import PaperTermFrequency as ptf
@@ -32,7 +32,6 @@ import PaperTermFrequency as ptf
    THREE no-knowledge (NK) files - one in each ontology.
 '''
 
-config_filename='.cafarc' # default configuration file name
 class bcolors:
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
@@ -43,241 +42,246 @@ class bcolors:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
-def create_output(params, outfile, infile, work_dir, ontType):
-    # Creates an output filename based on the output file prefix 
-    # provided by the user
-    if not outfile == '':
-        ob = basename(params['outfile'])
-    else:
-        if ontType == '':
-            ob = basename(infile + '.benchmark')
-        else: 
-            ob = basename(infile + '.benchmark' + '_' + ontType)
-    index = 1
-    while os.path.exists(work_dir + '/' + ob + '.' + str(index)):
-        index = index + 1
-    output_filename = ob + '.' + str(index)
-    return output_filename
+config_filename = '.cafarc' # default configuration file name
 
-def create_iterator(infile):
-    # Returns an iterator object for an input uniprot-goa file along with a 
-    # list of all field names contained in the uniprot-goa file
+class Benchmark:
+    def __init__(self, parser, ConfigParam):
+        self.ConfigParam = ConfigParam
+        self.parsed_dict = ap.parse(parser, self.ConfigParam)
+                        # Get the user given parameters as a dictionary
+        t1 = self.parsed_dict['t1'] # Retreive file name at time t1
+        t2 = self.parsed_dict['t2'] # Retreive file name at time t2
+        if self.parsed_dict['t1'] == self.parsed_dict['t2']:
+            print 'Both input files are from the same time point. This will not create a valid benchmark set.'
+            print 'Program quiting ...'
+            sys.exit(1)
 
-    infile_handle = open(infile, 'r')
-    iter_handle = GOA.gafiterator(infile_handle)
-    for ingen in iter_handle:
-        if len(ingen) == 17:
-            GAFFIELDS = GOA.GAF20FIELDS
-            break
+        outfile_basename = basename(self.parsed_dict['outfile']) 
+                                   # Retreive output file name
+        self.work_dir = (self.ConfigParam['workdir']).rstrip('/')
+                                   # Retreive work directory name 
+        if not os.path.exists(self.work_dir):
+            os.makedirs(self.work_dir)
+                # Create work direcoty, if it does not exist 
+
+        self.t1_input_file = fd.find_dataset(t1, self.work_dir, 
+                            self.ConfigParam) # Locate t1 file
+        self.t2_input_file = fd.find_dataset(t2, self.work_dir, 
+                            self.ConfigParam) # Locate t2 file
+
+        # Names for SIX ouput files: bpo, cco, and mfo for LK and NK benchmark types:
+        self.output_filename_LK_bpo = self.create_output(self.parsed_dict, 
+                                    outfile_basename, self.t2_input_file, 
+                                    self.work_dir, 'LK_bpo')
+        self.output_filename_LK_cco = self.create_output(self.parsed_dict, 
+                                    outfile_basename, self.t2_input_file, 
+                                    self.work_dir, 'LK_cco')
+        self.output_filename_LK_mfo = self.create_output(self.parsed_dict, 
+                                    outfile_basename, self.t2_input_file, 
+                                    self.work_dir, 'LK_mfo')
+        self.output_filename_NK_bpo = self.create_output(self.parsed_dict, 
+                                    outfile_basename, self.t2_input_file, 
+                                    self.work_dir, 'NK_bpo')
+        self.output_filename_NK_cco = self.create_output(self.parsed_dict, 
+                                    outfile_basename, self.t2_input_file, 
+                                    self.work_dir, 'NK_cco')
+        self.output_filename_NK_mfo = self.create_output(self.parsed_dict, 
+                                    outfile_basename, self.t2_input_file, 
+                                    self.work_dir, 'NK_mfo')
+
+        # Names for THREE files to store non-EXP and EXP type entries:
+        # These files will be deleted once the calculation is done
+        self.t1_iea_name = self.t1_input_file + '.iea'
+                # File name for entries in t1 file with non-EXP evidence codes
+        self.t1_exp_name = self.t1_input_file + '.exp'
+                # File name for entries in t1 file with EXP evidence codes
+        self.t2_exp_name = self.t2_input_file + '.exp'
+                # File name for entries in t2 file with EXP evidence codes
+
+        # Name for GO ID frequency per pubmed id for t2 file:
+        # This file will be deleted once the calculations are done
+        self.t2_ptf_filename =  self.t2_input_file + '_with_annotations_per_paper.txt'
+        
+        # Names for SIX intermediate benchmark files:
+        self.filename_LK_bpo = self.t2_exp_name + '.bpo_LK_bench.txt'
+        self.filename_LK_cco = self.t2_exp_name + '.cco_LK_bench.txt'
+        self.filename_LK_mfo = self.t2_exp_name + '.mfo_LK_bench.txt'
+        self.filename_NK_bpo = self.t2_exp_name + '.bpo_NK_bench.txt'
+        self.filename_NK_cco = self.t2_exp_name + '.cco_NK_bench.txt'
+        self.filename_NK_mfo = self.t2_exp_name + '.mfo_NK_bench.txt'
+
+    def create_output(self, params, outfile, infile, work_dir, ontType):
+        # Creates an output filename based on the output file prefix 
+        # provided by the user
+        if not outfile == '':
+            ob = basename(params['outfile'])
         else:
-            GAFFIELDS = GOA.GAF10FIELDS
+            if ontType == '':
+                ob = basename(infile + '.benchmark')
+            else: 
+                ob = basename(infile + '.benchmark' + '_' + ontType)
+        index = 1
+        while os.path.exists(work_dir + '/' + ob + '.' + str(index)):
+            index = index + 1
+        output_filename = work_dir + '/' + ob + '.' + str(index)
+        return output_filename
+
+    def create_iterator(self, infile):
+        # Returns an iterator object for an input uniprot-goa file along with a 
+        # list of all field names contained in the uniprot-goa file
+
+        infile_handle = open(infile, 'r')
+        iter_handle = GOA.gafiterator(infile_handle)
+        for ingen in iter_handle:
+            if len(ingen) == 17:
+                GAFFIELDS = GOA.GAF20FIELDS
+                break
+            else:
+                GAFFIELDS = GOA.GAF10FIELDS
+                break
+        infile_handle = open(infile, 'r')
+        iter_handle = GOA.gafiterator(infile_handle)
+        return iter_handle, GAFFIELDS
+
+    def remove_redundant_benchmarks(self):
+        if os.stat(self.filename_LK_bpo).st_size == 0:
+            print 'Your benchmark set for Biological Process Ontology is empty.'
+        else:
+            cmd = "awk -F \'\t\' '{print;}' " + self.filename_LK_bpo + \
+                    " | sort | uniq " + " > " + self.output_filename_LK_bpo
+            subprocess.call(cmd, shell=True)
+
+        if os.stat(self.filename_LK_cco).st_size == 0:
+            print 'Your benchmark set for Cellular Component Process Ontology is empty.'
+        else:
+            cmd = "awk -F \'\t\' '{print;}' " + self.filename_LK_cco + \
+                    " | sort | uniq " + " > " + self.output_filename_LK_cco
+            subprocess.call(cmd, shell=True)
+
+        if os.stat(self.filename_LK_mfo).st_size == 0:
+            print 'Your benchmark set for Molecular Function Ontology is empty.'
+        else:
+            cmd = "awk -F \'\t\' '{print;}' " + self.filename_LK_mfo + \
+                    " | sort | uniq " + " > " + self.output_filename_LK_mfo
+            subprocess.call(cmd, shell=True)
+
+        if os.stat(self.filename_NK_bpo).st_size == 0:
+            print 'Your no-knowledge benchmark set for Biological Process Ontology is empty.'
+        else:
+            cmd = "awk -F \'\t\' '{print;}' " + self.filename_NK_bpo + \
+                    " | sort | uniq " + " > " + self.output_filename_NK_bpo
+            subprocess.call(cmd, shell=True)
+
+        if os.stat(self.filename_NK_cco).st_size == 0:
+            print 'Your no-knowledge benchmark set for Cellular Component Process Ontology is empty.'
+        else:
+            cmd = "awk -F \'\t\' '{print;}' " + self.filename_NK_cco + \
+                    " | sort | uniq " + " > " + self.output_filename_NK_cco
+            subprocess.call(cmd, shell=True)
+
+        if os.stat(self.filename_NK_mfo).st_size == 0:
+            print 'Your no-knowledge benchmark set for Molecular Function Ontology is empty.'
+        else:
+            cmd = "awk -F \'\t\' '{print;}' " + self.filename_NK_mfo + \
+                    " | sort | uniq " + " > " + self.output_filename_NK_mfo
+            subprocess.call(cmd, shell=True)
+        return None
+
+    def create_intermediate_files(self):
+       # Create paper-term freq file for t2 file:
+        ann_conf = ptf.paper_term_freq(self.parsed_dict, 
+                  self.t2_input_file) 
+#        print self.parsed_dict 
+#        raise SystemExit
+        # Create an iterator object for filtering t2 file:
+        iter_handle, GAFFIELDS = self.create_iterator(self.t2_input_file)
+
+        # Create tax_id_name_mapping for filtering t2 file:
+        tax_id_name_mapping = gc.parse_tax_file(self.ConfigParam['tax_file'])
+
+        # Create t2_exp_name file:
+        # Filter t2 file for all proteins with EXP evidence:
+        print 'Parsing t2 file: ' + basename(self.t2_input_file) + ' ...'
+        t2_exp_handle = open(self.t2_exp_name, 'w')
+        for ingen in iter_handle: # iterate through t2 file entries
+            retval = gc.record_has_forBenchmark(ingen, ann_conf, self.parsed_dict,
+                tax_id_name_mapping, self.ConfigParam['exp_eec'], GAFFIELDS)
+            if retval: # if retval is TRUE, write out the record to t2.exp file 
+                GOA.writerec(ingen, t2_exp_handle, GAFFIELDS) # creates t2.exp file
+        t2_exp_handle.close()
+
+        if os.stat(self.t2_exp_name).st_size == 0: # if t2.exp is empty, program quits
+            print 'Your benchmark set will be empty with the parameters provided. Quiting ...'
+            sys.exit(1)
+       
+        # Create t1.iea_name and t1.exp_name files: 
+        # Filter t1 file to create t1.iea and t1.exp files
+        iter_handle, GAFFIELDS = self.create_iterator(self.t1_input_file)
+        print 'Parsing t1 file: ' + basename(self.t1_input_file) + ' ...' 
+        gc.t1_filter(iter_handle, self.t1_iea_name, self.t1_exp_name, 
+                    self.t2_exp_name, GAFFIELDS, self.ConfigParam['exp_eec'])
+        return None 
+
+    def collect_garbage(self):
+        print 'Cleaning working directory ...'
+        # Delete intermediate benchmark files: 
+        os.remove(self.filename_LK_bpo)
+        os.remove(self.filename_LK_cco)
+        os.remove(self.filename_LK_mfo)
+        os.remove(self.filename_NK_bpo)
+        os.remove(self.filename_NK_cco)
+        os.remove(self.filename_NK_mfo)
+        # Delete t1.iea, t1.exp, and t2.exp files: 
+        os.remove(self.t1_iea_name)
+        os.remove(self.t1_exp_name)
+        os.remove(self.t2_exp_name)
+       # Delete paper term frequency file for t2 file:
+        os.remove(self.t2_ptf_filename)
+        # Deletes empty files from the workspace (subdirectories included):
+        for root, dirs, files in os.walk(self.work_dir):
+            for fname in files:
+                if os.path.getsize(root + '/' + fname) == 0:
+                    os.remove(root + '/' + fname)
             break
-    infile_handle = open(infile, 'r')
-    iter_handle = GOA.gafiterator(infile_handle)
-    return iter_handle, GAFFIELDS
+        return None
 
-def paper_term_freq(params, infile):
-    # Given an input uniprot-goa file, this method computes the number of 
-    # proteins annotated in every pubmed id mentioned in that file
-    if params['Confidence'] == 'T':
-        paper_threshold = params['Threshold']
-        ann_conf_filter = True
-    else:
-        ann_conf_filter = False
-        paper_threshold = 0
-    if not os.path.exists(infile + '_with_annotations_per_paper.txt'):
-        paper_annotation_freq  = infile + '_with_annotations_per_paper.txt'
-        paper_conf_filter = True
-        paper_ann_freq_handle = open(paper_annotation_freq, 'w')
-    else:
-        paper_conf_filter = False
-    
-    if ann_conf_filter or paper_conf_filter:
-        [ann_conf, paper_conf] = ptf.count(infile, params['Evidence'], 
-                                                          ann_conf_filter, paper_conf_filter)
-        if len(paper_conf) > 0:
-            for i in paper_conf:
-                print >> paper_ann_freq_handle, i + '\t' + str(len(paper_conf[i]))
+    def print_epilog(self):
+        print bcolors.OKGREEN + 'The following benchmark files are created:' + bcolors.ENDC 
+        if os.path.exists(self.output_filename_LK_bpo):
+            print basename(self.output_filename_LK_bpo)
+        if os.path.exists(self.output_filename_LK_cco):
+            print basename(self.output_filename_LK_cco)
+        if os.path.exists(self.output_filename_LK_mfo):
+            print basename(self.output_filename_LK_mfo)
+        if os.path.exists(self.output_filename_NK_bpo):
+            print basename(self.output_filename_NK_bpo)
+        if os.path.exists(self.output_filename_NK_cco):
+            print basename(self.output_filename_NK_cco)
+        if os.path.exists(self.output_filename_NK_mfo):
+            print basename(self.output_filename_NK_mfo)
+        print bcolors.OKGREEN + 'Thank you for using Benchmark Creation Tool' + bcolors.ENDC
+        return None
 
-            paper_conf.clear()
-    else:
-        ann_conf = defaultdict(lambda:defaultdict(set))
-    return ann_conf
+    def process_data(self):
+        fc.check_gaf_format(self.t1_input_file)
+                    # Format checker module for input file t1
+        fc.check_gaf_format(self.t2_input_file) 
+                    # Format checker module for input file t2
+        self.create_intermediate_files()
+                    # Create necessary intermediate files
 
-parser = ap.parse_argument()
-ConfigParam = Config.read_config(config_filename)
+        # Filter all benchmarks based on t1.iea, t1.exp and t2.exp files:
+        # It will create SIX intermediate benchmark files
+        print 'Creating benchmark set ...'
+        cb.create_benchmarks(self.t1_iea_name, self.t1_exp_name, 
+                             self.t2_exp_name) # Create SIX benchmark sets
+        self.remove_redundant_benchmarks() # Remove redundant benchmark entries
+        self.collect_garbage() # Remove intermediate files
+        self.print_epilog() # Print summary of running this program 
+        return None
 
-work_dir = ConfigParam['workdir']
-work_dir = work_dir.rstrip('/')
-uniprot_path = ConfigParam['uniprot_path'] .rstrip('/')
-
-# In case the working directory is not found, the program will create one in this step
-if not os.path.exists(work_dir):
-    os.makedirs(work_dir)
-
-# Parses the set of user given parameters and returns a dictionary of the same.
-parsed_dict = ap.parse(parser, ConfigParam)
-t1 = parsed_dict['t1']
-t2 = parsed_dict['t2']
-outfile_basename = basename(parsed_dict['outfile'])
-
-# Create input datasets based on whether the user chose CAFA or non-CAFA mode 
-if parsed_dict['t1'] == parsed_dict['t2']:
-    print 'Both input files are from the same time point. This will not create a valid benchmark set.'
-    print 'Program quiting ...'
-    sys.exit(1)
-
-t1_input_file = work_dir + '/' + cd.parse(t1, ConfigParam) # Parse t1 file.
-t2_input_file = work_dir + '/' + cd.parse(t2, ConfigParam) # parse t2 file.
-
-# Filename initialization
-output_filename_LK_bpo = work_dir + '/' + create_output(
-    parsed_dict, outfile_basename, t2_input_file, work_dir, 'LK_bpo')
-output_filename_LK_cco = work_dir + '/' + create_output(
-    parsed_dict, outfile_basename, t2_input_file, work_dir, 'LK_cco')
-output_filename_LK_mfo = work_dir + '/' + create_output(
-    parsed_dict, outfile_basename, t2_input_file, work_dir, 'LK_mfo')
-output_filename_NK_bpo = work_dir + '/' + create_output(
-    parsed_dict, outfile_basename, t2_input_file, work_dir, 'NK_bpo')
-output_filename_NK_cco = work_dir + '/' + create_output(
-    parsed_dict, outfile_basename, t2_input_file, work_dir, 'NK_cco')
-output_filename_NK_mfo = work_dir + '/' + create_output(
-    parsed_dict, outfile_basename, t2_input_file, work_dir, 'NK_mfo')
-
-t1_iea_name = t1_input_file + '.iea' 
-      # This file will be used for recording entries in t1 file with 
-      # non-experimental evidence codes
-t1_exp_name = t1_input_file + '.exp'
-      # This file will be used for recording entries in t1 file with 
-      # experimental evidence codes
-t2_exp_name = t2_input_file + '.exp'
-      # This file will be used for recording entries in t2 file 
-      # with experimental evidence codes
-
-filename_LK_bpo = t2_exp_name + '.bpo_LK_bench.txt'
-filename_LK_cco = t2_exp_name + '.cco_LK_bench.txt'
-filename_LK_mfo = t2_exp_name + '.mfo_LK_bench.txt'
-filename_NK_bpo = t2_exp_name + '.bpo_NK_bench.txt'
-filename_NK_cco = t2_exp_name + '.cco_NK_bench.txt'
-filename_NK_mfo = t2_exp_name + '.mfo_NK_bench.txt'
-
-fc.check_gaf_format(t1_input_file) # Format checker module for input file t1
-fc.check_gaf_format(t2_input_file) # Format checker module for input file t2
-
-# Create paper-term frequency file
-ann_conf = paper_term_freq(parsed_dict, t2_input_file)
-
-# Creates an iterator object for t2 file
-iter_handle, GAFFIELDS = create_iterator(t2_input_file)
-
-# Creates a dictionary of taxon id-name mapping
-tax_id_name_mapping = gc.parse_tax_file(ConfigParam['tax_file'])
-
-# Filters t2 file for all proteins with experimentally annotated terms
-# based on user defined parameters
-
-print 'Parsing t2 file: ' + basename(t2_input_file) + ' ...'
-t2_exp_handle = open(t2_exp_name, 'w')
-for ingen in iter_handle: # iterate through t2 file
-    retval = gc.record_has_forBenchmark(ingen,ann_conf, parsed_dict,
-        tax_id_name_mapping, ConfigParam['exp_eec'], GAFFIELDS)
-    if retval: # if retval is TRUE, write out the record to t2.exp file 
-        GOA.writerec(ingen,t2_exp_handle,GAFFIELDS) # creates t2.exp file
-t2_exp_handle.close()
-    
-# If t2.exp file is empty, it would end up producing an empty benchmark file. 
-# To prevent this, the program will quit here with a message.
-if os.stat(t2_exp_name).st_size == 0:
-    print 'Your benchmark set will be empty with the parameters provided. Quiting ...'
-    sys.exit(1)
-
-# Filters t1 file and creates benchmark
-iter_handle, GAFFIELDS = create_iterator(t1_input_file)
-print 'Parsing t1 file: ' + basename(t1_input_file) + ' ...' 
-gc.t1_filter(
-    iter_handle, t1_iea_name, t1_exp_name, t2_exp_name, GAFFIELDS, ConfigParam['exp_eec'])
-           # This methods creats the t1.iea and t1.exp files
-
-print 'Creating benchmark set ...'
-fb.filter_benchmarks(t1_iea_name, t1_exp_name, t2_exp_name) 
-          # Filters benchmarks and create SIX benchmark files
-
-#sd.down(output_filename, uniprot_path, unique_proteins)
-
-# Checks the size of the benchmark files created in cb.filter_benchmark method.
-# If any file is found to be empty, the program will print a message saying so. 
-# Otherwise, it will remove the redundant entries in that file and create a 
-# final benchmark file with unique benchmark entries. It will do so for each of
-# the SIX benchmark files.
-if os.stat(filename_LK_bpo).st_size == 0:
-    print 'Your benchmark set for Biological Process Ontology is empty.'
-else:
-    cmd = "awk -F \'\t\' '{print;}' " + filename_LK_bpo +  " | sort | uniq " + " > " + output_filename_LK_bpo
-    subprocess.call(cmd, shell=True)
-
-if os.stat(filename_LK_cco).st_size == 0:
-    print 'Your benchmark set for Cellular Component Process Ontology is empty.'
-else:
-    cmd = "awk -F \'\t\' '{print;}' " + filename_LK_cco +  " | sort | uniq " + " > " + output_filename_LK_cco
-    subprocess.call(cmd, shell=True)
-
-if os.stat(filename_LK_mfo).st_size == 0:
-    print 'Your benchmark set for Molecular Function Ontology is empty.'
-else:
-    cmd = "awk -F \'\t\' '{print;}' " + filename_LK_mfo +  " | sort | uniq " + " > " + output_filename_LK_mfo
-    subprocess.call(cmd, shell=True)
-
-if os.stat(filename_NK_bpo).st_size == 0:
-    print 'Your no-knowledge benchmark set for Biological Process Ontology is empty.'
-else:
-    cmd = "awk -F \'\t\' '{print;}' " + filename_NK_bpo +  " | sort | uniq " + " > " + output_filename_NK_bpo
-    subprocess.call(cmd, shell=True)
-
-if os.stat(filename_NK_cco).st_size == 0:
-    print 'Your no-knowledge benchmark set for Cellular Component Process Ontology is empty.'
-else:
-    cmd = "awk -F \'\t\' '{print;}' " + filename_NK_cco +  " | sort | uniq " + " > " + output_filename_NK_cco
-    subprocess.call(cmd, shell=True)
-
-if os.stat(filename_NK_mfo).st_size == 0:
-    print 'Your no-knowledge benchmark set for Molecular Function Ontology is empty.'
-else:
-    cmd = "awk -F \'\t\' '{print;}' " + filename_NK_mfo +  " | sort | uniq " + " > " + output_filename_NK_mfo
-    subprocess.call(cmd, shell=True)
-
-# Cleans the working directory by removing files created in the 
-# intermediate steps. These files include files for iea and exp from 
-# t1 and t2 input files and filter benchmark files
-print 'Cleaning working directory ...'
-# Removing the temporary benchmark files created by fb.filter_benchmark() method
-os.remove(filename_LK_bpo)
-os.remove(filename_LK_cco)
-os.remove(filename_LK_mfo)
-os.remove(filename_NK_bpo)
-os.remove(filename_NK_cco)
-os.remove(filename_NK_mfo)
-os.remove(t1_input_file + '.iea')
-if os.path.exists(t1_input_file + '.exp'):
-    os.remove(t1_input_file + '.exp')
-os.remove(t2_exp_name)
-os.remove(t2_input_file + '_with_annotations_per_paper.txt')
-#Deletes all empty files from the working directory and its subdirectories
-for root, dirs, files in os.walk(work_dir):
-    for fname in files:
-        if os.path.getsize(root + '/' + fname) == 0:
-            os.remove(root + '/' + fname)
-    break
-print bcolors.OKGREEN + 'The following benchmark files are created:' + bcolors.ENDC 
-if os.path.exists(output_filename_LK_bpo):
-    print basename(output_filename_LK_bpo)
-if os.path.exists(output_filename_LK_cco):
-    print basename(output_filename_LK_cco)
-if os.path.exists(output_filename_LK_mfo):
-    print basename(output_filename_LK_mfo)
-if os.path.exists(output_filename_NK_bpo):
-    print basename(output_filename_NK_bpo)
-if os.path.exists(output_filename_NK_cco):
-    print basename(output_filename_NK_cco)
-if os.path.exists(output_filename_NK_mfo):
-    print basename(output_filename_NK_mfo)
-print bcolors.OKGREEN + 'Thank you for using Benchmark Creation Tool' + bcolors.ENDC 
+if __name__ == '__main__': 
+    parser = ap.parse_argument()
+    ConfigParam = Config.read_config(config_filename)
+    bm = Benchmark(parser, ConfigParam)
+    bm.process_data()
