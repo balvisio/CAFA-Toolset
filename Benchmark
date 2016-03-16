@@ -188,12 +188,13 @@ class Benchmark:
         return None
 
     def create_intermediate_files(self):
-       # Create paper-term freq file for t2 file:
-#        ann_conf = ptf.paper_term_freq(self.parsed_dict, 
-#                  open(self.t2_input_file,'r'), open(self.t2_ptf_file,'w'))
-        ann_conf = ptf.paper_term_freq(open(self.t2_input_file,'r'), 
-                    open(self.t2_ptf_file,'w'), self.parsed_dict)
-
+        # Create paper-term freq file for t2 file:
+        ann_conf = ptf.paper_term_freq( open(self.t2_input_file,'r'), 
+                                        open(self.t2_ptf_file,'w'), 
+                                        self.parsed_dict)
+#        print ann_conf.keys()
+#        print ann_conf.values()
+#        raise SystemExit
         # Create an iterator object for filtering t2 file:
         iter_handle, GAFFIELDS = self.create_iterator(self.t2_input_file)
 
@@ -204,14 +205,18 @@ class Benchmark:
         # Filter t2 file for all proteins with EXP evidence:
         print 'Parsing t2 file: ' + basename(self.t2_input_file) + ' ...'
         t2_exp_handle = open(self.t2_exp_name, 'w')
-        for ingen in iter_handle: # iterate through t2 file entries
-            retval = gc.record_has_forBenchmark(ingen, ann_conf, self.parsed_dict,
-                tax_id_name_mapping, self.ConfigParam['exp_eec'], GAFFIELDS)
-            if retval: # if retval is TRUE, write out the record to t2.exp file 
-                GOA.writerec(ingen, t2_exp_handle, GAFFIELDS) # creates t2.exp file
+        for ingen in iter_handle: # Iterate through t2 file entries
+            retval = gc.record_has_forBenchmark(ingen, 
+                                                ann_conf, 
+                                                self.parsed_dict,
+                                                tax_id_name_mapping, 
+                                                self.ConfigParam['exp_eec'], 
+                                                GAFFIELDS)
+            if retval: # If retval is TRUE, write out the record to t2.exp file 
+                GOA.writerec(ingen, t2_exp_handle, GAFFIELDS) # Create t2.exp file
         t2_exp_handle.close()
 
-        if os.stat(self.t2_exp_name).st_size == 0: # if t2.exp is empty, program quits
+        if os.stat(self.t2_exp_name).st_size == 0: # If t2.exp is empty, program quits
             print 'Your benchmark set will be empty with the parameters provided. Quiting ...'
             sys.exit(1)
        
