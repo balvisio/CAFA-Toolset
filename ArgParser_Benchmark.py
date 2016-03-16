@@ -30,7 +30,7 @@ def parse_argument():
                     separated by space. Default is all.')
     parser.add_argument('-V','--evidence',nargs='*', default=['all'],help='Provides \
                     user a choice to specify a set of GO experimental evidence \
-                    codes (example: IPI, IDA, EXP) separated by space.Default \
+                    codes (example: IPI, IDA, EXP) separated by space. Default \
                     is all.')
     parser.add_argument('-S', '--source',action='store' ,nargs='*',default=\
                     ['all'],help='Provides user a choice to specify sources \
