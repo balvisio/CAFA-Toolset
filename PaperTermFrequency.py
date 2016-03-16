@@ -51,4 +51,4 @@ if __name__ == '__main__':
     ptf_file = sys.argv[2] # output file for paper term frequency
     paper_term_freq(open(sys.argv[1], 'r'), 
                     open(sys.argv[2], 'w'), set())
-        # Creates a paper term frequency file from the input goa file
+        # Create a paper term frequency file from the input goa file
