@@ -25,12 +25,12 @@ def count_freq(goa_handle, EEC=set([])):
             continue
         fields = line.strip().split('\t')
         if not fields[5] == '' and re.match('^PMID', fields[5]): # Match PMID 
-            paper_id = fields[5].split(':')[1] # Extract PubMed id
+            pubmed_id = fields[5].split(':')[1] # Extract PubMed id
             if (not EEC) or (fields[6] in EEC):
-                ann_conf[fields[1]][fields[4]].add(str(paper_id)) 
+                ann_conf[fields[1]][fields[4]].add(str(pubmed_id)) 
                     # add pubmed id as evidence to the protein, GO ID 
                     # (fields[1], fields[4]) pair
-                paper_conf[paper_id][fields[4]] = 1
+                paper_conf[pubmed_id][fields[4]] = 1
     return (ann_conf, paper_conf)
 
 def paper_term_freq(goa_handle, ptf_handle, params):
