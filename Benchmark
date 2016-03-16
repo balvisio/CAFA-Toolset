@@ -189,8 +189,10 @@ class Benchmark:
 
     def create_intermediate_files(self):
        # Create paper-term freq file for t2 file:
-        ann_conf = ptf.paper_term_freq(self.parsed_dict, 
-                  open(self.t2_input_file,'r'), open(self.t2_ptf_file,'w'))
+#        ann_conf = ptf.paper_term_freq(self.parsed_dict, 
+#                  open(self.t2_input_file,'r'), open(self.t2_ptf_file,'w'))
+        ann_conf = ptf.paper_term_freq(open(self.t2_input_file,'r'), 
+                    open(self.t2_ptf_file,'w'), self.parsed_dict)
 
         # Create an iterator object for filtering t2 file:
         iter_handle, GAFFIELDS = self.create_iterator(self.t2_input_file)
