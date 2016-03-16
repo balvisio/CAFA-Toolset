@@ -34,8 +34,9 @@ def count_freq(goa_handle, EEC=set([])):
     return (ann_conf, paper_conf)
 
 def paper_term_freq(goa_handle, ptf_handle, params):
-    # Given an input uniprot-goa file, this method computes the number of 
-    # proteins annotated in every pubmed id mentioned in the file
+    # Given an input uniprot-goa file, this method populates file pointed by 
+    # ptf_handle with a pair of pubmed id and the number of proteins 
+    # annotated by that pubmed id
 
     ann_conf, paper_conf = count_freq(goa_handle,
                             params['Evidence'])
