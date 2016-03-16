@@ -235,7 +235,11 @@ fc.check_gaf_format(t2_input_file)
 
 # Create the following two parameters that will be needed for t2 file parsing
 #ann_conf = paper_term_freq(parsed_dict, t2_input_file) # Create paper-term frequency file
-ann_conf = ptf.paper_term_freq(parsed_dict, t2_input_file) # Create paper-term frequency file
+t2_ptf_file = t2_input_file + '_with_annotations_per_paper.txt'
+ann_conf = ptf.paper_term_freq( open(t2_input_file,'r'), 
+                                open(t2_ptf_file,'w'), 
+                                parsed_dict)
+#ann_conf = ptf.paper_term_freq(parsed_dict, t2_input_file) # Create paper-term frequency file
 
 tax_id_name_mapping = gc.parse_tax_file(ConfigParam['tax_file']) # Creates a dictionary of taxon id-name mapping
 
