@@ -49,7 +49,6 @@ class bcolors:
     BOLD = '\033[1m' 
     UNDERLINE = '\033[4m'
 
-
 def paper_term_freq(params, infile):
     # Given an input uniprot-goa file, this method computes the number of 
     # proteins annotated in every pubmed id mentioned in that file
