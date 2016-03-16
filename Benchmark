@@ -262,26 +262,20 @@ class Benchmark:
         print bcolors.OKGREEN + 'Thank you for using Benchmark Creation Tool' + bcolors.ENDC
         return None
 
-    def process_data(self):
-        fc.check_gaf_format(self.t1_input_file)
-                    # Format checker module for input file t1
-        fc.check_gaf_format(self.t2_input_file) 
-                    # Format checker module for input file t2
-        self.create_intermediate_files()
-                    # Create necessary intermediate files
-
-        # Filter all benchmarks based on t1.iea, t1.exp and t2.exp files:
-        # It will create SIX intermediate benchmark files
-        print 'Creating benchmark set ...'
-        cb.create_benchmarks(self.t1_iea_name, self.t1_exp_name, 
-                             self.t2_exp_name) # Create SIX benchmark sets
+    def process_data(self): # Process user data and create benchmarks 
+        fc.check_gaf_format(self.t1_input_file) # File format check for t1 file
+        fc.check_gaf_format(self.t2_input_file) # File format check for t2 file
+        self.create_intermediate_files() # Create necessary intermediate files
+        cb.create_benchmarks(self.t1_iea_name, # Create SIX benchmark sets
+                             self.t1_exp_name, 
+                             self.t2_exp_name) 
         self.remove_redundant_benchmarks() # Remove redundant benchmark entries
         self.collect_garbage() # Remove intermediate files
         self.print_epilog() # Print summary of running this program 
         return None
 
 if __name__ == '__main__': 
-    parser = ap.parse_argument()
-    ConfigParam = Config.read_config(config_filename)
-    bm = Benchmark(parser, ConfigParam)
-    bm.process_data()
+    parser = ap.parse_argument() # Collect input arguments
+    ConfigParam = Config.read_config(config_filename) # Collect config entries
+    bm = Benchmark(parser, ConfigParam) # Create a Benchmark instance 
+    bm.process_data() # Process data and create benchmarks
