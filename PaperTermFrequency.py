@@ -6,21 +6,14 @@ from collections import defaultdict
 import re
 
 '''
-   Given an input file and a bunch of parameters, this module calculates
-   2 things: the number of annotations per paper for every paper listed
-   in the input file and the other is, calculate how many papers are
-   associated with every protein annotation pair. The first helps to filter
-   out high throughput papers (if required) and the second helps to identify 
-   confident annotations. The assumption is annotations in more papers are
-   considered confident over others.
-
     count_freq: This method calculates two things: (1) the number of 
     annotations per paper for every paper listed in the input file, and 
     (2) how many papers are associated with every protein annotation pair.
     It returns these two values as tuple of two dictionaries.
 
     paper_term_freq: It populates the paper term frequency file. Then, it 
-    returns the  
+    returns the dictionary containing the pair of the protein annotation 
+    (protein name, GO ID) and number of papers supporting it.
 '''
 
 def count_freq(goa_handle, EEC=set([])):
@@ -40,7 +33,7 @@ def count_freq(goa_handle, EEC=set([])):
                 paper_conf[paper_id][fields[4]] = 1
     return (ann_conf, paper_conf)
 
-def paper_term_freq(params, goa_handle, ptf_handle):
+def paper_term_freq(goa_handle, ptf_handle, params):
     # Given an input uniprot-goa file, this method computes the number of 
     # proteins annotated in every pubmed id mentioned in the file
 
@@ -54,5 +47,8 @@ def paper_term_freq(params, goa_handle, ptf_handle):
     return ann_conf
 
 if __name__ == '__main__':
-    infile = sys.argv[1]
-    paper_term = count(infile, EEC)
+    goa_file = sys.argv[1] # input file in GOA format 
+    ptf_file = sys.argv[2] # output file for paper term frequency
+    paper_term_freq(open(sys.argv[1], 'r'), 
+                    open(sys.argv[2], 'w'), set())
+        # Creates a paper term frequency file from the input goa file
