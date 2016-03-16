@@ -71,6 +71,7 @@ def create_benchmarks(t1_iea, t1_exp, t2_exp):
     outfile_NK_mfo = open(t2_exp + '.mfo_NK_bench.txt' , 'w')
 
     # Creating benchmark set ...
+    print 'Creating benchmark sets ...'
     t1_iea_handle = open(t1_iea, 'r')
     for lines in t1_iea_handle:
         cols = lines.strip().split('\t')
