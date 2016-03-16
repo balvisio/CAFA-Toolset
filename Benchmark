@@ -100,7 +100,7 @@ class Benchmark:
 
         # Name for GO ID frequency per pubmed id for t2 file:
         # This file will be deleted once the calculations are done
-        self.t2_ptf_filename =  self.t2_input_file + '_with_annotations_per_paper.txt'
+        self.t2_ptf_file =  self.t2_input_file + '_with_annotations_per_paper.txt'
         
         # Names for SIX intermediate benchmark files:
         self.filename_LK_bpo = self.t2_exp_name + '.bpo_LK_bench.txt'
@@ -190,9 +190,8 @@ class Benchmark:
     def create_intermediate_files(self):
        # Create paper-term freq file for t2 file:
         ann_conf = ptf.paper_term_freq(self.parsed_dict, 
-                  self.t2_input_file) 
-#        print self.parsed_dict 
-#        raise SystemExit
+                  open(self.t2_input_file,'r'), open(self.t2_ptf_file,'w'))
+
         # Create an iterator object for filtering t2 file:
         iter_handle, GAFFIELDS = self.create_iterator(self.t2_input_file)
 
@@ -222,9 +221,9 @@ class Benchmark:
                     self.t2_exp_name, GAFFIELDS, self.ConfigParam['exp_eec'])
         return None 
 
-    def collect_garbage(self):
+    def delete_intermediate_files(self):
         print 'Cleaning working directory ...'
-        # Delete intermediate benchmark files: 
+        # Delete SIX intermediate benchmark files: 
         os.remove(self.filename_LK_bpo)
         os.remove(self.filename_LK_cco)
         os.remove(self.filename_LK_mfo)
@@ -235,9 +234,9 @@ class Benchmark:
         os.remove(self.t1_iea_name)
         os.remove(self.t1_exp_name)
         os.remove(self.t2_exp_name)
-       # Delete paper term frequency file for t2 file:
-        os.remove(self.t2_ptf_filename)
-        # Deletes empty files from the workspace (subdirectories included):
+        # Delete paper term frequency file for t2 file:
+#        os.remove(self.t2_ptf_file)
+        # Delete any empty files from the workspace (subdirectories included):
         for root, dirs, files in os.walk(self.work_dir):
             for fname in files:
                 if os.path.getsize(root + '/' + fname) == 0:
@@ -262,7 +261,7 @@ class Benchmark:
         print bcolors.OKGREEN + 'Thank you for using Benchmark Creation Tool' + bcolors.ENDC
         return None
 
-    def process_data(self): # Process user data and create benchmarks
+    def process_data(self): # Process user data and create benchmark sets
         fc.check_gaf_format(self.t1_input_file) # File format check for t1 file
         fc.check_gaf_format(self.t2_input_file) # File format check for t2 file
         self.create_intermediate_files() # Create necessary intermediate files
@@ -270,7 +269,7 @@ class Benchmark:
                              self.t1_exp_name,
                              self.t2_exp_name) # Create SIX benchmark sets
         self.remove_redundant_benchmarks() # Remove redundant benchmark entries
-        self.collect_garbage() # Remove intermediate files
+        self.delete_intermediate_files() # Remove intermediate files
         self.print_epilog() # Print summary of running this program
         return None
 
