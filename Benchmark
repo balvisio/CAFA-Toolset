@@ -276,7 +276,7 @@ class Benchmark:
                              self.t1_exp_name,
                              self.t2_exp_name) # Create SIX benchmark sets
         self.remove_redundant_benchmarks() # Remove redundant benchmark entries
-        self.delete_intermediate_files() # Remove intermediate files
+        self.delete_intermediate_files() # Delete intermediate files
         self.print_epilog() # Print summary of running this program
         return None
 
