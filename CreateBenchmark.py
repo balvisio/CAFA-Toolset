@@ -49,9 +49,9 @@ def create_annotation_dict(t_exp_handle):
     return (t1_dict_bpo, t1_dict_cco, t1_dict_mfo)
 
 def create_benchmarks(t1_iea_handle, t1_exp_handle, t2_exp_handle, 
-                     bmfile_LK_bpo_handle, bmfile_LK_cco_handle, 
-                     bmfile_LK_mfo_handle, bmfile_NK_bpo_handle, 
-                     bmfile_NK_cco_handle, bmfile_NK_mfo_handle):
+                      bmfile_LK_bpo_handle, bmfile_LK_cco_handle, 
+                      bmfile_LK_mfo_handle, bmfile_NK_bpo_handle, 
+                      bmfile_NK_cco_handle, bmfile_NK_mfo_handle):
     
     # Create dict with (protein, GO ID) from entries with exp evidence at t1:  
     t1_dict_bpo, t1_dict_cco, t1_dict_mfo = create_annotation_dict(t1_exp_handle)
