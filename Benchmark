@@ -103,12 +103,12 @@ class Benchmark:
         self.t2_ptf_file =  self.t2_input_file + '_with_annotations_per_paper.txt'
         
         # Names for SIX intermediate benchmark files:
-        self.filename_LK_bpo = self.t2_exp_name + '.bpo_LK_bench.txt'
-        self.filename_LK_cco = self.t2_exp_name + '.cco_LK_bench.txt'
-        self.filename_LK_mfo = self.t2_exp_name + '.mfo_LK_bench.txt'
-        self.filename_NK_bpo = self.t2_exp_name + '.bpo_NK_bench.txt'
-        self.filename_NK_cco = self.t2_exp_name + '.cco_NK_bench.txt'
-        self.filename_NK_mfo = self.t2_exp_name + '.mfo_NK_bench.txt'
+        self.bmfile_LK_bpo = self.t2_exp_name + '.bpo_LK_bench.txt'
+        self.bmfile_LK_cco = self.t2_exp_name + '.cco_LK_bench.txt'
+        self.bmfile_LK_mfo = self.t2_exp_name + '.mfo_LK_bench.txt'
+        self.bmfile_NK_bpo = self.t2_exp_name + '.bpo_NK_bench.txt'
+        self.bmfile_NK_cco = self.t2_exp_name + '.cco_NK_bench.txt'
+        self.bmfile_NK_mfo = self.t2_exp_name + '.mfo_NK_bench.txt'
 
     def create_output(self, params, outfile, infile, work_dir, ontType):
         # Creates an output filename based on the output file prefix 
@@ -144,45 +144,45 @@ class Benchmark:
         return iter_handle, GAFFIELDS
 
     def remove_redundant_benchmarks(self):
-        if os.stat(self.filename_LK_bpo).st_size == 0:
+        if os.stat(self.bmfile_LK_bpo).st_size == 0:
             print 'Your benchmark set for Biological Process Ontology is empty.'
         else:
-            cmd = "awk -F \'\t\' '{print;}' " + self.filename_LK_bpo + \
+            cmd = "awk -F \'\t\' '{print;}' " + self.bmfile_LK_bpo + \
                     " | sort | uniq " + " > " + self.output_filename_LK_bpo
             subprocess.call(cmd, shell=True)
 
-        if os.stat(self.filename_LK_cco).st_size == 0:
+        if os.stat(self.bmfile_LK_cco).st_size == 0:
             print 'Your benchmark set for Cellular Component Process Ontology is empty.'
         else:
-            cmd = "awk -F \'\t\' '{print;}' " + self.filename_LK_cco + \
+            cmd = "awk -F \'\t\' '{print;}' " + self.bmfile_LK_cco + \
                     " | sort | uniq " + " > " + self.output_filename_LK_cco
             subprocess.call(cmd, shell=True)
 
-        if os.stat(self.filename_LK_mfo).st_size == 0:
+        if os.stat(self.bmfile_LK_mfo).st_size == 0:
             print 'Your benchmark set for Molecular Function Ontology is empty.'
         else:
-            cmd = "awk -F \'\t\' '{print;}' " + self.filename_LK_mfo + \
+            cmd = "awk -F \'\t\' '{print;}' " + self.bmfile_LK_mfo + \
                     " | sort | uniq " + " > " + self.output_filename_LK_mfo
             subprocess.call(cmd, shell=True)
 
-        if os.stat(self.filename_NK_bpo).st_size == 0:
+        if os.stat(self.bmfile_NK_bpo).st_size == 0:
             print 'Your no-knowledge benchmark set for Biological Process Ontology is empty.'
         else:
-            cmd = "awk -F \'\t\' '{print;}' " + self.filename_NK_bpo + \
+            cmd = "awk -F \'\t\' '{print;}' " + self.bmfile_NK_bpo + \
                     " | sort | uniq " + " > " + self.output_filename_NK_bpo
             subprocess.call(cmd, shell=True)
 
-        if os.stat(self.filename_NK_cco).st_size == 0:
+        if os.stat(self.bmfile_NK_cco).st_size == 0:
             print 'Your no-knowledge benchmark set for Cellular Component Process Ontology is empty.'
         else:
-            cmd = "awk -F \'\t\' '{print;}' " + self.filename_NK_cco + \
+            cmd = "awk -F \'\t\' '{print;}' " + self.bmfile_NK_cco + \
                     " | sort | uniq " + " > " + self.output_filename_NK_cco
             subprocess.call(cmd, shell=True)
 
-        if os.stat(self.filename_NK_mfo).st_size == 0:
+        if os.stat(self.bmfile_NK_mfo).st_size == 0:
             print 'Your no-knowledge benchmark set for Molecular Function Ontology is empty.'
         else:
-            cmd = "awk -F \'\t\' '{print;}' " + self.filename_NK_mfo + \
+            cmd = "awk -F \'\t\' '{print;}' " + self.bmfile_NK_mfo + \
                     " | sort | uniq " + " > " + self.output_filename_NK_mfo
             subprocess.call(cmd, shell=True)
         return None
@@ -206,13 +206,13 @@ class Benchmark:
         print 'Parsing t2 file: ' + basename(self.t2_input_file) + ' ...'
         t2_exp_handle = open(self.t2_exp_name, 'w')
         for ingen in iter_handle: # Iterate through t2 file entries
-            retval = gc.record_has_forBenchmark(ingen, 
-                                                ann_conf, 
+            retval = gc.record_has_forBenchmark(ingen,
+                                                ann_conf,
                                                 self.parsed_dict,
-                                                tax_id_name_mapping, 
-                                                self.ConfigParam['exp_eec'], 
+                                                tax_id_name_mapping,
+                                                self.ConfigParam['exp_eec'],
                                                 GAFFIELDS)
-            if retval: # If retval is TRUE, write out the record to t2.exp file 
+            if retval: # If retval is TRUE, write out the record to t2.exp file
                 GOA.writerec(ingen, t2_exp_handle, GAFFIELDS) # Create t2.exp file
         t2_exp_handle.close()
 
@@ -231,12 +231,12 @@ class Benchmark:
     def delete_intermediate_files(self):
         print 'Cleaning working directory ...'
         # Delete SIX intermediate benchmark files: 
-        os.remove(self.filename_LK_bpo)
-        os.remove(self.filename_LK_cco)
-        os.remove(self.filename_LK_mfo)
-        os.remove(self.filename_NK_bpo)
-        os.remove(self.filename_NK_cco)
-        os.remove(self.filename_NK_mfo)
+        os.remove(self.bmfile_LK_bpo)
+        os.remove(self.bmfile_LK_cco)
+        os.remove(self.bmfile_LK_mfo)
+        os.remove(self.bmfile_NK_bpo)
+        os.remove(self.bmfile_NK_cco)
+        os.remove(self.bmfile_NK_mfo)
         # Delete t1.iea, t1.exp, and t2.exp files: 
         os.remove(self.t1_iea_name)
         os.remove(self.t1_exp_name)
@@ -272,9 +272,15 @@ class Benchmark:
         fc.check_gaf_format(self.t1_input_file) # File format check for t1 file
         fc.check_gaf_format(self.t2_input_file) # File format check for t2 file
         self.create_intermediate_files() # Create necessary intermediate files
-        cb.create_benchmarks(self.t1_iea_name,
-                             self.t1_exp_name,
-                             self.t2_exp_name) # Create SIX benchmark sets
+        cb.create_benchmarks(open(self.t1_iea_name, 'r'),
+                             open(self.t1_exp_name, 'r'),
+                             open(self.t2_exp_name, 'r'),
+                             open(self.bmfile_LK_bpo, 'w'), 
+                             open(self.bmfile_LK_cco, 'w'), 
+                             open(self.bmfile_LK_mfo, 'w'), 
+                             open(self.bmfile_NK_bpo, 'w'), 
+                             open(self.bmfile_NK_cco, 'w'), 
+                             open(self.bmfile_NK_mfo, 'w')) # Populate benchmark files
         self.remove_redundant_benchmarks() # Remove redundant benchmark entries
         self.delete_intermediate_files() # Delete intermediate files
         self.print_epilog() # Print summary of running this program
