@@ -10,16 +10,16 @@ from collections import defaultdict
    create_annotation_dict: 
        This method takes a GOA file with no header section. It creates 
        THREE dictionaries. A dictionary with <protein name, GO ID> pairs 
-       for BPO type entries, one for CCO type entries, and another for MFO 
-       type entries. Then it returns these THREE dictionaries.        
+       for BPO type entries, one for CCO type entries, and the thrid one 
+       for MFO type entries. Then it returns these THREE dictionaries.
 
-   create_benchmarks: 
+   create_benchmarks:
        This script filters the Limited-Knowledge(LK) and No-Knowledge(NK)
        benchmark proteins.
              For LK-benchmarks: it extracts the proteins whose annotation 
        did not have experimental evidence in a particular ontology at time 
        t1 but gained experimental evidence for that ontology at time t2. It 
-       creates three LK-benchmark files - one for each ontology. 
+       creates three LK-benchmark files - one for each ontology.
              For NK-benchmarks: it extracts the proteins that did not have 
        experimental evidence in any of the three ontologies at time t1 but 
        gained experimental evidence at some ontology at time t2. This option 
@@ -50,10 +50,10 @@ def create_benchmarks(t1_iea_handle, t1_exp_handle, t2_exp_handle,
                       bmfile_LK_bpo_handle, bmfile_LK_cco_handle, 
                       bmfile_LK_mfo_handle, bmfile_NK_bpo_handle, 
                       bmfile_NK_cco_handle, bmfile_NK_mfo_handle):
-    # Create dict with (protein, GO ID) from entries with exp evidence at t1:  
+    # Create dict for (protein, GO ID) from entries with EXP evidence code at t1:
     t1_dict_bpo, t1_dict_cco, t1_dict_mfo = create_annotation_dict(t1_exp_handle)
 
-    # Create dict with (protein, GO ID) from entries with exp evidence at t2:  
+    # Create dict for (protein, GO ID) from entries with EXP evidence code at t2:
     t2_dict_bpo, t2_dict_cco, t2_dict_mfo = create_annotation_dict(t2_exp_handle)
 
     # Populate benchmark files:
