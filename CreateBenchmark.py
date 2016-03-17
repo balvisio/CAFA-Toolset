@@ -34,12 +34,14 @@ def create_annotation_dict(goa_exp_handle):
     t1_dict_mfo = defaultdict(lambda:set())  
     t1_dict_bpo = defaultdict(lambda:set())
     t1_dict_cco = defaultdict(lambda:set())
-    for lines in goa_exp_handle: # Populate t1_dict with entries from t1_exp
+
+    # Populate the dictionaries: 
+    for lines in goa_exp_handle: 
         cols = lines.strip().split('\t')
         if len(cols) < 15: # Skip the lines in the header section
             continue  
-        if cols[8] == 'F': # Column 8: Ontology group
-            t1_dict_mfo[cols[1]].add(cols[4])# col 1: protein name, col 2: GO ID
+        if cols[8] == 'F': # Col 8: Ontology group
+            t1_dict_mfo[cols[1]].add(cols[4]) # Col 1: protein name, Col 2: GO ID
         elif cols[8] == 'P':
             t1_dict_bpo[cols[1]].add(cols[4])
         elif cols[8] == 'C':
@@ -101,6 +103,6 @@ def create_benchmarks(t1_iea_handle, t1_exp_handle, t2_exp_handle,
     t2_dict_mfo.clear()
 
 if __name__ == '__main__':
-    t_exp_file = sys.argv[1]
-    create_annotation_dict(t_exp_handle)
+    goa_file_handle = sys.argv[1] # a GOA file with no header section
+    create_annotation_dict(goa_file_handle) # Create three dictionaries 
 
