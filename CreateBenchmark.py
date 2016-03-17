@@ -25,9 +25,9 @@ from collections import defaultdict
        experimental evidence in any of the three ontologies at time t1 but 
        gained experimental evidence at some ontology at time t2. This option 
        creates three NK-benchmark files - one for each ontology.
-            The filtered proteins are stored in SIX 2-column tab delimited 
+            The filtered proteins are saved in SIX 2-column tab delimited 
        files - one file for each ontology - for both LK and NK types. Thus, 
-       filter_benchmark() module creates total SIX files.
+       create_benchmark() populate total SIX files.
 '''
 
 def create_annotation_dict(t_exp_handle):
