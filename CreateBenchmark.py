@@ -101,6 +101,7 @@ def create_benchmarks(t1_iea_handle, t1_exp_handle, t2_exp_handle,
     t2_dict_bpo.clear()
     t2_dict_cco.clear()
     t2_dict_mfo.clear()
+    return None
 
 if __name__ == '__main__':
     goa_file_handle = sys.argv[1] # a GOA file with no header section
