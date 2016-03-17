@@ -30,13 +30,13 @@ from collections import defaultdict
        create_benchmark() populate total SIX files.
 '''
 
-def create_annotation_dict(t_exp_handle):
+def create_annotation_dict(goa_exp_handle):
     # Create dictionaries with <protein, GO terms> 
     # as <key, values> pairs from t1_exp file
     t1_dict_mfo = defaultdict(lambda:set()) # initialize dictionaries 
     t1_dict_bpo = defaultdict(lambda:set())
     t1_dict_cco = defaultdict(lambda:set())
-    for lines in t_exp_handle: # populate t1_dict with entries from t1_exp
+    for lines in goa_exp_handle: # populate t1_dict with entries from t1_exp
         cols = lines.strip().split('\t')
         if len(cols) < 15: # skip the lines in the header section
             continue  
