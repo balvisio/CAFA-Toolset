@@ -18,18 +18,16 @@ import GOAParser_cafa as gc
 import PaperTermFrequency as ptf
 
 '''
-   Benchmark program accepts 2 uniprot-goa gaf-format files as inputs. These 
-   are available for download at ftp://ftp.ebi.ac.uk/pub/databases/GO/goa/
+   Benchmark program accepts two input files in uniprot-goa GAF format at 
+   two distinct time pointst t1 and t2. The input files can be downloaded 
+   from ftp://ftp.ebi.ac.uk/pub/databases/GO/goa/. The simplest way to run 
+   this program is: 
 
-   There are a host of other parameters that could be provided to filter 
-   results. The list of all parameters can be obtained through the following 
-   command:
-
-   python Benchmark --help
+   python Benchmark -I1=input_file_at_t1 -I2=input_file_at_t2 
 
    Running this program creates SIX benchmark files: THREE limited-knolwedge 
-   (LK) files - one in each of the three ontolgies (MFO, BPO, and CCO) and 
-   THREE no-knowledge (NK) files - one in each ontology.
+   (LK) benchmark files - one in each of the three ontolgies (MFO, BPO, and 
+   CCO) and THREE no-knowledge (NK) benchmark files - one in each ontology.
 '''
 
 class bcolors:
@@ -42,13 +40,13 @@ class bcolors:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
-config_filename = '.cafarc' # default configuration file name
+config_filename = '.cafarc' # Default configuration file name
 
 class Benchmark:
     def __init__(self, parser, ConfigParam):
         self.ConfigParam = ConfigParam
         self.parsed_dict = ap.parse(parser, self.ConfigParam)
-                        # Get the user given parameters as a dictionary
+                        # Obtain the user given parameters in a dictionary
         t1 = self.parsed_dict['t1'] # Retreive file name at time t1
         t2 = self.parsed_dict['t2'] # Retreive file name at time t2
         if self.parsed_dict['t1'] == self.parsed_dict['t2']:
@@ -192,6 +190,7 @@ class Benchmark:
         ann_conf = ptf.paper_term_freq( open(self.t2_input_file,'r'),
                                         open(self.t2_ptf_file,'w'),
                                         self.parsed_dict)
+#        raise SystemExit
 #        print ann_conf.keys()
 #        print ann_conf.values()
 #        raise SystemExit
