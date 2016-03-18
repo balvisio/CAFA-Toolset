@@ -20,6 +20,7 @@ def count_freq(goa_handle, EEC=set([])):
 #    print 'EEC: ' + str(EEC)
     paper_conf = defaultdict(lambda:defaultdict(set))
     ann_conf = defaultdict(lambda:defaultdict(set))
+#    goCount = 0
     for line in goa_handle:
         if line[0] == '!':
             continue
@@ -31,6 +32,18 @@ def count_freq(goa_handle, EEC=set([])):
                     # add pubmed id as evidence to the protein, GO ID 
                     # (fields[1], fields[4]) pair
                 paper_conf[pubmed_id][fields[4]] = 1
+#                goCount += 1
+#                if goCount >= 20: 
+#                   break
+    
+#    print ann_conf
+#    for k1 in ann_conf.keys(): 
+#        print k1 + ':' 
+#        for k2 in ann_conf[k1].keys():
+#            print '  ' + k2 + ' => ' + str(ann_conf[k1][k2])
+
+#    print ann_conf.keys()
+#    print ann_conf.values()
     return (ann_conf, paper_conf)
 
 def paper_term_freq(goa_handle, ptf_handle, params):
