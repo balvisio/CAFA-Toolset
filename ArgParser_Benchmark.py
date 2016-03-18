@@ -32,7 +32,7 @@ def parse_argument():
                     user a choice to specify a set of GO experimental evidence \
                     codes (example: IPI, IDA, EXP) separated by space. Default \
                     is all.')
-    parser.add_argument('-S', '--source',action='store' ,nargs='*',default=\
+    parser.add_argument('-S', '--source',action='store', nargs='*',default=\
                     ['all'],help='Provides user a choice to specify sources \
                     (example: UniProt, InterPro) separated by spaces. Default \
                     is all.')
@@ -52,7 +52,7 @@ def parse_argument():
     parser.add_argument('-B', '--blacklist', nargs='*',default=[], help='This \
                     parameter can take in a list of pubmed ids and all GO \
                     terms and proteins annotated in them will be eliminated \
-                    from the benchmark set.Default is an empty list.')
+                    from the benchmark set. Default is an empty list.')
     return parser
 
 def extract_args(args):
