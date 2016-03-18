@@ -31,8 +31,12 @@ def parse_tax_file(tax_filename):
             tax_id_name_mapping[cols[0].rstrip()] = cols[1].rstrip()
     return tax_id_name_mapping
 
-def record_has_forBenchmark(inupgrec, ann_freq, allowed, tax_name_id_mapping,
-                            EEC_default, GAFFIELDS):
+def record_has_forBenchmark(inupgrec, 
+                            ann_freq,
+                            allowed,
+                            tax_name_id_mapping,
+                            EEC_default,
+                            GAFFIELDS):
     """
        Accepts a gaf record, a dictionary of allowed field values and other
        user specified parameters.                                                                                         
@@ -40,13 +44,19 @@ def record_has_forBenchmark(inupgrec, ann_freq, allowed, tax_name_id_mapping,
        stops search and returns false. Otherwise, the function returns true.
     """
 
+#    print allowed
+#    print allowed.keys()
+#    print '\n'
+#    print inupgrec
+#    print inupgrec.keys()
+#    raise SystemExit
     retval=True
     organism = ''
     for field in allowed:
-        if inupgrec['Evidence'] not in EEC_default: 
+        if inupgrec['Evidence'] not in EEC_default:
             retval=False  # No EXP validation. retval set to FALSE
             break
-        if field not in inupgrec:
+        if field not in inupgrec: # if field is not a member of inupgrec.keys()
             if field == 'Pubmed':
                 rec_set = set([])
                 if type(inupgrec['DB:Reference']) is type(''):
@@ -63,6 +73,16 @@ def record_has_forBenchmark(inupgrec, ann_freq, allowed, tax_name_id_mapping,
                 db_id = inupgrec['DB_Object_ID']
                 go_id = inupgrec['GO_ID']
                 if allowed[field] == 'T' and len(ann_freq[db_id][go_id]) < allowed['Threshold']:
+#                    print 'field: ' + field
+#                    print 'allowed[field]: ' + str(allowed[field])
+#                    print 'db_id: ' + db_id
+#                    print 'go_id: ' + go_id
+#                    print "ann_freq[db_id][go_id]: " + str(ann_freq[db_id][go_id])
+#                    print "allowed['Threshold']: " + str(allowed['Threshold'])
+#                    print "allowed['Pubmed']: " + str(allowed['Pubmed'])
+#                    print "allowed['Blacklist']: " + str (allowed['Blacklist'])
+#                    raise SystemExit
+
                     retval=False
                     break
             elif field == 'Blacklist':
@@ -74,32 +94,33 @@ def record_has_forBenchmark(inupgrec, ann_freq, allowed, tax_name_id_mapping,
                         if x.startswith('PMID'):
                             x = x.split(':')[1]
                             rec_set.add(x)
-                if len(rec_set & allowed[field]) > 0:
+                if len(rec_set & allowed[field]) > 0: # What exactly happening here?????????????????? 
                      retval=False
                      break
             else:
                 continue
+
             continue
 
-        if len(allowed[field]) == 0:
+        if len(allowed[field]) == 0: # Checks whether field is an empty string or empty list
             continue
 
-        if field == 'Taxon_ID':
-            if type(inupgrec[field]) is type(''):
-                rec_set =set([inupgrec[field]])
-            else:
-                rec_set = set(inupgrec[field]) # Extracting Taxon_ID field 
+        if field == 'Taxon_ID': #  
+            if type(inupgrec[field]) is type(''): # only one taxon id
+                rec_set =set([inupgrec[field]]) # assign an empty set
+            else: # a list of taxon ids
+                rec_set = set(inupgrec[field]) # assing a set with the list of taxon ids
             for rec in rec_set:
-                if rec.split(':')[1] in tax_name_id_mapping:
-                    organism = tax_name_id_mapping[rec.split(':')[1]]
-                if organism in allowed[field] or rec.split(':')[1] in allowed[field]:  
+                if rec.split(':')[1] in tax_name_id_mapping: # taxon id is in the tax_name_id_mapping?
+                    organism = tax_name_id_mapping[rec.split(':')[1]] # get the organism id from the mapping
+                if organism in allowed[field] or rec.split(':')[1] in allowed[field]: # checking by organism id or organism name
                     retval=True
                     break
                 else:
                     retval=False
             if not retval:
                 break
-        else:
+        else: #  
             if inupgrec[field] not in allowed[field]:
                 retval=False
                 break        
