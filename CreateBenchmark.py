@@ -5,7 +5,7 @@ import re
 from collections import defaultdict
 
 '''
-   This module has two methods - create_annotation_dict and create_benchmarks:
+   This module has two methods: create_annotation_dict and create_benchmarks.
 
    create_annotation_dict: 
        This method takes a GOA file with no header section. It creates 
@@ -38,8 +38,8 @@ def create_annotation_dict(goa_exp_handle):
     # Populate the dictionaries: 
     for lines in goa_exp_handle: 
         cols = lines.strip().split('\t')
-        if len(cols) < 15: # Skip the lines in the header section
-            continue  
+        if len(cols) < 15: # Skip lines NOT in GAF 1.0 or GAF 2.0 format
+            continue
         if cols[8] == 'F': # Col 8: Ontology group
             t1_dict_mfo[cols[1]].add(cols[4]) # Col 1: protein name, Col 2: GO ID
         elif cols[8] == 'P':
@@ -105,5 +105,4 @@ def create_benchmarks(t1_iea_handle, t1_exp_handle, t2_exp_handle,
 
 if __name__ == '__main__':
     goa_file_handle = sys.argv[1] # a GOA file with no header section
-    create_annotation_dict(goa_file_handle) # Create three dictionaries 
-
+    create_annotation_dict(goa_file_handle) # Create three dictionaries
