@@ -82,7 +82,6 @@ def record_has_forBenchmark(inupgrec,
 #                    print "allowed['Pubmed']: " + str(allowed['Pubmed'])
 #                    print "allowed['Blacklist']: " + str (allowed['Blacklist'])
 #                    raise SystemExit
-
                     retval=False
                     break
             elif field == 'Blacklist':
