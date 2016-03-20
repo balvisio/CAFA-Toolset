@@ -4,7 +4,8 @@ import os
 import sys
 import argparse
 import re
-from collections import defaultdict
+#from collections import defaultdict
+from collections import OrderedDict
 
 '''
    This script parses, verifies a bunch of user input parameters using argparse module.
@@ -59,19 +60,35 @@ def extract_args(args):
     # This dictionary bellow contains the values of all arguments available to the program.
     # If they have been passed, it will take the values passed. Else, will assume default values.
     # If a new parameter is to be added to the program, it should be added into this dictionary
-    args_dict = {}
-    args_dict = {'t1' : args.input1,
-                 't2' : args.input2,
-                 'outfile' : args.output,
-                 'Taxon_ID' : args.organism,
-                 'Aspect' : args.ontology,
-                 'Evidence' : args.evidence,
-                 'Assigned_By' : args.source,
-                 'Pubmed' : args.pubmed,
-                 'Confidence' : args.confidence,
-                 'Threshold' : args.threshold,
-                 'Blacklist' : args.blacklist,
-                 }
+    
+#    args_dict = {}
+#    args_dict = {'t1' : args.input1,
+#                 't2' : args.input2,
+#                 'outfile' : args.output,
+#                 'Taxon_ID' : args.organism,
+#                 'Aspect' : args.ontology,
+#                 'Evidence' : args.evidence,
+#                 'Assigned_By' : args.source,
+#                 'Pubmed' : args.pubmed,
+#                 'Confidence' : args.confidence,
+#                 'Threshold' : args.threshold,
+#                 'Blacklist' : args.blacklist,
+#                 }
+
+    args_dict = OrderedDict() 
+    args_dict['t1'] = args.input1
+    args_dict['t2'] = args.input2
+    args_dict['outfile'] = args.output
+    args_dict['Taxon_ID'] = args.organism           
+    args_dict['Aspect'] = args.ontology
+    args_dict['Evidence'] = args.evidence
+    args_dict['Assigned_By'] = args.source
+    args_dict['Pubmed'] = args.pubmed
+    args_dict['Confidence'] = args.confidence
+    args_dict['Threshold'] = args.threshold
+    args_dict['Blacklist'] = args.blacklist
+
+
     print "*************************************************"
     print "Welcome to Benchmark Creation Tool !!!!!"
     print "*************************************************\n"
@@ -86,7 +103,42 @@ def check_args(args_dict, parser):
     # for inconsistent input. It creates a dictionary of input arguments and 
     # returns the created dictionary.
 
-    user_dict = {}
+#    user_dict = {}
+#    for arg in args_dict:
+#        if arg == 't1':
+#            if args_dict[arg] == None:
+#                print 'Missing T1 file\n'
+#                print parser.parse_args(['--help'])
+#            else:
+#                user_dict['t1'] = args_dict[arg]
+#        elif arg == 't2':
+#            if args_dict[arg] == None:
+#                print 'Missing T2 file\n'
+#                print parser.parse_args(['--help'])
+#            else:
+#                user_dict['t2'] = args_dict[arg]
+#        elif arg == 'outfile':
+#            user_dict[arg] = args_dict[arg]
+#        elif arg == 'Threshold':
+#            user_dict[arg] = args_dict[arg]
+#        elif arg == 'Confidence':
+#            user_dict[arg] = args_dict[arg]
+#        elif arg == 'Target':
+#            user_dict[arg] = args_dict[arg]
+#        elif arg == 'Taxon_ID':
+#            if 'all' in args_dict[arg] or len(args_dict[arg]) == 0:
+#                user_dict[arg] = set([])
+#            else:
+#                args_dict[arg] = [x.capitalize() for x in args_dict[arg]]
+#                user_dict[arg] = set(args_dict[arg])
+#        else:
+#            if 'all' in args_dict[arg] or len(args_dict[arg]) == 0:
+#                user_dict[arg] = set([])
+#            else:
+#                args_dict[arg] = [x.upper() for x in args_dict[arg]]
+#                user_dict[arg] = set(args_dict[arg])
+
+    user_dict = OrderedDict() 
     for arg in args_dict:
         if arg == 't1':
             if args_dict[arg] == None:
@@ -122,7 +174,7 @@ def check_args(args_dict, parser):
                 user_dict[arg] = set(args_dict[arg])
     return user_dict
 
-def parse(parser, ConfigParam=defaultdict()):
+def parse(parser):
     args_dict = {}
     args, unknown = parser.parse_known_args()
 
