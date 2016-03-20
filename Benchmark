@@ -45,7 +45,7 @@ config_filename = '.cafarc' # Default configuration file name
 class Benchmark:
     def __init__(self, parser, ConfigParam):
         self.ConfigParam = ConfigParam
-        self.parsed_dict = ap.parse(parser, self.ConfigParam)
+        self.parsed_dict = ap.parse(parser)
                         # Obtain the user given parameters in a dictionary
         t1 = self.parsed_dict['t1'] # Retreive file name at time t1
         t2 = self.parsed_dict['t2'] # Retreive file name at time t2
