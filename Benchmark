@@ -43,48 +43,48 @@ class bcolors:
 config_filename = '.cafarc' # Default configuration file name
 
 class Benchmark:
-    def __init__(self, parser, ConfigParam):
-        self.ConfigParam = ConfigParam
-        self.parsed_dict = ap.parse(parser)
-                        # Obtain the user given parameters in a dictionary
+    def __init__(self):
+        self.parsed_dict = ap.parse_args('benchmark')
+                        # Obtain user supplied argument values in a dictionary 
+        self.print_prolog() # Print the welcome message
+        self.ConfigParam = Config.read_config(config_filename) # Collect config entries
         t1 = self.parsed_dict['t1'] # Retreive file name at time t1
         t2 = self.parsed_dict['t2'] # Retreive file name at time t2
         if self.parsed_dict['t1'] == self.parsed_dict['t2']:
             print 'Both input files are from the same time point. This will not create a valid benchmark set.'
             print 'Program quiting ...'
             sys.exit(1)
-
-        outfile_basename = basename(self.parsed_dict['outfile']) 
+        outfile_basename = basename(self.parsed_dict['outfile'])
                                    # Retreive output file name
         self.work_dir = (self.ConfigParam['workdir']).rstrip('/')
-                                   # Retreive work directory name 
+                                   # Retreive work directory name
         if not os.path.exists(self.work_dir):
             os.makedirs(self.work_dir)
-                # Create work direcoty, if it does not exist 
+                # Create work direcoty, if it does not exist
 
-        self.t1_input_file = fd.find_dataset(t1, self.work_dir, 
+        self.t1_input_file = fd.find_dataset(t1, self.work_dir,
                             self.ConfigParam) # Locate t1 file
-        self.t2_input_file = fd.find_dataset(t2, self.work_dir, 
+        self.t2_input_file = fd.find_dataset(t2, self.work_dir,
                             self.ConfigParam) # Locate t2 file
 
         # Names for SIX ouput files: bpo, cco, and mfo for LK and NK benchmark types:
-        self.output_filename_LK_bpo = self.create_output(self.parsed_dict, 
-                                    outfile_basename, self.t2_input_file, 
+        self.output_filename_LK_bpo = self.create_output(self.parsed_dict,
+                                    outfile_basename, self.t2_input_file,
                                     self.work_dir, 'LK_bpo')
-        self.output_filename_LK_cco = self.create_output(self.parsed_dict, 
-                                    outfile_basename, self.t2_input_file, 
+        self.output_filename_LK_cco = self.create_output(self.parsed_dict,
+                                    outfile_basename, self.t2_input_file,
                                     self.work_dir, 'LK_cco')
-        self.output_filename_LK_mfo = self.create_output(self.parsed_dict, 
-                                    outfile_basename, self.t2_input_file, 
+        self.output_filename_LK_mfo = self.create_output(self.parsed_dict,
+                                    outfile_basename, self.t2_input_file,
                                     self.work_dir, 'LK_mfo')
-        self.output_filename_NK_bpo = self.create_output(self.parsed_dict, 
-                                    outfile_basename, self.t2_input_file, 
+        self.output_filename_NK_bpo = self.create_output(self.parsed_dict,
+                                    outfile_basename, self.t2_input_file,
                                     self.work_dir, 'NK_bpo')
-        self.output_filename_NK_cco = self.create_output(self.parsed_dict, 
-                                    outfile_basename, self.t2_input_file, 
+        self.output_filename_NK_cco = self.create_output(self.parsed_dict,
+                                    outfile_basename, self.t2_input_file,
                                     self.work_dir, 'NK_cco')
-        self.output_filename_NK_mfo = self.create_output(self.parsed_dict, 
-                                    outfile_basename, self.t2_input_file, 
+        self.output_filename_NK_mfo = self.create_output(self.parsed_dict,
+                                    outfile_basename, self.t2_input_file,
                                     self.work_dir, 'NK_mfo')
 
         # Names for THREE files to store non-EXP and EXP type entries:
@@ -246,6 +246,16 @@ class Benchmark:
             break
         return None
 
+    def print_prolog(self):
+        print "*************************************************"
+        print "Welcome to Benchmark Creation Tool !!!!!"
+        print "*************************************************\n"
+        print 'Following is a list of user supplied inputs:\n'
+        for arg in self.parsed_dict:
+            print arg + ': ' + str(self.parsed_dict[arg])
+        print '*********************************************\n'
+        return None
+
     def print_epilog(self):
         print bcolors.OKGREEN + 'The following benchmark files are created:' + bcolors.ENDC 
         if os.path.exists(self.output_filename_LK_bpo):
@@ -282,7 +292,5 @@ class Benchmark:
         return None
 
 if __name__ == '__main__': 
-    parser = ap.parse_argument() # Collect input arguments
-    ConfigParam = Config.read_config(config_filename) # Collect config entries
-    bm = Benchmark(parser, ConfigParam) # Create a Benchmark instance 
+    bm = Benchmark() # Create a Benchmark instance 
     bm.process_data() # Process data and create benchmark sets
