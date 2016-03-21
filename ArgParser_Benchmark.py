@@ -120,7 +120,6 @@ def parse_args(prog='benchmark'):
     parser = collect_args(prog) # Collect user supplied argument values
     args_dict = {}
     args, unknown = parser.parse_known_args()
-
     if len(unknown) > 0:
         print '\n*********************************'
         print "Invalid Arguments"
