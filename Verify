@@ -59,7 +59,7 @@ class Verify:
     def __init__(self):
         self.parsed_dict = ap.parse_args('verify')
                         # Obtain user supplied argument values in a dictionary 
-        self.ConfigParam = Config.read_config(config_filename) # Collect config entries
+        self.ConfigParam = Config.read_config(config_filename) # Collect config file entries
         t1 = self.parsed_dict['t1'] # Retreive file name at time t1
         t2 = self.parsed_dict['t2'] # Retreive file name at time t2
 
