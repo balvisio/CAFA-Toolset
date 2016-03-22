@@ -1,18 +1,20 @@
 #!/usr/bin/env python
+
 import os
 import sys
 import argparse
+import shutil
 import subprocess
-from collections import defaultdict
 from os.path import basename 
+from collections import defaultdict
+from Bio.UniProt import GOA
 
-import ArgParser_Verify as apv
-#import CreateDataset as cd
-import ConfigParser as cp
+import ArgParser_Benchmark as ap
+import Config
+import CreateBenchmark as cb
 import FindDataset as fd
 import FormatChecker as fc
 import GOAParser_cafa as gc
-from Bio.UniProt import GOA 
 import PaperTermFrequency as ptf
 import verifyBenchmark as vb
 
@@ -31,277 +33,228 @@ import verifyBenchmark as vb
    is given, it extracts the version of the benchmark files from this input, 
    and verifies all the benchmark files for that specific version.  
  
-   The list of all parameters can be obtained through the following command:
-   python Benchmark --help
-  
    The program creates THREE intermediate files from the input file 1 and input 
    file 2 and these intermediate files are removed after the verfication is 
    completed.
+   
+   Complete usage directions of this program can obtained through the 
+   following command: 
+
+   python Verify --help
 '''
 
-class bcolors: 
-    HEADER = '\033[95m' 
-    OKBLUE = '\033[94m' 
-    OKGREEN = '\033[92m' 
-    WARNING = '\033[93m' 
-    FAIL = '\033[91m' 
-    ENDC = '\033[0m' 
-    BOLD = '\033[1m' 
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
-def paper_term_freq(params, infile):
-    # Given an input uniprot-goa file, this method computes the number of 
-    # proteins annotated in every pubmed id mentioned in that file
+config_filename = '.cafarc' # Default configuration file name
 
-    if params['Confidence'] == 'T':
-        paper_threshold = params['Threshold']
-        ann_conf_filter = True
-    else:
-        ann_conf_filter = False
-        paper_threshold = 0
-    if not os.path.exists(infile + '_with_annotations_per_paper.txt'):
-        paper_annotation_freq  = infile + '_with_annotations_per_paper.txt'
-        paper_conf_filter = True
-        paper_ann_freq_handle = open(paper_annotation_freq, 'w')
-    else:
-        paper_conf_filter = False
-    
-    if ann_conf_filter or paper_conf_filter : 
-        [ann_conf, paper_conf] = ptf.count(infile, params['Evidence'], 
-                                                          ann_conf_filter, paper_conf_filter)
-        if len(paper_conf) > 0:
-            for i in paper_conf:
-                print >> paper_ann_freq_handle, i + '\t' + str(len(paper_conf[i]))
-            paper_conf.clear()
-    else:
-        ann_conf = defaultdict(lambda:defaultdict(set))
-    return ann_conf
+class Verify:
+    def __init__(self):
+        self.parsed_dict = ap.parse_args('verify')
+                        # Obtain user supplied argument values in a dictionary 
+        self.ConfigParam = Config.read_config(config_filename) # Collect config entries
+        t1 = self.parsed_dict['t1'] # Retreive file name at time t1
+        t2 = self.parsed_dict['t2'] # Retreive file name at time t2
 
-def create_benchmarkFilename(params, t3_basename, infile, work_dir, ontType):
-    # Creates an output filename based on the output file prefix 
-    # provided by the user
-    if not t3_basename == '':
-        ob = basename(params['t3_basename'])
-    else:
-        if ontType == '':
-            ob = basename(infile + '.benchmark')
-        else:
-            ob = basename(infile + '.benchmark' + '_' + ontType)
-    index = 1
-    while os.path.exists(work_dir + '/' + ob + '.' + str(index)):
-        index = index + 1
-    benchmark_filename = ob + '.' + str(index-1)
-    return benchmark_filename
+        self.work_dir = (self.ConfigParam['workdir']).rstrip('/')
+                                   # Retreive work directory name
+        if not os.path.exists(self.work_dir):
+            print ('Work space not found. Check ' + config_filename + ' file for correct assignment of work directory.')
+            sys.exit(1)
+#            os.makedirs(self.work_dir)
 
-def create_iterator(infile):
-    # Returns an iterator object for an input uniprot-goa file along with 
-    # a list of all fieldnames contained in the uniprot-goa file
-    infile_handle = open(infile, 'r')
-    iter_handle = GOA.gafiterator(infile_handle)
-    for ingen in iter_handle:
-        if len(ingen) == 17:
-            GAFFIELDS = GOA.GAF20FIELDS
+                # Create work direcoty, if it does not exist
+        self.t1_input_file = fd.find_dataset(t1, self.work_dir,
+                            self.ConfigParam) # Locate t1 file
+        self.t2_input_file = fd.find_dataset(t2, self.work_dir,
+                            self.ConfigParam) # Locate t2 file
+
+        # Names for SIX benchmark files: bpo, cco, and mfo for LK and NK benchmark types:
+        t3_basename = basename(self.parsed_dict['t3']) # Retreive base name of the benchmark file
+        if t3_basename == '':
+            t3_LK_bpo = self.work_dir + '/' + self.create_benchmarkFilename('LK_bpo')
+            t3_basename = basename(t3_LK_bpo)
+            benchmarkVersion = t3_basename.strip().split('.')[-1]
+        else: 
+            benchmarkVersion = t3_basename.strip().split('.')[-1]
+        self.benchmark_LK_bpo = self.work_dir + '/' + self.parsed_dict['t2'] + \
+                            '-' + ((basename(self.parsed_dict['t1'])).split('.'))[-1] + \
+                              '.benchmark_LK_bpo.' + benchmarkVersion
+        self.benchmark_LK_cco = self.work_dir + '/' + self.parsed_dict['t2'] + \
+                            '-' + ((basename(self.parsed_dict['t1'])).split('.'))[-1] + \
+                            '.benchmark_LK_cco.' + benchmarkVersion
+        self.benchmark_LK_mfo = self.work_dir + '/' + self.parsed_dict['t2'] + \
+                            '-' + ((basename(self.parsed_dict['t1'])).split('.'))[-1] + \
+                            '.benchmark_LK_mfo.' + benchmarkVersion
+        self.benchmark_NK_bpo = self.work_dir + '/' + self.parsed_dict['t2'] + \
+                            '-' + ((basename(self.parsed_dict['t1'])).split('.'))[-1] + \
+                            '.benchmark_NK_bpo.' + benchmarkVersion
+        self.benchmark_NK_cco = self.work_dir + '/' + self.parsed_dict['t2'] + \
+                            '-' + ((basename(self.parsed_dict['t1'])).split('.'))[-1] + \
+                            '.benchmark_NK_cco.' + benchmarkVersion
+        self.benchmark_NK_mfo = self.work_dir + '/' + self.parsed_dict['t2'] + \
+                            '-' + ((basename(self.parsed_dict['t1'])).split('.'))[-1] + \
+                            '.benchmark_NK_mfo.' + benchmarkVersion
+
+        # Names for THREE files to store non-EXP and EXP type entries:
+        # These files will be deleted once the calculation is done
+        self.t1_iea_name = self.t1_input_file + '.iea'
+                # File name for entries in t1 file with non-EXP evidence codes
+        self.t1_exp_name = self.t1_input_file + '.exp'
+                # File name for entries in t1 file with EXP evidence codes
+        self.t2_exp_name = self.t2_input_file + '.exp'
+                # File name for entries in t2 file with EXP evidence codes
+
+        # Name for GO ID frequency per pubmed id for t2 file:
+        # This file will be deleted once the calculations are done
+        self.t2_ptf_file =  self.t2_input_file + '_with_annotations_per_paper.txt'
+        
+    def create_benchmarkFilename(self, ontType):
+        # Creates a benchmark filename based on input file names at times 
+        # t1 and t2
+        ob = basename(self.parsed_dict['t2']) + '-' + \
+            ((basename(self.parsed_dict['t1'])).split('.'))[-1] + \
+            '.benchmark' + '_' + ontType
+        index = 1
+        while os.path.exists(self.work_dir + '/' + ob + '.' + str(index)):
+            index = index + 1
+        benchmark_filename = ob + '.' + str(index-1)
+        return benchmark_filename
+
+    def create_iterator(self, infile):
+        # Returns an iterator object for an input uniprot-goa file along with a 
+        # list of all field names contained in the uniprot-goa file
+
+        infile_handle = open(infile, 'r')
+        iter_handle = GOA.gafiterator(infile_handle)
+        for ingen in iter_handle:
+            if len(ingen) == 17:
+                GAFFIELDS = GOA.GAF20FIELDS
+                break
+            else:
+                GAFFIELDS = GOA.GAF10FIELDS
+                break
+        infile_handle = open(infile, 'r')
+        iter_handle = GOA.gafiterator(infile_handle)
+        return iter_handle, GAFFIELDS
+
+    def create_intermediate_files(self):
+        # Create paper-term freq file for t2 file:
+        ann_conf = ptf.paper_term_freq( open(self.t2_input_file,'r'),
+                                        open(self.t2_ptf_file,'w'),
+                                        self.parsed_dict)
+        # Create an iterator object for filtering t2 file:
+        iter_handle, GAFFIELDS = self.create_iterator(self.t2_input_file)
+
+        # Create tax_id_name_mapping for filtering t2 file:
+        tax_id_name_mapping = gc.parse_tax_file(self.ConfigParam['tax_file'])
+
+        # Create t2_exp_name file:
+        # Filter t2 file for all proteins with EXP evidence:
+        print 'Parsing t2 file: ' + basename(self.t2_input_file) + ' ...'
+        t2_exp_handle = open(self.t2_exp_name, 'w')
+        for ingen in iter_handle: # Iterate through t2 file entries
+            retval = gc.record_has_forBenchmark(ingen,
+                                                ann_conf,
+                                                self.parsed_dict,
+                                                tax_id_name_mapping,
+                                                self.ConfigParam['exp_eec'],
+                                                GAFFIELDS)
+            if retval: # If retval is TRUE, write out the record to t2.exp file
+                GOA.writerec(ingen, t2_exp_handle, GAFFIELDS) # Create t2.exp file
+        t2_exp_handle.close()
+
+        if os.stat(self.t2_exp_name).st_size == 0: # If t2.exp is empty, program quits
+            print 'Your benchmark set will be empty with the parameters provided. Quiting ...'
+            sys.exit(1)
+       
+        # Create t1.iea_name and t1.exp_name files: 
+        # Filter t1 file to create t1.iea and t1.exp files
+        iter_handle, GAFFIELDS = self.create_iterator(self.t1_input_file)
+        print 'Parsing t1 file: ' + basename(self.t1_input_file) + ' ...' 
+        gc.t1_filter(iter_handle, self.t1_iea_name, self.t1_exp_name, 
+                    self.t2_exp_name, GAFFIELDS, self.ConfigParam['exp_eec'])
+        return None 
+
+    def delete_intermediate_files(self):
+        print 'Cleaning working directory ...'
+        # Delete t1.iea, t1.exp, and t2.exp files:
+        os.remove(self.t1_iea_name)
+        os.remove(self.t1_exp_name)
+        os.remove(self.t2_exp_name)
+        # Delete paper term frequency file for t2 file:
+        os.remove(self.t2_ptf_file)
+        # Delete any empty files from the workspace (subdirectories included):
+        for root, dirs, files in os.walk(self.work_dir):
+            for fname in files:
+                if os.path.getsize(root + '/' + fname) == 0:
+                    os.remove(root + '/' + fname)
             break
-        else:
-            GAFFIELDS = GOA.GAF10FIELDS
-            break
-    infile_handle = open(infile, 'r')
-    iter_handle = GOA.gafiterator(infile_handle)
-    return iter_handle, GAFFIELDS
+        return None
 
-# The first step with using the argparse module is to create a parser object 
-# that can then parse all the user inputs and convert them into python objects 
-# based on the user input types provided
+    def print_prolog(self):
+        print "*************************************************"
+        print "Welcome to Benchmark Verification Tool !!!!!"
+        print "*************************************************\n"
+        print 'Following is a list of user supplied inputs:\n'
+        for arg in self.parsed_dict:
+            print arg + ': ' + str(self.parsed_dict[arg])
+        print '*********************************************\n'
+        return None
 
-parser = argparse.ArgumentParser(prog='bm.py',description='Verifies benchmark sets')
-parser.add_argument('-I1', '--input1', help='This opton is mandatory. Specifies path to the first input file which is a protein annotation file in GOA file format at time t1.')
-parser.add_argument('-I2', '--input2', help='This option is mandatory. Specifies path to the second input file which is a protein annotation file in GOA file format at time t2.')
-parser.add_argument('-I3', '--input3', default='', help='This option is mandatory. Specifies path to the third input file which is any of the benchmark files generated by Benchmark creation software.')
-parser.add_argument('-G','--organism',nargs='*', default=['all'], help='Provides user a choice ' + \
-                        'to specify a set of organisms (example:Saccharomyces cerevisiae or 7227) ' + \
-                        'separated by space.Default is all.')
-parser.add_argument('-N','--ontology',nargs='*', default=['all'], help='Provides user a choice to ' + \
-                        'specify a set of ontologies (F, P, C) separated by space. Default is all.')
-parser.add_argument('-V','--evidence',nargs='*', default=['all'], help='Provides user a choice to ' + \
-                        'specify a set of GO experimental evidence codes (example: IPI, IDA, EXP) ' + \
-                        'separated by space.Default is all.')
-#parser.add_argument('-C','--cafa', default='F', help='Takes in either T or F. If specified as T, ' + \
-#                        'user needs to provide a CAFA targets file asinput1. If F, program will ' + \
-#                        'take in a uniprot-goa file as input1. Default is F')
+    def print_epilog(self, LKcount, NKcount):
+        if LKcount + NKcount == 0:
+            print bcolors.WARNING + 'No valid benchmark file found for verification' + \
+                bcolors.ENDC
+        else: 
+            print bcolors.OKGREEN + 'Verification successful for the following benchmark files:' + \
+                bcolors.ENDC
+            if os.path.exists(self.benchmark_LK_bpo) and os.stat(self.benchmark_LK_bpo).st_size != 0:
+                print basename(self.benchmark_LK_bpo)
+            if os.path.exists(self.benchmark_LK_cco) and os.stat(self.benchmark_LK_cco).st_size != 0:
+                print basename(self.benchmark_LK_cco)
+            if os.path.exists(self.benchmark_LK_mfo) and os.stat(self.benchmark_LK_mfo).st_size != 0:
+                print basename(self.benchmark_LK_mfo)
+            if os.path.exists(self.benchmark_NK_bpo) and os.stat(self.benchmark_NK_bpo).st_size != 0:
+                print basename(self.benchmark_NK_bpo)
+            if os.path.exists(self.benchmark_NK_cco) and os.stat(self.benchmark_NK_cco).st_size != 0:
+                print basename(self.benchmark_NK_cco)
+            if os.path.exists(self.benchmark_NK_mfo) and os.stat(self.benchmark_NK_mfo).st_size != 0:
+                print basename(self.benchmark_NK_mfo)
+        print bcolors.OKGREEN + 'Thank you for using Benchmark Verification Tool' + \
+            bcolors.ENDC
+        return None
 
-parser.add_argument('-S', '--source',action='store' ,nargs='*',default=['all'], help='Provides user ' + \
-                        'a choice to specify sources (example: UniProt, InterPro) separated by spaces. Default is all.')
-parser.add_argument('-P', '--pubmed',default='F', help='Allows user to turn on the pubmed filter. ' + \
-                        'If turned on, GO terms w/o any Pubmed references will not be considered ' + \
-                        'part of the benchmark set.By default, it is turned off.')
-parser.add_argument('-F', '--confidence',default='F', help='Allows user to turn on the annotation ' + \
-                        'confidence filter. If turned on, GO terms assignments to proteins that are ' + \
-                        'documented in few papers (4 or less by default) will not be considered part ' + \
-                        'of the benchmark set.By default, it is turned off.')
-parser.add_argument('-T', '--threshold', type=int, default=4, help='Allows users to specify a threshold ' + \
-                        'for the minimum number of papers to be used for having a confident annotation. ' + \
-                        'If not specified, defaults to a value of 4.')
-parser.add_argument('-B', '--blacklist', nargs='*',default=[], help='This parameter can take in a list of ' + \
-                        'pubmed ids and all GO terms and proteins annotated in them will be eliminated from ' + \
-                        'the benchmark set.Default is an empty list.')
+    def process_data(self): # Process user data and create benchmark sets
+        self.print_prolog() # Print the welcome message and argument list
+        fc.check_gaf_format(self.t1_input_file) # File format check for t1 file
+        fc.check_gaf_format(self.t2_input_file) # File format check for t2 file
+        self.create_intermediate_files() # Create necessary intermediate files
+        # Verifying the benchmarks
+        print 'Verifying benchmark sets ...'
+        fc.check_benchmark_format(self.benchmark_LK_bpo)
+        fc.check_benchmark_format(self.benchmark_LK_cco)
+        fc.check_benchmark_format(self.benchmark_LK_mfo)
+        LKcount = vb.verify_LK_benchmark(self.t1_iea_name, self.t1_exp_name, 
+            self.t2_exp_name, self.benchmark_LK_bpo, self.benchmark_LK_cco, 
+            self.benchmark_LK_mfo)
+        fc.check_benchmark_format(self.benchmark_NK_bpo)
+        fc.check_benchmark_format(self.benchmark_NK_cco)
+        fc.check_benchmark_format(self.benchmark_NK_mfo)
+        NKcount = vb.verify_NK_benchmark(self.t1_iea_name, self.t1_exp_name, 
+            self.t2_exp_name, self.benchmark_NK_bpo, self.benchmark_NK_cco, 
+            self.benchmark_NK_mfo)
+        self.delete_intermediate_files() # Delete intermediate files
+        self.print_epilog(LKcount, NKcount) # Print summary of running this program
+        return None
 
-# Search for config file in the current directory. If not present, 
-# creates a new config file
-fname_ind = 0
-for root,dirs,files in os.walk('.'):
-    for fname in files:
-        if fname == '.cafarc':
-            fname_ind = 1
-    if fname_ind == 0:
-        print bcolors.FAIL + 'Failed: Config file NOT found' + bcolors.ENDC  
-        print bcolors.WARNING + 'Suggestion: You need to run Benchmark Creation Software before you run this Verification Software ...' + bcolors.ENDC
-        sys.exit(1)
-    break
-    
-# Reads the config file and stores values in a dictionary
-Config_handle = cp.ConfigParser()
-Config_handle.read('.cafarc')
-ConfigParam = defaultdict()
-
-ConfigParam = {'workdir' : Config_handle.get('WORKDIR', 'DEFAULT_PATH'),
-               'ftp_host' : Config_handle.get('FTP', 'HOSTNAME'),
-               'ftp_curr_path' : Config_handle.get('FTP', 'CURRENT_FILE_PATH'),
-               'ftp_old_path' : Config_handle.get('FTP', 'OLD_FILE_PATH'),
-               'exp_eec' : Config_handle.get('DEFAULTS', 'EXP_EVIDENCE_CODES'),
-               'ont_def' : Config_handle.get('DEFAULTS', 'ONTOLOGIES'),
-               'tax_file' : Config_handle.get('DEFAULTS', 'TAXONOMY_FILENAME'),
-               'uniprot_path' : Config_handle.get('SEQUENCE', 'BASE_URL'),
-               'ftp_date' : Config_handle.get('REGEX', 'FTP_DATE'),
-               'ftp_file_start' : Config_handle.get('REGEX', 'FTP_FILE_START')
-               }
-
-work_dir = ConfigParam['workdir']
-work_dir = work_dir.rstrip('/')
-uniprot_path = ConfigParam['uniprot_path'] .rstrip('/')
-
-# In case the working directory is not found, the program will give an error 
-# message and terminate in this step
-if not os.path.exists(work_dir):
-    print bcolors.FAIL + 'Failed: Working directory is NOT found' + bcolors.ENDC
-    print bcolors.WARNING + 'Suggestion: You need to run Benchmark Creation Software before you run this Verification Software ...' + bcolors.ENDC
-    sys.exit(1) 
-
-# Parses the set of user given parameters and returns a dictionary of the same.
-parsed_dict = apv.parse(parser, ConfigParam)
-
-t1 = parsed_dict['t1']
-t2 = parsed_dict['t2']
-t3 = parsed_dict['t3']
-
-# Create input datasets based on whether the user chose CAFA or non-CAFA 
-# submode of Benchmark Creation mode 
-#if parsed_dict['Program'] == 'T':
-#    t1_input_file = work_dir + '/' + cd.parse_cafa(t1, ConfigParam)
-#else:
-#    t1_input_file = work_dir + '/' + cd.parse(t1, ConfigParam)
-
-#t1_input_file = work_dir + '/' + cd.parse(t1, ConfigParam)
-#t2_input_file = work_dir + '/' + cd.parse(t2, ConfigParam)
-
-t1_input_file = fd.find_dataset(t1, work_dir, ConfigParam)
-t2_input_file = fd.find_dataset(t2, work_dir, ConfigParam)
-
-
-# Filename initialization
-t1_iea_name = t1_input_file + '.iea'
-t1_exp_name = t1_input_file + '.exp'
-t2_exp_name = t2_input_file + '.exp'
-
-t3_basename = basename(parsed_dict['t3'])
-if t3_basename == '':
-    t3_LK_bpo = work_dir + '/' + create_benchmarkFilename(
-        parsed_dict, t3_basename, t2_input_file, work_dir, 'LK_bpo')
-    t3_basename = basename(t3_LK_bpo)
-    benchmarkVersion = t3_basename.strip().split('.')[-1]
-else: 
-    benchmarkVersion = t3_basename.strip().split('.')[-1] 
-benchmark_LK_bpo = work_dir + '/' + parsed_dict['t2'] + '.benchmark_LK_bpo.' + benchmarkVersion
-benchmark_LK_cco = work_dir + '/' + parsed_dict['t2'] + '.benchmark_LK_cco.' + benchmarkVersion
-benchmark_LK_mfo = work_dir + '/' + parsed_dict['t2'] + '.benchmark_LK_mfo.' + benchmarkVersion
-benchmark_NK_bpo = work_dir + '/' + parsed_dict['t2'] + '.benchmark_NK_bpo.' + benchmarkVersion
-benchmark_NK_cco = work_dir + '/' + parsed_dict['t2'] + '.benchmark_NK_cco.' + benchmarkVersion
-benchmark_NK_mfo = work_dir + '/' + parsed_dict['t2'] + '.benchmark_NK_mfo.' + benchmarkVersion
-
-# Add format checker module for input file at time t1
-#fc.check(t1_input_file, t2_input_file,parsed_dict['Program'])
-fc.check_gaf_format(t1_input_file)
-# Add format checker module for input file at time t2 
-fc.check_gaf_format(t2_input_file)
-
-# Create the following two parameters that will be needed for t2 file parsing
-#ann_conf = paper_term_freq(parsed_dict, t2_input_file) # Create paper-term frequency file
-t2_ptf_file = t2_input_file + '_with_annotations_per_paper.txt'
-ann_conf = ptf.paper_term_freq( open(t2_input_file,'r'), 
-                                open(t2_ptf_file,'w'), 
-                                parsed_dict)
-#ann_conf = ptf.paper_term_freq(parsed_dict, t2_input_file) # Create paper-term frequency file
-
-tax_id_name_mapping = gc.parse_tax_file(ConfigParam['tax_file']) # Creates a dictionary of taxon id-name mapping
-
-# Filtering t2 file for all proteins with experimentally annotated terms based on user defined parameters ...
-iter_handle, GAFFIELDS = create_iterator(t2_input_file) # Creates an iterator object for t2 file
-
-t2_exp_handle = open(t2_exp_name, 'w') # Create a file handle to save entries in t2 with experimental evidence codes
-
-print 'Parsing t2 file: ' + basename(t2_input_file) + ' ...'
-# This creates the intermediate file: t2.exp 
-for ingen in iter_handle: 
-    retval = gc.record_has_forBenchmark(ingen,ann_conf,parsed_dict,
-        tax_id_name_mapping,ConfigParam['exp_eec'],GAFFIELDS)
-    if retval: # if retval is TRUE, write the write record to t2.exp file 
-        GOA.writerec(ingen,t2_exp_handle,GAFFIELDS) 
-t2_exp_handle.close()
-
-print 'Parsing t1 file: ' + basename(t1_input_file) + ' ...'
- # This creates two intermediate files: t1.iea and t1.exp
-iter_handle, GAFFIELDS = create_iterator(t1_input_file)
-gc.t1_filter(iter_handle, t1_iea_name, t1_exp_name, t2_exp_name, 
-             GAFFIELDS, ConfigParam['exp_eec'])
-
-# Verifying the benchmarks
-print 'Verifying benchmark set ...'
-fc.check_benchmark_format(benchmark_LK_bpo)
-fc.check_benchmark_format(benchmark_LK_cco)
-fc.check_benchmark_format(benchmark_LK_mfo)
-LKcount = vb.verify_LK_benchmark(t1_iea_name, t1_exp_name, t2_exp_name, 
-    benchmark_LK_bpo,benchmark_LK_cco, benchmark_LK_mfo)
-
-fc.check_benchmark_format(benchmark_NK_bpo)
-fc.check_benchmark_format(benchmark_NK_cco)
-fc.check_benchmark_format(benchmark_NK_mfo)
-NKcount = vb.verify_NK_benchmark(t1_iea_name, t1_exp_name, t2_exp_name, 
-    benchmark_NK_bpo,benchmark_NK_cco, benchmark_NK_mfo)
-
-# Cleans the working directory by removing files created in the intermediate steps
-print 'Cleaning working directory ...'
-os.remove(t1_iea_name)
-if os.path.exists(t1_exp_name):
-    os.remove(t1_exp_name)
-os.remove(t2_exp_name)
-os.remove(t2_input_file + '_with_annotations_per_paper.txt')
-
-if LKcount + NKcount == 0:
-    print bcolors.WARNING + 'No valid benchmark file found for verification' + \
-        bcolors.ENDC
-else: 
-    print bcolors.OKGREEN + 'Verification successful for the following benchmark files:' + \
-        bcolors.ENDC
-    if os.path.exists(benchmark_LK_bpo) and os.stat(benchmark_LK_bpo).st_size != 0:
-        print basename(benchmark_LK_bpo)
-    if os.path.exists(benchmark_LK_cco) and os.stat(benchmark_LK_cco).st_size != 0:
-        print basename(benchmark_LK_cco)
-    if os.path.exists(benchmark_LK_mfo) and os.stat(benchmark_LK_mfo).st_size != 0:
-        print basename(benchmark_LK_mfo)
-    if os.path.exists(benchmark_NK_bpo) and os.stat(benchmark_NK_bpo).st_size != 0:
-        print basename(benchmark_NK_bpo)
-    if os.path.exists(benchmark_NK_cco) and os.stat(benchmark_NK_cco).st_size != 0:
-        print basename(benchmark_NK_cco)
-    if os.path.exists(benchmark_NK_mfo) and os.stat(benchmark_NK_mfo).st_size != 0:
-        print basename(benchmark_NK_mfo)
-print bcolors.OKGREEN + 'Thank you for using Benchmark Verification Tool' + \
-    bcolors.ENDC
+if __name__ == '__main__': 
+    vm = Verify() # Create a Verify instance 
+    vm.process_data() # Process data and create benchmark sets
