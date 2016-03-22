@@ -42,15 +42,21 @@ class Mergedb:
         self.parsed_dict = ap.parse_args() # Collect user arguments into a dictionary
         self.ConfigParam = Config.read_config(config_filename) # Collect config file entries
         self.work_dir = self.ConfigParam['workdir']
-        # In case the working directory is not found, the program will create one in this step
+        # Find workspace: 
         if not os.path.exists(self.work_dir):
             os.makedirs(self.work_dir) # Create work space, if it does not exist
         t1 = self.parsed_dict['t1']
         t2 = self.parsed_dict['t2']
         outfile_basename = basename(self.parsed_dict['outfile'])
-        self.t1_input_file = fd.find_dataset(t1, self.work_dir, self.ConfigParam) 
-        self.t2_input_file = fd.find_dataset(t2, self.work_dir, self.ConfigParam) # parse t2 file.
-        self.output_filename = self.create_output(self.parsed_dict, outfile_basename, self.work_dir)
+        self.t1_input_file = fd.find_dataset(t1, 
+                                             self.work_dir, 
+                                             self.ConfigParam) # Locate t1 file.
+        self.t2_input_file = fd.find_dataset(t2, 
+                                             self.work_dir, 
+                                             self.ConfigParam) # Locate t2 file.
+        self.output_filename = self.create_output(self.parsed_dict, 
+                                                  outfile_basename, 
+                                                  self.work_dir) # Create output file name
 
     def create_iterator(self, infile):
         # Returns an iterator object for an input uniprot-goa file along 
@@ -69,7 +75,8 @@ class Mergedb:
         return iter_handle, GAFFIELDS
 
     def create_output(self, params, outfile, work_dir):
-         # Creates an output filename based on the output file prefix provided by the user
+         # Creates an output filename based on the output file prefix 
+         # provided by the user:
         if not outfile == '':
             ob = basename(self.parsed_dict['outfile'])
         else:
@@ -106,7 +113,6 @@ class Mergedb:
         self.print_prolog() # Print Welcome message
         fc.check_gaf_format(self.t2_input_file) # Check UniProt-GOA file format
 
-        print('Merging ...')
         # Merge steps:
         # Step 1: 
            # Copy the gene association file to the output file:
