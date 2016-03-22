@@ -26,19 +26,19 @@ import verifyBenchmark as vb
    annotation file at time t1, input file 2: a tab delimited annotation file 
    at time t2. Then the program finds the latest version of the benchmark 
    files created by Bechmark Creation program for this specific set of 
-   input files and verifies the correctness of these benchmark files.    
+   input files and verifies the correctness of these benchmark files.
  
    Verify program can also take a third input which is one of the benchmark 
    files created by Benchmark Creation program. When this third input file 
    is given, it extracts the version of the benchmark files from this input, 
-   and verifies all the benchmark files for that specific version.  
+   and verifies all the benchmark files for that specific version.
  
    The program creates THREE intermediate files from the input file 1 and input 
    file 2 and these intermediate files are removed after the verfication is 
    completed.
    
-   Complete usage directions of this program can obtained through the 
-   following command: 
+   Complete usage directions of this program can be obtained through the 
+   following command:
 
    python Verify --help
 '''
@@ -66,11 +66,9 @@ class Verify:
         self.work_dir = (self.ConfigParam['workdir']).rstrip('/')
                                    # Retreive work directory name
         if not os.path.exists(self.work_dir):
-            print ('Work space not found. Check ' + config_filename + ' file for correct assignment of work directory.')
+            print ('Work space not found. Check ' + config_filename + \
+                ' file for correct assignment of work directory.')
             sys.exit(1)
-#            os.makedirs(self.work_dir)
-
-                # Create work direcoty, if it does not exist
         self.t1_input_file = fd.find_dataset(t1, self.work_dir,
                             self.ConfigParam) # Locate t1 file
         self.t2_input_file = fd.find_dataset(t2, self.work_dir,
