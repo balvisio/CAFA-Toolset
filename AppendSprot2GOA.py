@@ -13,11 +13,11 @@ import GOAParser
 import GOAParser_cafa as gc
 
 '''
-This program takes four inputs: (1) a uniprot-swissprot file, (2) a uniprot-GOA
-file, (3) taxon id, and (4) an output file. The GO terms in the 
-UniProt-SwissProt file that are NOT in the unprot-GOA file for the supplied 
-taxon id, are merged together with the uniprot-GOA file and written to the 
-output file.
+    This program takes four inputs: (1) a uniprot-swissprot file, (2) a 
+    uniprot-GOA file, (3) taxon id, and (4) an output file. The GO terms 
+    in the UniProt-SwissProt file that are NOT in the unprot-GOA file for 
+    the supplied taxon id, are merged together with the uniprot-GOA file i
+    and written to the output file.
 '''
 
 Months = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
@@ -163,6 +163,7 @@ def appendSprot2goa(fh_sprot, goa_file_name, taxon_id, fh_merged_go):
             goa_dict[ingen['DB_Object_ID']] = [[ingen['GO_ID'], ingen['Evidence'], ingen['Aspect']]]
 
 # EXTRACTS the NEW GO terms in t2 file that are NOT found in t1 file
+    print('Merging ...')
     goCount = 0
     for rec in sp.parse(fh_sprot):
         if taxon_id in rec.taxonomy_id: # SELECTS records that are related to a specific taxon_id such as 559292 for yeast
