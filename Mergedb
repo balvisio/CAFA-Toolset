@@ -119,8 +119,10 @@ class Mergedb:
         cmd = "cp " + self.t2_input_file + " " + self.output_filename 
         subprocess.call(cmd, shell=True)
         # Step 2: 
-            # Create GOA records from uniprot-sprot file and 
-            # append them at the end of the output file
+            # Fetch records from from uniprot-sprot file
+            # Check for duplicacy 
+            # Convert them to GOA records
+            # Append them at the end of the output file
         as2g.appendSprot2goa(open(self.t1_input_file, 'r'), 
                              self.t2_input_file, 
                              self.parsed_dict['g'], 
