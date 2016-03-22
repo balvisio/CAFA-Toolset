@@ -121,8 +121,8 @@ t1 = parsed_dict['t1']
 t2 = parsed_dict['t2']
 outfile_basename = basename(parsed_dict['outfile'])
 
-#t1_input_file = work_dir + '/' + fd.find_dataset(t1, ConfigParam) 
-t1_input_file = work_dir + '/' + t1 
+t1_input_file = work_dir + '/' + fd.find_dataset(t1, ConfigParam) 
+#t1_input_file = work_dir + '/' + t1 
 t2_input_file = fd.find_dataset(t2, work_dir, ConfigParam) # parse t2 file.
 
 fc.check_gaf_format(t2_input_file)
