@@ -8,8 +8,16 @@ import re
 from collections import OrderedDict
 
 '''
-   This script parses, verifies a bunch of user input parameters using argparse module.
-   Finally creates a dictionary with all parameter values and returns it
+   Th methods in this module collect user supplied arguments, parses and 
+   verifies them. 
+   
+   collect_args: This method collect the user supplied arguments.  
+   extract_args: This method puts the user supplied arguments into an 
+        ordered dictionary. 
+   check_args: This method verifies the correctness of the user supplied
+       arguments and puts them into an ordered dictionary and returns it. 
+   parse_args: This method calls the above methods and returns the final 
+      dictionary with user supplied arguments.
 '''
 
 def collect_args(prog='benchmark'):
@@ -23,6 +31,10 @@ def collect_args(prog='benchmark'):
     if prog == 'benchmark':
         parser.add_argument('-O', '--output', default='', help='Provides user an \
             option to specify an output filename.')
+    elif prog == 'verify':
+        parser.add_argument('-I3', '--input3', default='', help='Provides user an \
+            option to specify any of the benchmark files that need to be verified.')
+
     parser.add_argument('-G','--organism',nargs='*', default=['all'],help='Provides \
                     user a choice to specify a set of organisms  \
                     (example:Saccharomyces cerevisiae or 7227) separated by \
@@ -66,6 +78,8 @@ def extract_args(args, prog):
     args_dict['t2'] = args.input2
     if prog == 'benchmark':
         args_dict['outfile'] = args.output # Default: ''
+    elif prog == 'verify': 
+        args_dict['t3'] = args.input3
     args_dict['Taxon_ID'] = args.organism # Default: 'all'
     args_dict['Aspect'] = args.ontology # Default: 'all'
     args_dict['Evidence'] = args.evidence # Default: 'all'   
@@ -94,6 +108,8 @@ def check_args(args_dict, parser):
                 print parser.parse_args(['--help'])
             else:
                 user_dict['t2'] = args_dict[arg]
+        elif arg == 't3':
+                user_dict['t3'] = args_dict[arg]
         elif arg == 'outfile':
             user_dict[arg] = args_dict[arg]
         elif arg == 'Threshold':
@@ -130,5 +146,5 @@ def parse_args(prog='benchmark'):
     return user_dict
 
 if __name__ == '__main__':
-    print ('This program does not run as an independently.') 
+    print ('This program does not run independently.') 
     sys.exit(1) 
