@@ -18,7 +18,6 @@ if [ ! -f ${curDir}'/'${fileName} ] && [ ! -f ${curDir}'/workspace/'${fileName} 
    rm uniprot_sprot_varsplic.fasta.gz 
    rm uniprot_sprot.xml.gz
    rm uniprot_sprot.fasta.gz
-   sleep 1m # Give the system some time to stablize these copying and deleting operations
 fi
 
 # Integrating Annotation Datasets
