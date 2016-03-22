@@ -28,6 +28,11 @@ import PaperTermFrequency as ptf
    Running this program creates SIX benchmark files: THREE limited-knolwedge 
    (LK) benchmark files - one in each of the three ontolgies (MFO, BPO, and 
    CCO) and THREE no-knowledge (NK) benchmark files - one in each ontology.
+   
+   Complete usage directions of this program can obtained through the 
+   following command: 
+
+   python Benchmark --help
 '''
 
 class bcolors:
@@ -46,12 +51,12 @@ class Benchmark:
     def __init__(self):
         self.parsed_dict = ap.parse_args('benchmark')
                         # Obtain user supplied argument values in a dictionary 
-        self.print_prolog() # Print the welcome message
         self.ConfigParam = Config.read_config(config_filename) # Collect config entries
         t1 = self.parsed_dict['t1'] # Retreive file name at time t1
         t2 = self.parsed_dict['t2'] # Retreive file name at time t2
         if self.parsed_dict['t1'] == self.parsed_dict['t2']:
-            print 'Both input files are from the same time point. This will not create a valid benchmark set.'
+            print 'Both input files are from the same time point.\
+                This will not create a valid benchmark set.'
             print 'Program quiting ...'
             sys.exit(1)
         outfile_basename = basename(self.parsed_dict['outfile'])
@@ -61,31 +66,18 @@ class Benchmark:
         if not os.path.exists(self.work_dir):
             os.makedirs(self.work_dir)
                 # Create work direcoty, if it does not exist
-
         self.t1_input_file = fd.find_dataset(t1, self.work_dir,
                             self.ConfigParam) # Locate t1 file
         self.t2_input_file = fd.find_dataset(t2, self.work_dir,
                             self.ConfigParam) # Locate t2 file
 
         # Names for SIX ouput files: bpo, cco, and mfo for LK and NK benchmark types:
-        self.output_filename_LK_bpo = self.create_output(self.parsed_dict,
-                                    outfile_basename, self.t2_input_file,
-                                    self.work_dir, 'LK_bpo')
-        self.output_filename_LK_cco = self.create_output(self.parsed_dict,
-                                    outfile_basename, self.t2_input_file,
-                                    self.work_dir, 'LK_cco')
-        self.output_filename_LK_mfo = self.create_output(self.parsed_dict,
-                                    outfile_basename, self.t2_input_file,
-                                    self.work_dir, 'LK_mfo')
-        self.output_filename_NK_bpo = self.create_output(self.parsed_dict,
-                                    outfile_basename, self.t2_input_file,
-                                    self.work_dir, 'NK_bpo')
-        self.output_filename_NK_cco = self.create_output(self.parsed_dict,
-                                    outfile_basename, self.t2_input_file,
-                                    self.work_dir, 'NK_cco')
-        self.output_filename_NK_mfo = self.create_output(self.parsed_dict,
-                                    outfile_basename, self.t2_input_file,
-                                    self.work_dir, 'NK_mfo')
+        self.output_filename_LK_bpo = self.create_output('LK_bpo')
+        self.output_filename_LK_cco = self.create_output('LK_cco')
+        self.output_filename_LK_mfo = self.create_output('LK_mfo')
+        self.output_filename_NK_bpo = self.create_output('NK_bpo')
+        self.output_filename_NK_cco = self.create_output('NK_cco')
+        self.output_filename_NK_mfo = self.create_output('NK_mfo')
 
         # Names for THREE files to store non-EXP and EXP type entries:
         # These files will be deleted once the calculation is done
@@ -108,20 +100,19 @@ class Benchmark:
         self.bmfile_NK_cco = self.t2_exp_name + '.cco_NK_bench.txt'
         self.bmfile_NK_mfo = self.t2_exp_name + '.mfo_NK_bench.txt'
 
-    def create_output(self, params, outfile, infile, work_dir, ontType):
+    def create_output(self, ontType):
         # Creates an output filename based on the output file prefix 
         # provided by the user
-        if not outfile == '':
-            ob = basename(params['outfile'])
+        if not self.parsed_dict['outfile'] == '':
+            ob = basename(self.parsed_dict['outfile']) + '_' + ontType
         else:
-            if ontType == '':
-                ob = basename(infile + '.benchmark')
-            else: 
-                ob = basename(infile + '.benchmark' + '_' + ontType)
+            ob = basename(self.parsed_dict['t2']) + '-' + \
+                ((basename(self.parsed_dict['t1'])).split('.'))[-1] + \
+                '.benchmark' + '_' + ontType
         index = 1
-        while os.path.exists(work_dir + '/' + ob + '.' + str(index)):
+        while os.path.exists(self.work_dir + '/' + ob + '.' + str(index)):
             index = index + 1
-        output_filename = work_dir + '/' + ob + '.' + str(index)
+        output_filename = self.work_dir + '/' + ob + '.' + str(index)
         return output_filename
 
     def create_iterator(self, infile):
@@ -274,6 +265,7 @@ class Benchmark:
         return None
 
     def process_data(self): # Process user data and create benchmark sets
+        self.print_prolog() # Print the welcome message and argument list
         fc.check_gaf_format(self.t1_input_file) # File format check for t1 file
         fc.check_gaf_format(self.t2_input_file) # File format check for t2 file
         self.create_intermediate_files() # Create necessary intermediate files
