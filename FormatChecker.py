@@ -20,7 +20,6 @@ import stat
     gets invoked, when this script is used from the command line.  
 
 '''
-
 class bcolors:
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
