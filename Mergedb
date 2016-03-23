@@ -61,7 +61,7 @@ class Mergedb:
         self.t2_input_file = fd.find_dataset(t2,
                                              self.work_dir,
                                              self.ConfigParam) # Locate t2 file.
-        self.output_filename = self.create_output(self.parsed_dict,
+        self.output_filename = self.create_outfilename(self.parsed_dict,
                                                   outfile_basename,
                                                   self.work_dir) # Create output file name
 
@@ -81,7 +81,7 @@ class Mergedb:
         iter_handle = GOA.gafiterator(infile_handle)
         return iter_handle, GAFFIELDS
 
-    def create_output(self, params, outfile, work_dir):
+    def create_outfilename(self, params, outfile, work_dir):
          # Creates an output filename based on the output file prefix 
          # provided by the user:
         if not outfile == '':
