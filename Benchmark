@@ -72,12 +72,12 @@ class Benchmark:
                             self.ConfigParam) # Locate t2 file
 
         # Names for SIX ouput files: bpo, cco, and mfo for LK and NK benchmark types:
-        self.output_filename_LK_bpo = self.create_output('LK_bpo')
-        self.output_filename_LK_cco = self.create_output('LK_cco')
-        self.output_filename_LK_mfo = self.create_output('LK_mfo')
-        self.output_filename_NK_bpo = self.create_output('NK_bpo')
-        self.output_filename_NK_cco = self.create_output('NK_cco')
-        self.output_filename_NK_mfo = self.create_output('NK_mfo')
+        self.output_filename_LK_bpo = self.create_outfilename('LK_bpo')
+        self.output_filename_LK_cco = self.create_outfilename('LK_cco')
+        self.output_filename_LK_mfo = self.create_outfilename('LK_mfo')
+        self.output_filename_NK_bpo = self.create_outfilename('NK_bpo')
+        self.output_filename_NK_cco = self.create_outfilename('NK_cco')
+        self.output_filename_NK_mfo = self.create_outfilename('NK_mfo')
 
         # Names for THREE files to store non-EXP and EXP type entries:
         # These files will be deleted once the calculation is done
@@ -100,7 +100,7 @@ class Benchmark:
         self.bmfile_NK_cco = self.t2_exp_name + '.cco_NK_bench.txt'
         self.bmfile_NK_mfo = self.t2_exp_name + '.mfo_NK_bench.txt'
 
-    def create_output(self, ontType):
+    def create_outfilename(self, ontType):
         # Creates an output filename based on the output file prefix 
         # provided by the user
         if not self.parsed_dict['outfile'] == '':
