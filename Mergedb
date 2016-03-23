@@ -117,8 +117,10 @@ class Mergedb:
         return None
 
     def process_data(self): 
-        self.print_prolog() # Print welcome message
-        fc.check_gaf_format(self.t2_input_file) # Check UniProt-GOA file format
+        # Print wellcome message:
+        self.print_prolog() 
+        # Check UniProt-GOA file format:
+        fc.check_gaf_format(self.t2_input_file) 
 
         # Merge steps:
         # Step 1: 
@@ -134,6 +136,8 @@ class Mergedb:
                              self.t2_input_file, 
                              self.parsed_dict['g'], 
                              open(self.output_filename, 'a'))
+
+        # Print the summary of running this program:
         self.print_epilog()
         return None
 
