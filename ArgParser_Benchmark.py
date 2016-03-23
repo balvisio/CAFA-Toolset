@@ -21,7 +21,8 @@ from collections import OrderedDict
 '''
 
 def collect_args(prog='benchmark'):
-    # Argument list:
+    # This method collects the user supplied arguments 
+    # and returns them at the end.
     parser = argparse.ArgumentParser(description='Creates benchmark protein sets \
                     from two annotation files at two time points')
     parser.add_argument('-I1', '--input1', help='This opton is mandatory. \
@@ -70,8 +71,8 @@ def collect_args(prog='benchmark'):
     return parser
 
 def extract_args(args, prog):
-    # This dictionary bellow places the user supplied arguments to the dictionary keys.
-    # If no argument is supplied by the user, the key is assigned with the default value.
+    # This method builds a dicitonary from the user supplied arguments
+    # and returns the constructed dictionary at the end.
     
     args_dict = OrderedDict() 
     args_dict['t1'] = args.input1
@@ -92,8 +93,8 @@ def extract_args(args, prog):
     
 def check_args(args_dict, parser):
     # This method checks the consistency of user arguments.
-    # It creates a dictionary of input arguments and returns 
-    # the created dictionary.
+    # It builds a new dictionary of the input arguments and 
+    # returns the created dictionary at the end.
     user_dict = OrderedDict() 
     for arg in args_dict:
         if arg == 't1':
@@ -133,6 +134,14 @@ def check_args(args_dict, parser):
     return user_dict
 
 def parse_args(prog='benchmark'):
+    # This is the entry point for the other methods in this module:
+    # 1. it invokes collect_args to collect user arguments
+    # 2. it puts those arguments into a dictionary by calling extract_args method
+    # 3. it checks the consistency of those arguments by invoking check_args which
+    #    returns an dictionary of correct arguments
+    # 4. Finally, it returns the dictionary at the end.
+    parser = collect_args() # Collect user arguments
+
     parser = collect_args(prog) # Collect user supplied argument values
     args_dict = {}
     args, unknown = parser.parse_known_args()
