@@ -21,6 +21,8 @@ from collections import OrderedDict
 '''
 
 def collect_args():
+    # This method collects the user supplied arguments 
+    # and returns them at the end.
     parser = argparse.ArgumentParser(description='Generate a set of target \
         sequences for a specific organism by filtering them out fro a \
         UniProt-SwissProt file.')
@@ -35,10 +37,8 @@ def collect_args():
     return parser
 
 def extract_args(args):
-    # This dictionary below contains the values of all arguments available to
-    # the program. If they have been passed, it will take the values passed. 
-    # Else, will assume default values. If a new parameter is to be added to
-    # the program, it should be added into this dictionary
+    # This method builds a dicitonary from the user supplied arguments
+    # and returns the constructed dictionary at the end.
     args_dict = OrderedDict() 
     args_dict['t1'] = args.input1
     args_dict['outfile'] = args.output
@@ -46,9 +46,10 @@ def extract_args(args):
     return args_dict
     
 def check_args(args_dict,parser):
-    # This method checks the values for each of the arguments provided to look 
-    # for inconsistent input. At the end, it creates a final dictionary of 
-    # input argument values and gives it back to the main script
+    # This method checks the user arguments for consistency.
+    # It builds a new dictionary from these arguments and 
+    # finally returns this newly created dictionary 
+
     user_dict = OrderedDict() 
     for arg in args_dict:
         if arg == 't1':
@@ -74,7 +75,14 @@ def check_args(args_dict,parser):
     return user_dict
 
 def parse_args():
-    parser = collect_args()
+    # This is the entry point for the other methods in this module:
+    # 1. it invokes collect_args to collect user arguments
+    # 2. it puts those arguments into a dictionary by calling extract_args method
+    # 3. it checks the consistency of those arguments by invoking check_args which
+    #    returns an dictionary of correct arguments
+    # 4. Finally, it returns the dictionary at the end.
+
+    parser = collect_args() # Collect user arguments
     args_dict = {}
     args, unknown = parser.parse_known_args()
     if len(unknown) > 0:
@@ -82,9 +90,10 @@ def parse_args():
         print ("Invalid Arguments")
         print ('*********************************\n')
         print (parser.parse_args(['--help']))
-    args_dict = extract_args(args)
-    user_dict = check_args(args_dict,parser)
+    args_dict = extract_args(args) # Places the user arguments into a dictionary
+    user_dict = check_args(args_dict,parser) # Checks the consistency of the user args
     return user_dict
 
 if __name__ == '__main__':
     print('This program does not run independently.')
+    sys.exit(1)
