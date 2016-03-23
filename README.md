@@ -5,8 +5,8 @@
   1. Integration of protein annotation databases: This tool integrates 
       multiple protein annotation datasets in different file formats into 
       one larger dataset. Current release merges two datasets, one in 
-      unprot-swissProt format and the other in uniprot-GOA format, into a 
-      larger single dataset in uniprot-GOA format.
+      UniProtKB/SwissProt format and the other in UniProt-GOA format, into a 
+      larger single dataset in UniProt-GOA format.
 
   2. Target generation: This tool generates a set of protein sequences 
        in fasta file format that will be sent out to the community participating 
@@ -39,28 +39,28 @@ are submitted for publication.
 
 Definitions of some terms used in this document are following.
 
-#### uniprot-GOA 
+#### UniProt-GOA 
 This is a database for protein assignments to GO resources which maintains a 
 dynamically controlled vocabulary.  
-*  uniprot-GOA dataset archive: ftp://ftp.ebi.ac.uk/pub/databases/GO/goa 
-*  uniprot-GOA datasets can be in GAF 1.0 or GAF 2.0 file format. More details
+*  UniProt-GOA dataset archive: ftp://ftp.ebi.ac.uk/pub/databases/GO/goa 
+*  UniProt-GOA datasets can be in GAF 1.0 or GAF 2.0 file format. More details
 about GAF 1.0 format at http://geneontology.org/page/go-annotation-file-gaf-format-10
 and GAF 2.0 format at http://geneontology.org/page/go-annotation-file-format-20
-* More details about uniprot-GOA project: http://www.geneontology.org/gene-associations/readme/goa.README  
+* More details about UniProt-GOA project: http://www.geneontology.org/gene-associations/readme/goa.README  
 
-#### uniprot-swissProt 
+#### UniProtKB/SwissProt 
 This is a non-redundant protein sequence database. Each entry in this database 
 is manually annotated involving detailed analysis of the protein sequence and 
 of the scientific literature. This database is recognized as the central access point 
 of the extensive curated protein information, classification, and cross-reference. 
 
-* uniprot-swissProt dataset current release: ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/
+* UniProtKB/SwissProt dataset current release: ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/
 * Detailed release statistics: http://web.expasy.org/docs/relnotes/relstat.html
-* uniprot-swissProt dataset archive (release 9 to 45): 
-ftp://ftp.ebi.ac.uk/pub/databases/swissprot/sw_old_releases/ 
-* uniprot-swissProt dataset archive (release 46 and greater ): 
+* UniProtKB/SwissProt dataset archive (release 9 to 45): 
+ftp://ftp.ebi.ac.uk/pub/databases/SwissProt/sw_old_releases/ 
+* UniProtKB/SwissProt dataset archive (release 46 and greater ): 
 ftp://ftp.uniprot.org/pub/databases/uniprot/previous_releases/
-* uniprot-swissProt file format: 
+* UniProtKB/SwissProt file format: 
 http://arep.med.harvard.edu/labgc/jong/Fetch/SwissProtAll.html
 
 
@@ -88,7 +88,7 @@ the CAFA challenge is announced.
 #### Benchmark set
 It is a set of proteins whose functions were, until recently, unknown. Protein 
 annotations at two time points, t1 and t2, are collected from the annotation 
-databases such as uniProt-GOA or uniProt-swissProt, and the annotations that 
+databases such as uniProt-GOA or uniProt/SwissProt, and the annotations that 
 gained experimental evidence at time t2 are placed in the benchmark set. Two 
 types of benchmark sets, no-knowledge and limited-knowledge, are used in each 
 of the three ontologies (MFO, BPO, and CCO) to evaluate the protein function 
@@ -128,10 +128,10 @@ The details of the usage description of the CAFA Toolset are following.
 
 ### Integrating Annotation Datasets
 This tool integrates protein annoations from multiple sources. Currently, it 
-supports uniprot-swissProt and uniprot-GOA file format. Here is the command to 
+supports UniProtKB/SwissProt and UniProt-GOA file format. Here is the command to 
 run this tool:
 
-python Mergedb -input1 uniprot-swissProt-annoation-at-t0 -input2 uniprot-GOA-annotation-at-time-t0 -organism taxon-id
+python Mergedb -input1 UniProtKB/SwissProt-annoation-at-t0 -input2 UniProt-GOA-annotation-at-time-t0 -organism taxon-id
 
 One specific example run with input1 file uniprot_sprot.dat.38, input2 file 
 gene_association.goa_ref_yeast.38, and taxon id 559292 for Saccharomyces Cerevisiae:
@@ -140,19 +140,19 @@ gene_association.goa_ref_yeast.38, and taxon id 559292 for Saccharomyces Cerevis
 python Mergedb -I1=uniprot_sprot.dat.2014_09 -I2=gene_association.goa_ref_yeast.38 -G 559292
 ```
 This command will extract the annotations for taxon id 559292 from the 
-uniprot-swissProt file and append them at the end of the uniprot-GOA file, 
+UniProtKB/SwissProt file and append them at the end of the UniProt-GOA file, 
 considering only the entries that are not already in the latter file. 
 It will create a combined file: gene_association.goa_ref_yeast.38+sprot.38.1 
-whose file format would be the same as the uniprot-GOA format.
+whose file format would be the same as the UniProt-GOA format.
 
 Multiple run of this program with the same input file versions will create 
 subsequent versions of the output file where the file name will end with 
 subsequent version number, such as 2, 3, 4, etc.
 
 ##### Note 
-The uniprot-swissProt file uniprot_sprot.dat.38 is not stored in gitHub as 
+The UniProtKB/SwissProt file uniprot_sprot.dat.38 is not stored in gitHub as 
 one of the example input files because of its large size. To retreive this 
-specific file from the uniprot website, please perform the following 
+specific file from the UniProt website, please perform the following 
 commands:
 
 ```
@@ -167,13 +167,13 @@ This tool will create a file for the target set, containing the protein
 sequences in fasta format. The simplest way to run the program for target 
 generation:
 
-python Filter  --input1 uniprot-swissProt-annotation-at-t0  -G taxon_id
+python Filter  --input1 UniProtKB/SwissProt-annotation-at-t0  -G taxon_id
 
-input1 is a uniprot-swissProt annotation file at a certain time point (on CAFA 
+input1 is a UniProtKB/SwissProt annotation file at a certain time point (on CAFA 
 time-line, this is time t0, the sequence release date for the CAFA community 
 challenge), taxon_id is the taxonomy id for the specific species whose protein 
 sequences are being filtered. Here is an example with uniprot_sprot.dat.38  as 
-the uniprot-swissProt annotation file and 559292 as taxon id for Saccharomyces 
+the UniProtKB/SwissProt annotation file and 559292 as taxon id for Saccharomyces 
 cerevisiae.
 
 ```
@@ -201,14 +201,14 @@ subsequent version number, such as 2, 3, 4, etc.
 
 The program can also take an output file name as an input parameter:
 
-python Filter  --input1 uniprot-swissProt-annotation-at-t0  -G taxon_id -output output_filename
+python Filter  --input1 UniProtKB/SwissProt-annotation-at-t0  -G taxon_id -output output_filename
 
 ### Benchmark Creation
 This tool will create benchmark files from two input annotation files in 
-uniprot-GOA file format at time points t1 and t2, respectively. The simplest 
+UniProt-GOA file format at time points t1 and t2, respectively. The simplest 
 way to run this program:
 
-python Benchmark  --input1 uniprot-goa-annotation-at-t1 --input2 uniprot-goa-annotation-at-t2
+python Benchmark  --input1 UniProt-GOA-annotation-at-t1 --input2 UniProt-GOA-annotation-at-t2
 
 input 1 and input 2 are two annotation files at time points t1 and t2, 
 respectively. Each of the input files must be in GAF 1.0 or GAF 2.0 format. 
@@ -238,7 +238,7 @@ number, such as 2, 3, 4 etc. in consecutive runs.
 This tool will verify the benchmark files generated by the Benchmark Creation 
 tool. The simplest way to run the program:
 
-python Verify --input1 uniprot-goa-annotation-at-t1 --input2 uniprot-goa-annotation-at-t2
+python Verify --input1 UniProt-goa-annotation-at-t1 --input2 UniProt-goa-annotation-at-t2
 
 input 1 and input 2 are two annotation files at time points t1 and t2, 
 respectively. Each of the input files must be in GAF 1.0 or GAF 2.0 format. 
