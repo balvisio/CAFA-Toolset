@@ -265,7 +265,7 @@ class Benchmark:
         return None
 
     def process_data(self): # Process user data and create benchmark sets
-        self.print_prolog() # Print the welcome message and argument list
+        self.print_prolog() # Print the wellcome message and argument list
         fc.check_gaf_format(self.t1_input_file) # File format check for t1 file
         fc.check_gaf_format(self.t2_input_file) # File format check for t2 file
         self.create_intermediate_files() # Create necessary intermediate files
@@ -284,5 +284,5 @@ class Benchmark:
         return None
 
 if __name__ == '__main__': 
-    bm = Benchmark() # Create a Benchmark instance 
+    bm = Benchmark() # Create an instance of Benchmark class  
     bm.process_data() # Process data and create benchmark sets
