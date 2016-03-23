@@ -18,11 +18,17 @@ import FindDataset as fd
 import FormatChecker as fc
 
 '''
-    This program takes four inputs: (1) uniprot-swissprot file, 
-    (2) a uniprot-GOA file, (3) taxon id, and (4) an output file. 
+    This program takes four inputs: 
+        (1) uniprot-swissprot file 
+        (2) a uniprot-GOA file 
+        (3) taxon id 
+        (4) an optional output file
+    When the output file name is NOT given, the program will construct 
+    an output file name by combining the UniProt-SwissProt  and 
+    UniProt-GOA file names supplied by the user. 
     The GO terms in the UniProt-SwissProt file that are NOT in the 
     unprot-GOA file for the supplied taxon id, are merged together 
-    with the uniprot-GOA file and written to the output file.
+    with those in the uniprot-GOA file and written to the output file.
 '''
 
 class bcolors:
@@ -42,20 +48,21 @@ class Mergedb:
         self.parsed_dict = ap.parse_args() # Collect user arguments into a dictionary
         self.ConfigParam = Config.read_config(config_filename) # Collect config file entries
         self.work_dir = self.ConfigParam['workdir']
+
         # Find workspace: 
         if not os.path.exists(self.work_dir):
             os.makedirs(self.work_dir) # Create work space, if it does not exist
         t1 = self.parsed_dict['t1']
         t2 = self.parsed_dict['t2']
         outfile_basename = basename(self.parsed_dict['outfile'])
-        self.t1_input_file = fd.find_dataset(t1, 
-                                             self.work_dir, 
+        self.t1_input_file = fd.find_dataset(t1,
+                                             self.work_dir,
                                              self.ConfigParam) # Locate t1 file.
-        self.t2_input_file = fd.find_dataset(t2, 
-                                             self.work_dir, 
+        self.t2_input_file = fd.find_dataset(t2,
+                                             self.work_dir,
                                              self.ConfigParam) # Locate t2 file.
-        self.output_filename = self.create_output(self.parsed_dict, 
-                                                  outfile_basename, 
+        self.output_filename = self.create_output(self.parsed_dict,
+                                                  outfile_basename,
                                                   self.work_dir) # Create output file name
 
     def create_iterator(self, infile):
@@ -110,7 +117,7 @@ class Mergedb:
         return None
 
     def process_data(self): 
-        self.print_prolog() # Print Welcome message
+        self.print_prolog() # Print welcome message
         fc.check_gaf_format(self.t2_input_file) # Check UniProt-GOA file format
 
         # Merge steps:
@@ -119,8 +126,8 @@ class Mergedb:
         cmd = "cp " + self.t2_input_file + " " + self.output_filename 
         subprocess.call(cmd, shell=True)
         # Step 2: 
-            # Fetch records from from uniprot-sprot file
-            # Check for duplicacy 
+            # Fetch records from from Uniprot-SwissProt file
+            # Check for duplicacy in UniProt-GOA file 
             # Convert them to GOA records
             # Append them at the end of the output file
         as2g.appendSprot2goa(open(self.t1_input_file, 'r'), 
@@ -131,5 +138,5 @@ class Mergedb:
         return None
 
 if __name__ == '__main__': 
-   md = Mergedb() # Creates a Mergedb instance 
+   md = Mergedb() # Creates an instance Mergedb class
    md.process_data() # Process data and create merged file
