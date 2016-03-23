@@ -4,12 +4,12 @@ import os
 import sys
 import argparse
 import re
-#from collections import defaultdict
 from collections import OrderedDict
 
 '''
    Th methods in this module collect user supplied arguments, parses and 
-   verifies them. 
+   verifies them. The entry point of these chain of actions is parse_args 
+   method. Description of these methods are following:
    
    collect_args: This method collect the user supplied arguments.  
    extract_args: This method puts the user supplied arguments into an 
