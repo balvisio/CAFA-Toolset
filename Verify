@@ -254,5 +254,5 @@ class Verify:
         return None
 
 if __name__ == '__main__': 
-    vm = Verify() # Create a Verify instance 
-    vm.process_data() # Process data and create benchmark sets
+    vm = Verify() # Create an instance of Verify class 
+    vm.process_data() # Process data and verify the benchmark sets
