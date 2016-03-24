@@ -50,7 +50,6 @@ def locate_SwissProtfile(infile, work_dir, ConfigParam=defaultdict):
     else:
         print infile + ' is not available.'
         sys.exit(1)
-
     return t1_input_file
 
 def locate_benchmark_file(infile, work_dir):
