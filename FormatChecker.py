@@ -67,6 +67,7 @@ def check_benchmark_format(benchmarkFile):
                 outfile.close()
                 sys.exit(1)
 
+
 if __name__ == '__main__':
     benchmark_file = sys.argv[1]
     check_benchmark_format(benchmark_file)
