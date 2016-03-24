@@ -12,7 +12,7 @@ from Bio.UniProt import GOA
 import ArgParser_Benchmark as ap
 import Config
 import CreateBenchmark as cb
-import FindDataset as fd
+import LocateDataset as ld
 import FormatChecker as fc
 import GOAParser_cafa as gc
 import PaperTermFrequency as ptf
@@ -66,10 +66,8 @@ class Benchmark:
         if not os.path.exists(self.work_dir):
             os.makedirs(self.work_dir)
                 # Create work direcoty, if it does not exist
-        self.t1_input_file = fd.find_dataset(t1, self.work_dir,
-                            self.ConfigParam) # Locate t1 file
-        self.t2_input_file = fd.find_dataset(t2, self.work_dir,
-                            self.ConfigParam) # Locate t2 file
+        self.t1_input_file = ld.locate_GOAfile(t1, self.work_dir) # Locate t1 file
+        self.t2_input_file = ld.locate_GOAfile(t2, self.work_dir) # Locate t2 file
 
         # Names for SIX ouput files: bpo, cco, and mfo for LK and NK benchmark types:
         self.output_filename_LK_bpo = self.create_outfilename('LK_bpo')
@@ -134,21 +132,27 @@ class Benchmark:
 
     def remove_redundant_benchmarks(self):
         if os.stat(self.bmfile_LK_bpo).st_size == 0:
-            print 'Your benchmark set for Biological Process Ontology is empty.'
+            print 'Your limited-knowledge benchmark set for Biological Process Ontology is empty.'
+            copy =  self.bmfile_LK_bpo + ' ' + self.output_filename_LK_bpo
+            subprocess.call(copy, shell=True)
         else:
             cmd = "awk -F \'\t\' '{print;}' " + self.bmfile_LK_bpo + \
                     " | sort | uniq " + " > " + self.output_filename_LK_bpo
             subprocess.call(cmd, shell=True)
 
         if os.stat(self.bmfile_LK_cco).st_size == 0:
-            print 'Your benchmark set for Cellular Component Process Ontology is empty.'
+            print 'Your limited-knowledge benchmark set for Cellular Component Process Ontology is empty.'
+            copy =  self.bmfile_LK_cco + ' ' + self.output_filename_LK_cco
+            subprocess.call(copy, shell=True)
         else:
             cmd = "awk -F \'\t\' '{print;}' " + self.bmfile_LK_cco + \
                     " | sort | uniq " + " > " + self.output_filename_LK_cco
             subprocess.call(cmd, shell=True)
 
         if os.stat(self.bmfile_LK_mfo).st_size == 0:
-            print 'Your benchmark set for Molecular Function Ontology is empty.'
+            print 'Your limited-knowledge benchmark set for Molecular Function Ontology is empty.'
+            copy =  self.bmfile_LK_mfo + ' ' + self.output_filename_LK_mfo
+            subprocess.call(copy, shell=True)
         else:
             cmd = "awk -F \'\t\' '{print;}' " + self.bmfile_LK_mfo + \
                     " | sort | uniq " + " > " + self.output_filename_LK_mfo
@@ -156,6 +160,8 @@ class Benchmark:
 
         if os.stat(self.bmfile_NK_bpo).st_size == 0:
             print 'Your no-knowledge benchmark set for Biological Process Ontology is empty.'
+            copy =  self.bmfile_NK_bpo + ' ' + self.output_filename_NK_bpo
+            subprocess.call(copy, shell=True)
         else:
             cmd = "awk -F \'\t\' '{print;}' " + self.bmfile_NK_bpo + \
                     " | sort | uniq " + " > " + self.output_filename_NK_bpo
@@ -163,6 +169,8 @@ class Benchmark:
 
         if os.stat(self.bmfile_NK_cco).st_size == 0:
             print 'Your no-knowledge benchmark set for Cellular Component Process Ontology is empty.'
+            copy =  self.bmfile_NK_cco + ' ' + self.output_filename_NK_cco
+            subprocess.call(copy, shell=True)
         else:
             cmd = "awk -F \'\t\' '{print;}' " + self.bmfile_NK_cco + \
                     " | sort | uniq " + " > " + self.output_filename_NK_cco
@@ -170,6 +178,8 @@ class Benchmark:
 
         if os.stat(self.bmfile_NK_mfo).st_size == 0:
             print 'Your no-knowledge benchmark set for Molecular Function Ontology is empty.'
+            copy =  self.bmfile_NK_mfo + ' ' + self.output_filename_NK_mfo
+            subprocess.call(copy, shell=True)
         else:
             cmd = "awk -F \'\t\' '{print;}' " + self.bmfile_NK_mfo + \
                     " | sort | uniq " + " > " + self.output_filename_NK_mfo
