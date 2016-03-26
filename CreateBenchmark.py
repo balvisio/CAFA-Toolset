@@ -85,12 +85,12 @@ def write_benchmarks(protName,
         sys.exit(1)
 
     if protName not in t1_xxo_dict and protName in t2_xxo_dict:
-        # Limited-Knowledge benchmarks: BPO, CCO, MFO type based on value in LKtype
+        # Limited-Knowledge benchmarks: BPO, CCO, MFO type based on LKtype
         for term in t2_xxo_dict[protName]:
             print >> bmfile_LK_xxo_handle, str(protName) + '\t' + str(term)
     if protName not in t1_mfo_dict and protName not in t1_bpo_dict and \
        protName not in t1_cco_dict and protName in t2_xxo_dict:
-        # No-Knowledge benchmarks: BPO, CCO, MFO type based on value in LKtype
+        # No-Knowledge benchmarks: BPO, CCO, MFO type based on LKtype
         for term in t2_xxo_dict[protName]:
             print >> bmfile_NK_xxo_handle, str(protName) + '\t' + str(term)
     return None
