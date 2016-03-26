@@ -33,11 +33,11 @@ import os.path
                         tuples from t1_iea file.
        create_exp_dict: This method builds three dictionaries in BPO, CCO, and 
                         MFO categories for <protein, GO ID> tuples from a t1_exp 
-                        or t2_exp file.  
+                        or t2_exp file.
        verify_LK_benchmark_xxo: This method verifies any of the LK-benchmark 
                         sets.
        verify_NK_benchmark_xxo: This method verifies any of the NK-benchmark 
-                        sets
+                        sets.
 '''
 
 def create_iea_dict(iea_handle):
