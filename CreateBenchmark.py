@@ -5,17 +5,20 @@ import re
 from collections import defaultdict
 
 '''
-   This module has two methods: create_annotation_dict and create_benchmarks.
-
-   create_annotation_dict: 
-       This method takes a GOA file with no header section. It creates 
-       THREE dictionaries. A dictionary with <protein name, GO ID> pairs 
-       for BPO type entries, one for CCO type entries, and the thrid one 
-       for MFO type entries. Then it returns these THREE dictionaries.
-
-   create_benchmarks:
-       This script filters the Limited-Knowledge(LK) and No-Knowledge(NK)
-       benchmark proteins.
+   The entry point of this module is create_benchmarks method. It has 
+   the following arguments:    
+            t1_iea_handle: file handle for t1_iea file 
+            t1_exp_handle: file handle for t1_exp file 
+            t2_exp_handle: file handle for t2_exp file 
+            bmfile_LK_bpo_handle: file handle in append mode for LK-BPO type benchmark file
+            bmfile_LK_cco_handle: file handle in append mode for LK-CCO type benchmark file
+            bmfile_LK_mfo_handle: file handle in append mode for LK-MFO type benchmark file
+            bmfile_NK_bpo_handle: file handle in append mode for LK-BPO type benchmark file
+            bmfile_NK_cco_handle: file handle in append mode for LK-CCO type benchmark file
+            bmfile_NK_mfo_handle: file handle in append mode for LK-MFO type benchmark file
+   
+       This method filters the Limited-Knowledge(LK) and No-Knowledge(NK)
+       benchmark proteins as described below:
              For LK-benchmarks: it extracts the proteins whose annotation 
        did not have experimental evidence in a particular ontology at time 
        t1 but gained experimental evidence for that ontology at time t2. It 
@@ -27,6 +30,20 @@ from collections import defaultdict
             The filtered proteins are saved in SIX 2-column tab delimited 
        files - one file for each ontology - for both LK and NK types. Thus, 
        create_benchmark() populate total SIX files.
+
+   This module has the following two methods to aid the benchmark creation by 
+   the above method:
+
+   create_annotation_dict: 
+       This method takes a GOA file with no header section. It creates 
+       THREE dictionaries. A dictionary with <protein name, GO ID> pairs 
+       for BPO type entries, one for CCO type entries, and the thrid one 
+       for MFO type entries. Then it returns these THREE dictionaries.
+
+   write_benchmarks: 
+      This method does the actual writing of the benchmark entries to the 
+      benchmark output file. create_benchmarks repeatedly calls this method 
+      to write the benchmarks to the output file.     
 '''
 
 def create_annotation_dict(goa_exp_handle):
@@ -53,9 +70,9 @@ def write_benchmarks(protName,
                     t1_cco_dict,
                     t1_mfo_dict,
                     t2_xxo_dict,
-                    LKtype, # Can take string BPO, CCO, or MFO 
                     bmfile_LK_xxo_handle,
                     bmfile_NK_xxo_handle,
+                    LKtype # Can take string BPO, CCO, or MFO
                    ):
     if LKtype == 'BPO':
         t1_xxo_dict = t1_bpo_dict
@@ -68,7 +85,7 @@ def write_benchmarks(protName,
         sys.exit(1)
 
     if protName not in t1_xxo_dict and protName in t2_xxo_dict:
-        # Limited-Knowledge benchmarks: BPO, CCO, MFO type based on value in LKtype 
+        # Limited-Knowledge benchmarks: BPO, CCO, MFO type based on value in LKtype
         for term in t2_xxo_dict[protName]:
             print >> bmfile_LK_xxo_handle, str(protName) + '\t' + str(term)
     if protName not in t1_mfo_dict and protName not in t1_bpo_dict and \
@@ -98,34 +115,37 @@ def create_benchmarks(t1_iea_handle,
     for lines in t1_iea_handle:
         cols = lines.strip().split('\t')
         if cols[8] == 'F':
-            write_benchmarks(cols[1], 
-                             t1_bpo_dict, 
-                             t1_cco_dict, 
-                             t1_mfo_dict, 
-                             t2_mfo_dict, 
-                             'MFO', 
-                             bmfile_LK_mfo_handle, 
+            # write out MFO type benchmarks: 
+            write_benchmarks(cols[1],
+                             t1_bpo_dict,
+                             t1_cco_dict,
+                             t1_mfo_dict,
+                             t2_mfo_dict,
+                             bmfile_LK_mfo_handle,
                              bmfile_NK_mfo_handle,
+                             'MFO'
                             )
         elif cols[8] == 'P':
-            write_benchmarks(cols[1], 
-                              t1_bpo_dict, 
-                              t1_cco_dict, 
-                              t1_mfo_dict, 
-                              t2_bpo_dict, 
-                              'BPO',
-                              bmfile_LK_bpo_handle, 
+            # write out BPO type benchmarks: 
+            write_benchmarks(cols[1],
+                              t1_bpo_dict,
+                              t1_cco_dict,
+                              t1_mfo_dict,
+                              t2_bpo_dict,
+                              bmfile_LK_bpo_handle,
                               bmfile_NK_bpo_handle,
+                              'BPO'
                             )
         elif cols[8] == 'C':
-            write_benchmarks(cols[1], 
-                             t1_bpo_dict, 
-                             t1_cco_dict, 
-                             t1_mfo_dict, 
-                             t2_cco_dict, 
-                             'CCO', 
-                             bmfile_LK_cco_handle, 
+            # write out CCO type benchmarks: 
+            write_benchmarks(cols[1],
+                             t1_bpo_dict,
+                             t1_cco_dict,
+                             t1_mfo_dict,
+                             t2_cco_dict,
+                             bmfile_LK_cco_handle,
                              bmfile_NK_cco_handle,
+                             'CCO',
                             )
     # Clear all dictionaries: 
     t1_bpo_dict.clear()
@@ -136,65 +156,6 @@ def create_benchmarks(t1_iea_handle,
     t2_cco_dict.clear()
     t2_mfo_dict.clear()
     return None
-
-
-def create_benchmarks_old(t1_iea_handle, t1_exp_handle, t2_exp_handle, 
-                      bmfile_LK_bpo_handle, bmfile_LK_cco_handle, 
-                      bmfile_LK_mfo_handle, bmfile_NK_bpo_handle, 
-                      bmfile_NK_cco_handle, bmfile_NK_mfo_handle):
-    # Create dict for (protein, GO ID) from entries with EXP evidence code at t1:
-    t1_bpo_dict, t1_cco_dict, t1_mfo_dict = create_annotation_dict(t1_exp_handle)
-
-    # Create dict for (protein, GO ID) from entries with EXP evidence code at t2:
-    t2_bpo_dict, t2_cco_dict, t2_mfo_dict = create_annotation_dict(t2_exp_handle)
-
-    # Populate benchmark files:
-    print 'Creating benchmark sets ...'
-    for lines in t1_iea_handle:
-        cols = lines.strip().split('\t')
-        if cols[8] == 'F':
-            if cols[1] not in t1_mfo_dict and cols[1] in t2_mfo_dict:
-                # Limited-Knowledge benchmarks: MFO
-                for term in t2_mfo_dict[cols[1]]:
-                    print >> bmfile_LK_mfo_handle, str(cols[1]) + '\t' + str(term)
-            if cols[1] not in t1_mfo_dict and cols[1] not in t1_bpo_dict and \
-                cols[1] not in t1_cco_dict and cols[1] in t2_mfo_dict:
-                # No-Knowledge benchmarks: MFO
-                for term in t2_mfo_dict[cols[1]]: 
-                    print >> bmfile_NK_mfo_handle, str(cols[1]) + '\t' + str(term)
-        elif cols[8] == 'P':
-            if cols[1] not in t1_bpo_dict and cols[1] in t2_bpo_dict:
-                # Limited-Knowledge benchmarks: BPO
-                for term in t2_bpo_dict[cols[1]]:
-                    print >> bmfile_LK_bpo_handle, str(cols[1]) + '\t' + str(term)
-            if cols[1] not in t1_mfo_dict and cols[1] not in t1_bpo_dict and \
-                cols[1] not in t1_cco_dict and cols[1] in t2_bpo_dict:
-                # No-Knowledge benchmarks: BPO
-                for term in t2_bpo_dict[cols[1]]: 
-                    print >> bmfile_NK_bpo_handle, str(cols[1]) + '\t' + str(term)
-        elif cols[8] == 'C':
-            if cols[1] not in t1_cco_dict and cols[1] in t2_cco_dict:
-                # Limited-Knowledge benchmarks: CCO
-                for term in t2_cco_dict[cols[1]]:
-                    print >> bmfile_LK_cco_handle, str(cols[1]) + '\t' + str(term)
-            if cols[1] not in t1_mfo_dict and cols[1] not in t1_bpo_dict and \
-                cols[1] not in t1_cco_dict and cols[1] in t2_cco_dict:
-                # No-Knowledge benchmarks: CCO
-                for term in t2_cco_dict[cols[1]]: 
-                    print >> bmfile_NK_cco_handle, str(cols[1]) + '\t' + str(term)
-
-    # Clear all dictionaries: 
-    t1_bpo_dict.clear()
-    t1_cco_dict.clear()
-    t1_mfo_dict.clear()
-
-    t2_bpo_dict.clear()
-    t2_cco_dict.clear()
-    t2_mfo_dict.clear()
-    return None
-
-
-
 
 if __name__ == '__main__':
     goa_file_handle = sys.argv[1] # a GOA file with no header section
