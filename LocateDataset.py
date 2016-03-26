@@ -54,9 +54,9 @@ def locate_SwissProtfile(infile, work_dir, ConfigParam=defaultdict):
 
 def locate_benchmark_file(infile, work_dir):
     if os.path.exists(work_dir + '/' + basename(infile)):
-       return True 
-    else: 
-      return False  
+       return True
+    else:
+      return False
 
 if __name__ == '__main__':
     print 'This program do not run indepedently'
