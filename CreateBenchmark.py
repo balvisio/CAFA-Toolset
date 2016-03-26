@@ -1,7 +1,7 @@
 #!/usr/bin/env python
-import sys
+
 import os
-import re
+import sys
 from collections import defaultdict
 
 '''
