@@ -1,7 +1,8 @@
 #!/usr/bin/env python
-from collections import defaultdict
-import sys
+
 import os.path
+import sys
+from collections import defaultdict
 
 '''
     This script verifies the Limited-Knowledge(LK) and No-Knowledge(NK) 
