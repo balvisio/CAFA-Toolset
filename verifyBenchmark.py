@@ -215,7 +215,6 @@ def verify_NK_benchmark(t1_iea_handle,
                                                 t2_cco_dict,
                                                 output_filename_NK_cco,
                                                 NKcount)
-
     # Verify NK-MFO benchmarks:
     NKcount = NKcount + verify_NK_benchmark_xxo(t1_iea_dict,
                                                 t1_bpo_dict,
