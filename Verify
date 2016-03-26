@@ -331,20 +331,12 @@ class Verify:
             fc.check_benchmark_format(self.benchmark_NK_mfo)
 
         # Verify NK-benchmark sets:
-#        NKcount = vb.verify_NK_benchmark(self.t1_iea_name, 
-#                                         self.t1_exp_name,
-#                                         self.t2_exp_name, 
-#                                         self.benchmark_NK_bpo, 
-#                                         self.benchmark_NK_cco,
-#                                         self.benchmark_NK_mfo)
-
         NKcount = vb.verify_NK_benchmark(open(self.t1_iea_name, 'r'),
                                          open(self.t1_exp_name, 'r'),
                                          open(self.t2_exp_name, 'r'),
                                          self.benchmark_NK_bpo,
                                          self.benchmark_NK_cco,
                                          self.benchmark_NK_mfo)
-
         # Delete intermediate files:
         self.delete_intermediate_files()
 
