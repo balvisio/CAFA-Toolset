@@ -7,6 +7,7 @@ import os.path
     This script verifies the Limited-Knowledge(LK) and No-Knowledge(NK) 
     benchmark sets created by CreateBenchmark program. The entry points 
     for such verification are the following two methods: 
+
         verify_LK_benchmark: This method need to be invoked to verify 
     LK-benchmark files. The arguments for calling this method are the 
     following: 
