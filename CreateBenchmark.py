@@ -31,9 +31,9 @@ from collections import defaultdict
 
 def create_annotation_dict(goa_exp_handle):
     # Initialize THREE dictionaries:
-    t1_dict_mfo = defaultdict(lambda:set())  
-    t1_dict_bpo = defaultdict(lambda:set())
-    t1_dict_cco = defaultdict(lambda:set())
+    t1_mfo_dict = defaultdict(lambda:set())  
+    t1_bpo_dict = defaultdict(lambda:set())
+    t1_cco_dict = defaultdict(lambda:set())
 
     # Populate the dictionaries: 
     for lines in goa_exp_handle: 
@@ -41,67 +41,132 @@ def create_annotation_dict(goa_exp_handle):
         if len(cols) < 15: # Skip lines NOT in GAF 1.0 or GAF 2.0 format
             continue
         if cols[8] == 'F': # Col 8: Ontology group
-            t1_dict_mfo[cols[1]].add(cols[4]) # Col 1: protein name, Col 2: GO ID
+            t1_mfo_dict[cols[1]].add(cols[4]) # Col 1: protein name, Col 2: GO ID
         elif cols[8] == 'P':
-            t1_dict_bpo[cols[1]].add(cols[4])
+            t1_bpo_dict[cols[1]].add(cols[4])
         elif cols[8] == 'C':
-            t1_dict_cco[cols[1]].add(cols[4])
-    return (t1_dict_bpo, t1_dict_cco, t1_dict_mfo)
+            t1_cco_dict[cols[1]].add(cols[4])
+    return (t1_bpo_dict, t1_cco_dict, t1_mfo_dict)
+
+
+
+
+
+
 
 def create_benchmarks(t1_iea_handle, t1_exp_handle, t2_exp_handle, 
                       bmfile_LK_bpo_handle, bmfile_LK_cco_handle, 
                       bmfile_LK_mfo_handle, bmfile_NK_bpo_handle, 
                       bmfile_NK_cco_handle, bmfile_NK_mfo_handle):
     # Create dict for (protein, GO ID) from entries with EXP evidence code at t1:
-    t1_dict_bpo, t1_dict_cco, t1_dict_mfo = create_annotation_dict(t1_exp_handle)
+    t1_bpo_dict, t1_cco_dict, t1_mfo_dict = create_annotation_dict(t1_exp_handle)
 
     # Create dict for (protein, GO ID) from entries with EXP evidence code at t2:
-    t2_dict_bpo, t2_dict_cco, t2_dict_mfo = create_annotation_dict(t2_exp_handle)
+    t2_bpo_dict, t2_cco_dict, t2_mfo_dict = create_annotation_dict(t2_exp_handle)
 
     # Populate benchmark files:
     print 'Creating benchmark sets ...'
     for lines in t1_iea_handle:
         cols = lines.strip().split('\t')
         if cols[8] == 'F':
-            if cols[1] not in t1_dict_mfo and cols[1] in t2_dict_mfo:
+            if cols[1] not in t1_mfo_dict and cols[1] in t2_mfo_dict:
                 # Limited-Knowledge benchmarks: MFO
-                for term in t2_dict_mfo[cols[1]]:
+                for term in t2_mfo_dict[cols[1]]:
                     print >> bmfile_LK_mfo_handle, str(cols[1]) + '\t' + str(term)
-            if cols[1] not in t1_dict_mfo and cols[1] not in t1_dict_bpo and \
-                cols[1] not in t1_dict_cco and cols[1] in t2_dict_mfo:
+            if cols[1] not in t1_mfo_dict and cols[1] not in t1_bpo_dict and \
+                cols[1] not in t1_cco_dict and cols[1] in t2_mfo_dict:
                 # No-Knowledge benchmarks: MFO
-                for term in t2_dict_mfo[cols[1]]: 
+                for term in t2_mfo_dict[cols[1]]: 
                     print >> bmfile_NK_mfo_handle, str(cols[1]) + '\t' + str(term)
         elif cols[8] == 'P':
-            if cols[1] not in t1_dict_bpo and cols[1] in t2_dict_bpo:
+            if cols[1] not in t1_bpo_dict and cols[1] in t2_bpo_dict:
                 # Limited-Knowledge benchmarks: BPO
-                for term in t2_dict_bpo[cols[1]]:
+                for term in t2_bpo_dict[cols[1]]:
                     print >> bmfile_LK_bpo_handle, str(cols[1]) + '\t' + str(term)
-            if cols[1] not in t1_dict_mfo and cols[1] not in t1_dict_bpo and \
-                cols[1] not in t1_dict_cco and cols[1] in t2_dict_bpo:
+            if cols[1] not in t1_mfo_dict and cols[1] not in t1_bpo_dict and \
+                cols[1] not in t1_cco_dict and cols[1] in t2_bpo_dict:
                 # No-Knowledge benchmarks: BPO
-                for term in t2_dict_bpo[cols[1]]: 
+                for term in t2_bpo_dict[cols[1]]: 
                     print >> bmfile_NK_bpo_handle, str(cols[1]) + '\t' + str(term)
         elif cols[8] == 'C':
-            if cols[1] not in t1_dict_cco and cols[1] in t2_dict_cco:
+            if cols[1] not in t1_cco_dict and cols[1] in t2_cco_dict:
                 # Limited-Knowledge benchmarks: CCO
-                for term in t2_dict_cco[cols[1]]:
+                for term in t2_cco_dict[cols[1]]:
                     print >> bmfile_LK_cco_handle, str(cols[1]) + '\t' + str(term)
-            if cols[1] not in t1_dict_mfo and cols[1] not in t1_dict_bpo and \
-                cols[1] not in t1_dict_cco and cols[1] in t2_dict_cco:
+            if cols[1] not in t1_mfo_dict and cols[1] not in t1_bpo_dict and \
+                cols[1] not in t1_cco_dict and cols[1] in t2_cco_dict:
                 # No-Knowledge benchmarks: CCO
-                for term in t2_dict_cco[cols[1]]: 
+                for term in t2_cco_dict[cols[1]]: 
                     print >> bmfile_NK_cco_handle, str(cols[1]) + '\t' + str(term)
 
     # Clear all dictionaries: 
-    t1_dict_bpo.clear()
-    t1_dict_cco.clear()
-    t1_dict_mfo.clear()
+    t1_bpo_dict.clear()
+    t1_cco_dict.clear()
+    t1_mfo_dict.clear()
 
-    t2_dict_bpo.clear()
-    t2_dict_cco.clear()
-    t2_dict_mfo.clear()
+    t2_bpo_dict.clear()
+    t2_cco_dict.clear()
+    t2_mfo_dict.clear()
     return None
+
+
+def create_benchmarks_old(t1_iea_handle, t1_exp_handle, t2_exp_handle, 
+                      bmfile_LK_bpo_handle, bmfile_LK_cco_handle, 
+                      bmfile_LK_mfo_handle, bmfile_NK_bpo_handle, 
+                      bmfile_NK_cco_handle, bmfile_NK_mfo_handle):
+    # Create dict for (protein, GO ID) from entries with EXP evidence code at t1:
+    t1_bpo_dict, t1_cco_dict, t1_mfo_dict = create_annotation_dict(t1_exp_handle)
+
+    # Create dict for (protein, GO ID) from entries with EXP evidence code at t2:
+    t2_bpo_dict, t2_cco_dict, t2_mfo_dict = create_annotation_dict(t2_exp_handle)
+
+    # Populate benchmark files:
+    print 'Creating benchmark sets ...'
+    for lines in t1_iea_handle:
+        cols = lines.strip().split('\t')
+        if cols[8] == 'F':
+            if cols[1] not in t1_mfo_dict and cols[1] in t2_mfo_dict:
+                # Limited-Knowledge benchmarks: MFO
+                for term in t2_mfo_dict[cols[1]]:
+                    print >> bmfile_LK_mfo_handle, str(cols[1]) + '\t' + str(term)
+            if cols[1] not in t1_mfo_dict and cols[1] not in t1_bpo_dict and \
+                cols[1] not in t1_cco_dict and cols[1] in t2_mfo_dict:
+                # No-Knowledge benchmarks: MFO
+                for term in t2_mfo_dict[cols[1]]: 
+                    print >> bmfile_NK_mfo_handle, str(cols[1]) + '\t' + str(term)
+        elif cols[8] == 'P':
+            if cols[1] not in t1_bpo_dict and cols[1] in t2_bpo_dict:
+                # Limited-Knowledge benchmarks: BPO
+                for term in t2_bpo_dict[cols[1]]:
+                    print >> bmfile_LK_bpo_handle, str(cols[1]) + '\t' + str(term)
+            if cols[1] not in t1_mfo_dict and cols[1] not in t1_bpo_dict and \
+                cols[1] not in t1_cco_dict and cols[1] in t2_bpo_dict:
+                # No-Knowledge benchmarks: BPO
+                for term in t2_bpo_dict[cols[1]]: 
+                    print >> bmfile_NK_bpo_handle, str(cols[1]) + '\t' + str(term)
+        elif cols[8] == 'C':
+            if cols[1] not in t1_cco_dict and cols[1] in t2_cco_dict:
+                # Limited-Knowledge benchmarks: CCO
+                for term in t2_cco_dict[cols[1]]:
+                    print >> bmfile_LK_cco_handle, str(cols[1]) + '\t' + str(term)
+            if cols[1] not in t1_mfo_dict and cols[1] not in t1_bpo_dict and \
+                cols[1] not in t1_cco_dict and cols[1] in t2_cco_dict:
+                # No-Knowledge benchmarks: CCO
+                for term in t2_cco_dict[cols[1]]: 
+                    print >> bmfile_NK_cco_handle, str(cols[1]) + '\t' + str(term)
+
+    # Clear all dictionaries: 
+    t1_bpo_dict.clear()
+    t1_cco_dict.clear()
+    t1_mfo_dict.clear()
+
+    t2_bpo_dict.clear()
+    t2_cco_dict.clear()
+    t2_mfo_dict.clear()
+    return None
+
+
+
 
 if __name__ == '__main__':
     goa_file_handle = sys.argv[1] # a GOA file with no header section
