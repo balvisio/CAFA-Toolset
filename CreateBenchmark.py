@@ -1,52 +1,61 @@
 #!/usr/bin/env python
 
+'''
+   This script creates a set of benchmark files. The entry point of this script
+   is create_benchmarks() method which takes the following arguments:
+            t1_iea_handle: 
+                      file handle to t1_iea file
+            t1_exp_handle: 
+                      file handle to t1_exp file
+            t2_exp_handle: 
+                      file handle to t2_exp file
+            bmfile_LK_bpo_handle: 
+                      file handle in append mode to LK-BPO type benchmark file
+            bmfile_LK_cco_handle: 
+                      file handle in append mode to LK-CCO type benchmark file
+            bmfile_LK_mfo_handle: 
+                      file handle in append mode to LK-MFO type benchmark file
+            bmfile_NK_bpo_handle: 
+                      file handle in append mode to LK-BPO type benchmark file
+            bmfile_NK_cco_handle: 
+                      file handle in append mode to LK-CCO type benchmark file
+            bmfile_NK_mfo_handle: 
+                      file handle in append mode to LK-MFO type benchmark file
+   
+       The method filters the Limited-Knowledge(LK) and No-Knowledge(NK)
+       benchmark proteins :
+             For LK-benchmarks: It extracts the proteins whose annotation 
+       did not have experimental evidence in a particular ontology at time 
+       t1 but gained experimental evidence for that ontology at time t2. It 
+       creates three LK-benchmark files - one for each ontology.
+             For NK-benchmarks: It extracts the proteins that did not have 
+       experimental evidence in any of the three ontologies at time t1 but 
+       gained experimental evidence at some ontology at time t2. This option
+       creates three NK-benchmark files - one for each ontology.
+            The filtered proteins are saved in SIX 2-column tab delimited 
+       files - one file for each ontology - for both LK and NK types. Thus,
+       create_benchmark() populate total SIX files.
+
+   The module also has the following two methods to aid the benchmark creation
+   by the above method:
+
+   create_exp_ann_dict:
+       This method takes a GOA file with no header section. It creates
+       THREE dictionaries. A dictionary with <protein name, GO ID> pairs
+       for BPO type entries, one for CCO type entries, and the thrid one
+       for MFO type entries. Then it returns these THREE dictionaries.
+
+   write_benchmarks:
+      This method does the actual writing of the benchmark entries to the
+      benchmark output file. create_benchmarks repeatedly calls this method
+      to write the benchmarks to the output file.
+'''
+
 import os
 import sys
 from collections import defaultdict
 
-'''
-   The entry point of this module is create_benchmarks method. It has 
-   the following arguments:    
-            t1_iea_handle: file handle for t1_iea file 
-            t1_exp_handle: file handle for t1_exp file 
-            t2_exp_handle: file handle for t2_exp file 
-            bmfile_LK_bpo_handle: file handle in append mode for LK-BPO type benchmark file
-            bmfile_LK_cco_handle: file handle in append mode for LK-CCO type benchmark file
-            bmfile_LK_mfo_handle: file handle in append mode for LK-MFO type benchmark file
-            bmfile_NK_bpo_handle: file handle in append mode for LK-BPO type benchmark file
-            bmfile_NK_cco_handle: file handle in append mode for LK-CCO type benchmark file
-            bmfile_NK_mfo_handle: file handle in append mode for LK-MFO type benchmark file
-   
-       This method filters the Limited-Knowledge(LK) and No-Knowledge(NK)
-       benchmark proteins as described below:
-             For LK-benchmarks: it extracts the proteins whose annotation 
-       did not have experimental evidence in a particular ontology at time 
-       t1 but gained experimental evidence for that ontology at time t2. It 
-       creates three LK-benchmark files - one for each ontology.
-             For NK-benchmarks: it extracts the proteins that did not have 
-       experimental evidence in any of the three ontologies at time t1 but 
-       gained experimental evidence at some ontology at time t2. This option 
-       creates three NK-benchmark files - one for each ontology.
-            The filtered proteins are saved in SIX 2-column tab delimited 
-       files - one file for each ontology - for both LK and NK types. Thus, 
-       create_benchmark() populate total SIX files.
-
-   This module has the following two methods to aid the benchmark creation by 
-   the above method:
-
-   create_annotation_dict: 
-       This method takes a GOA file with no header section. It creates 
-       THREE dictionaries. A dictionary with <protein name, GO ID> pairs 
-       for BPO type entries, one for CCO type entries, and the thrid one 
-       for MFO type entries. Then it returns these THREE dictionaries.
-
-   write_benchmarks: 
-      This method does the actual writing of the benchmark entries to the 
-      benchmark output file. create_benchmarks repeatedly calls this method 
-      to write the benchmarks to the output file.     
-'''
-
-def create_annotation_dict(goa_exp_handle):
+def create_exp_ann_dict(goa_exp_handle):
     # Initialize THREE dictionaries:
     t1_mfo_dict = defaultdict(lambda:set())  
     t1_bpo_dict = defaultdict(lambda:set())
@@ -105,10 +114,10 @@ def create_benchmarks(t1_iea_handle,
                       bmfile_NK_cco_handle,
                       bmfile_NK_mfo_handle):
     # Create dict for (protein, GO ID) from entries with EXP evidence code at t1:
-    t1_bpo_dict, t1_cco_dict, t1_mfo_dict = create_annotation_dict(t1_exp_handle)
+    t1_bpo_dict, t1_cco_dict, t1_mfo_dict = create_exp_ann_dict(t1_exp_handle)
 
     # Create dict for (protein, GO ID) from entries with EXP evidence code at t2:
-    t2_bpo_dict, t2_cco_dict, t2_mfo_dict = create_annotation_dict(t2_exp_handle)
+    t2_bpo_dict, t2_cco_dict, t2_mfo_dict = create_exp_ann_dict(t2_exp_handle)
 
     # Populate benchmark files:
     print 'Creating benchmark sets ...'
@@ -158,5 +167,6 @@ def create_benchmarks(t1_iea_handle,
     return None
 
 if __name__ == '__main__':
-    goa_file_handle = sys.argv[1] # a GOA file with no header section
-    create_annotation_dict(goa_file_handle) # Create three dictionaries
+    print (sys.argv[0] + ' docstring:')
+    print (__doc__)
+    sys.exit(1)
