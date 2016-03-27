@@ -1,5 +1,24 @@
 #!/usr/bin/env python
 
+'''
+    Benchmark program accepts two input files in uniprot-goa GAF format at
+    two distinct time points t1 and t2. The input files can be downloaded
+    from ftp://ftp.ebi.ac.uk/pub/databases/GO/goa/. The simplest way to run
+    this program is:
+
+    python Benchmark -I1=input_file_at_t1 -I2=input_file_at_t2
+
+    Running this program creates SIX benchmark files: THREE limited-knolwedge
+    (LK) benchmark files - one in each of the three ontolgy categories (MFO, 
+    BPO, and CCO) and THREE no-knowledge (NK) benchmark files - one in each 
+    ontology category.
+   
+    Complete usage directions of this program can obtained through the
+    following command:
+
+    python Benchmark --help
+'''
+
 import os
 import sys
 import argparse
@@ -16,24 +35,6 @@ import LocateDataset as ld
 import FormatChecker as fc
 import GOAParser_cafa as gc
 import PaperTermFrequency as ptf
-
-'''
-   Benchmark program accepts two input files in uniprot-goa GAF format at 
-   two distinct time pointst t1 and t2. The input files can be downloaded 
-   from ftp://ftp.ebi.ac.uk/pub/databases/GO/goa/. The simplest way to run 
-   this program is: 
-
-   python Benchmark -I1=input_file_at_t1 -I2=input_file_at_t2 
-
-   Running this program creates SIX benchmark files: THREE limited-knolwedge 
-   (LK) benchmark files - one in each of the three ontolgies (MFO, BPO, and 
-   CCO) and THREE no-knowledge (NK) benchmark files - one in each ontology.
-   
-   Complete usage directions of this program can obtained through the 
-   following command: 
-
-   python Benchmark --help
-'''
 
 class bcolors:
     HEADER = '\033[95m'
@@ -294,5 +295,10 @@ class Benchmark:
         return None
 
 if __name__ == '__main__': 
-    bm = Benchmark() # Create an instance of Benchmark class  
-    bm.process_data() # Process data and create benchmark sets
+    if (sys.argv[0] == 'Benchmark' or sys.argv[0] == './Benchmark') and len(sys.argv) == 1:
+        print(__doc__)
+        sys.exit(0)
+    else: 
+        bm = Benchmark() # Create an instance of Benchmark class  
+        bm.process_data() # Process data and create benchmark sets
+        sys.exit(0)
