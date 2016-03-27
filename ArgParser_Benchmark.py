@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 '''
-   This entry point of this script is parse_args() method which calls
+   The entry point of this script is parse_args() method which calls
    other methods to collect user supplied arguments, parses and
    verifies them, and at the end returns those arguments as a dictionary.
    Description of these methods are the following:
@@ -19,12 +19,12 @@
 
    extract_args:
        This method puts the user supplied arguments into an ordered
-       dictionary and returns it afterwards.
+       dictionary which it returns at the end.
 
    check_args:
        This method verifies the correctness of the user supplied
-       arguments and puts them into an ordered dictionary and returns it
-       afterwards.
+       arguments and puts them into an ordered dictionary and returns at 
+       the end. 
 
    parse_args:
       This method calls the above methods and returns the final dictionary
