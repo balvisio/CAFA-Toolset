@@ -188,4 +188,4 @@ def parse_args(prog='benchmark'):
 if __name__ == '__main__':
     print (sys.argv[0] + ' docstring:')
     print (__doc__)
-    sys.exit(1) 
+    sys.exit(0) 
