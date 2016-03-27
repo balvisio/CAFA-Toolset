@@ -343,6 +343,6 @@ if __name__ == '__main__':
         print(__doc__)
         sys.exit(0)
     else: 
-        vm = Verify() # Create an instance of Verify class 
+        vm = Verify()     # Create an instance of Verify class 
         vm.process_data() # Process data and verify the benchmark sets
         sys.exit(0)
