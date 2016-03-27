@@ -1,28 +1,35 @@
 #!/usr/bin/env python
 
+'''
+    The entry point of this script is parse_args() method which calls 
+    other methods to collect user supplied arguments, parses and
+    verifies them. Description of these methods are following:
+   
+    collect_args: This method collects the user supplied arguments and 
+        returns them as a aprgparse.ArgumentParser object. 
+
+    extract_args: This method puts the user supplied arguments into an 
+        ordered dictionary and returns it at the end.
+
+    check_args: This method verifies the correctness of the user supplied
+        arguments and puts them into an ordered dictionary which it returns
+        at the end. 
+    parse_args: This method calls the above methods and returns the final 
+        dictionary of the user supplied arguments to the calling point.
+'''
+
 import os
 import sys
 import argparse
 import re
 from collections import OrderedDict
 
-'''
-   Th methods in this module collect user supplied arguments, parses and 
-   verifies them. The entry point to these chain of actions is parse_args 
-   method. Description of these methods are following:   
-   
-   collect_args: This method collect the user supplied arguments.  
-   extract_args: This method puts the user supplied arguments into an 
-        ordered dictionary. 
-   check_args: This method verifies the correctness of the user supplied
-       arguments and puts them into an ordered dictionary and returns it. 
-   parse_args: This method calls the above methods and returns the final 
-      dictionary with user supplied arguments.
-'''
 
 def collect_args():
-    # This method collects the user supplied arguments 
-    # and returns them at the end.
+    """ 
+    This method collects the user supplied arguments and returns them 
+    at the end.
+    """
     parser = argparse.ArgumentParser(description='Generate a set of target \
         sequences for a specific organism by filtering them out fro a \
         UniProt-SwissProt file.')
@@ -46,10 +53,11 @@ def extract_args(args):
     return args_dict
     
 def check_args(args_dict,parser):
-    # This method checks the user arguments for consistency.
-    # It builds a new dictionary from these arguments and 
-    # finally returns this newly created dictionary 
-
+    """
+    This method checks the user arguments for consistency. It builds a new 
+    dictionary from these arguments and finally returns this newly created 
+    dictionary 
+    """
     user_dict = OrderedDict() 
     for arg in args_dict:
         if arg == 't1':
@@ -75,12 +83,16 @@ def check_args(args_dict,parser):
     return user_dict
 
 def parse_args():
-    # This is the entry point for the other methods in this module:
-    # 1. it invokes collect_args to collect user arguments
-    # 2. it puts those arguments into a dictionary by calling extract_args method
-    # 3. it checks the consistency of those arguments by invoking check_args which
-    #    returns an dictionary of correct arguments
-    # 4. Finally, it returns the dictionary at the end.
+    """ 
+    This is the entry point for the other methods in this module:
+      1. It invokes collect_args to collect the user arguments.
+      2. It invokes extract_args to put those arguments into an 
+         ordered dictionary. 
+      3. It checks the consistency of those arguments by invoking 
+         check_args which returns an ordered dictionary of correct 
+         arguments.
+      4. Finally, it returns the dictionary at the end to the calling point.
+    """
 
     parser = collect_args() # Collect user arguments
     args_dict = {}
@@ -95,5 +107,6 @@ def parse_args():
     return user_dict
 
 if __name__ == '__main__':
-    print('This program does not run independently.')
-    sys.exit(1)
+    print (sys.argv[0] + ' docstring:')
+    print (__doc__)
+    sys.exit(0)
