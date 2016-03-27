@@ -29,7 +29,7 @@ from collections import defaultdict
 
 import AppendSprot2GOA as as2g
 import Config
-import ArgParser_Merge as ap
+import ArgParser_Mergedb as ap
 import FindDataset as fd
 import FormatChecker as fc
 
