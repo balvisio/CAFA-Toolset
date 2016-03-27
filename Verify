@@ -339,6 +339,7 @@ class Verify:
 
 if __name__ == '__main__':
     if (sys.argv[0] == 'Verify' or sys.argv[0] == './Verify') and len(sys.argv) == 1:
+        print(sys.argv[0] + ' : docstring')
         print(__doc__)
         sys.exit(0)
     else: 
