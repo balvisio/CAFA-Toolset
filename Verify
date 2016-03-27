@@ -1,5 +1,27 @@
 #!/usr/bin/env python
 
+'''
+    The Benchmark Verification Tool verifies the benchmarks created by
+    Benchmark Creation Tool.
+
+    The program takes at least three inputs: input file 1: a tab delimited
+    annotation file at time t1, input file 2: a tab delimited annotation file
+    at time t2, and 3. one of the benchmark file names created by the
+    Benchmark Creation Tool using the the first and the second input files
+    given here. Simplest way to run this program is:
+
+    This tool will verify the correctness of all the benchmark files of the
+    specific version as the third input that are available in the workspace.
+
+    This tool creates some intermediate files and removes them after the
+    verification is completed.
+   
+    Complete usage directions of this program can be obtained through the
+    following command:
+
+    python Verify --help
+'''
+
 import os
 import sys
 import argparse
@@ -17,31 +39,6 @@ import FormatChecker as fc
 import GOAParser_cafa as gc
 import PaperTermFrequency as ptf
 import verifyBenchmark as vb
-
-'''
-   The Benchmark Verification Tool verifies the benchmarks created by 
-   the Benchmark Creation Tool.
-
-   The program takes at least two inputs: input file 1: a tab delimited 
-   annotation file at time t1, input file 2: a tab delimited annotation file 
-   at time t2. Then the program finds the latest version of the benchmark 
-   files created by Bechmark Creation program for this specific set of 
-   input files and verifies the correctness of these benchmark files.
- 
-   Verify program can also take a third input which is one of the benchmark 
-   files created by Benchmark Creation program. When this third input file 
-   is given, it extracts the version of the benchmark files from this input, 
-   and verifies all the benchmark files for that specific version.
- 
-   The program creates THREE intermediate files from the input file 1 and input 
-   file 2 and these intermediate files are removed after the verfication is 
-   completed.
-   
-   Complete usage directions of this program can be obtained through the 
-   following command:
-
-   python Verify --help
-'''
 
 class bcolors:
     HEADER = '\033[95m'
@@ -271,13 +268,15 @@ class Verify:
         return None
 
     def process_data(self):
-        # This method is the entry point of Benchmark Verification Tool. 
-        # It invokes different functions to print welcome message, 
-        # format checking for input files, create necessary 
-        # intermediate files, checks file format of the benchmark 
-        # sets, verify correctness of the entries in the benchmark 
-        # sets, delete intermediate files, and print summary of 
-        # running this program.  
+        """ 
+        This method is the entry point of Benchmark Verification Tool. 
+        It invokes different functions to print welcome message, 
+        format checking for input files, create necessary 
+        intermediate files, checks file format of the benchmark 
+        sets, verify correctness of the entries in the benchmark 
+        sets, delete intermediate files, and print summary of 
+        running this program.  
+        """ 
 
         # Print the welcome message and user argument list:
         self.print_prolog() 
@@ -309,12 +308,6 @@ class Verify:
         # Verifying the benchmarks:
         print 'Verifying benchmark sets ...'
         # Verify LK-benchmark sets:
-#        LKcount = vb.verify_LK_benchmark(self.t1_iea_name,
-#                                         self.t1_exp_name,
-#                                         self.t2_exp_name,
-#                                         self.benchmark_LK_bpo, 
-#                                         self.benchmark_LK_cco,
-#                                         self.benchmark_LK_mfo)
 
         LKcount = vb.verify_LK_benchmark(open(self.t1_iea_name, 'r'),
                                          open(self.t1_exp_name, 'r'),
@@ -344,6 +337,11 @@ class Verify:
         self.print_epilog(LKcount, NKcount) 
         return None
 
-if __name__ == '__main__': 
-    vm = Verify() # Create an instance of Verify class 
-    vm.process_data() # Process data and verify the benchmark sets
+if __name__ == '__main__':
+    if (sys.argv[0] == 'Verify' or sys.argv[0] == './Verify') and len(sys.argv) == 1:
+        print(__doc__)
+        sys.exit(0)
+    else: 
+        vm = Verify() # Create an instance of Verify class 
+        vm.process_data() # Process data and verify the benchmark sets
+        sys.exit(0)
