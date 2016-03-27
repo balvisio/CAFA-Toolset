@@ -1,5 +1,21 @@
 #!/usr/bin/env python
 
+'''
+    This program takes the following four inputs:
+        (1) a UniProtKB/SwissProt file
+        (2) a UniProt-GOA file
+        (3) a taxon id
+        (4) an optional output file
+
+    When the output file name is NOT given, the program will construct 
+    an output file name by combining the UniProtKB/SwissProt and 
+    UniProt-GOA file names supplied by the user. 
+
+    The GO terms in the UniProtKB/SwissProt file that are NOT in the
+    UniProt-GOA file for the supplied taxon id, are merged together
+    with those in the UniProt-GOA file and written to the output file.
+'''
+
 import os
 import sys
 from os.path import basename 
@@ -16,20 +32,6 @@ import Config
 import ArgParser_Merge as ap
 import FindDataset as fd
 import FormatChecker as fc
-
-'''
-    This program takes four inputs: 
-        (1) uniprot-swissprot file 
-        (2) a uniprot-GOA file 
-        (3) taxon id 
-        (4) an optional output file
-    When the output file name is NOT given, the program will construct 
-    an output file name by combining the UniProt-SwissProt  and 
-    UniProt-GOA file names supplied by the user. 
-    The GO terms in the UniProt-SwissProt file that are NOT in the 
-    unprot-GOA file for the supplied taxon id, are merged together 
-    with those in the uniprot-GOA file and written to the output file.
-'''
 
 class bcolors:
     HEADER = '\033[95m'
@@ -142,5 +144,12 @@ class Mergedb:
         return None
 
 if __name__ == '__main__': 
-   md = Mergedb() # Creates an instance Mergedb class
-   md.process_data() # Process data and create merged file
+    if (sys.argv[0] == 'Mergedb' or sys.argv[0] == './Mergedb') and len(sys.argv) == 1:
+        print (sys.argv[0] + ' docstring:')
+        print(__doc__)
+        sys.exit(0)
+    else: 
+        md = Mergedb()    # Creates an instance of Mergedb class
+        md.process_data() # Process data and create merged file
+        sys.exit(0)
+
