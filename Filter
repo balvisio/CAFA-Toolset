@@ -1,5 +1,32 @@
 #!/usr/bin/env python
 
+'''
+    This program takes the following three inputs: 
+           (1) a UniProtKB/swissProt file 
+           (2) a taxon id and 
+           (3) an optional output file name 
+
+    When the output file name is NOT given, it will construct an output file
+    name by combining a portion of the UniProtKB/SwissProt file name and the 
+    taxon id supplied by the user. It extracts the protein sequences for the 
+    species identified by the taxon id and writes them to the output file.
+
+    How to run this program: 
+
+       > python Filter -I1=uniprot_sprot.dat.2014_09 -G=55929 
+  
+    for some input file uniprot_sprot.dat.2014_09 and taxon id 559292.
+   
+    Two output files will be created:
+        A target sequence file: uniprot_sprot.dat.2014_09.559292.tfa.1
+        This will contain the target sequences specific to the organism
+        55929.
+        A target id and protein name mapping file:
+                              uniprot_sprot.dat.2014_09.559292.tfa.1.map
+        This will contain the mapping of target sequence ids and protein
+        names.
+'''
+
 import os
 import sys
 from os.path import basename 
@@ -17,27 +44,6 @@ import Filter_sp_targets as ft
 import FindDataset as fd
 import FormatChecker as fc
 
-'''
-    This program takes three inputs: 
-           (1) uniprot-swissProt file 
-           (2) a taxon id and 
-           (3) an optional output file name 
-    When an output file name is not given, it construct an output file name
-    by combining the a portion of the uniprot-swissProt file name given as 
-    the first argument and the taxon id given as the second argument. It 
-    extracts the protein sequences for the species identified by the taxon 
-    id and writes them to the output file. 
-
-    How to run this program: 
-
-       > python Filter -I1=uniprot_sprot.dat.2014_09 -G=55929 
-
-    Two output files will be created: 
-        A target sequence file: uniprot_sprot.dat.2014_09.559292.tfa.1 
-        This will contain the target sequences specific to organism 55929.   
-        A target id and protein name mapping file: uniprot_sprot.dat.2014_09.559292.tfa.1.map 
-        This will contain the mapping of target sequence id and protein name.
-'''
 
 class bcolors:
     HEADER = '\033[95m'
@@ -75,8 +81,11 @@ class Filter:
         self.output_map_filename = self.output_filename + '.map'
 
     def create_iterator(self, infile):
-        # Returns an iterator object for an input uniprot-goa file along with a 
-        # list of all field names contained in the uniprot-goa file
+        """ 
+        Creates and returns an iterator object for an input a UniProt-GOA
+        file along with a list of all field names contained in the
+        UniProt-GOA file.
+        """
         infile_handle = open(infile, 'r')
         iter_handle = GOA.gafiterator(infile_handle)
         for ingen in iter_handle:
@@ -91,8 +100,11 @@ class Filter:
         return iter_handle, GAFFIELDS
 
     def create_outfilename(self):
-        # Creates an output filename based on the output file prefix 
-        # provided by the user
+        """ 
+         Creates an output filename based on the output file prefix 
+         provided by the user and at the end returns the newly 
+         created output filename.
+        """
         if not self.parsed_dict['outfile'] == '':
             ob = basename(self.parsed_dict['outfile'])
         else:
@@ -151,6 +163,12 @@ class Filter:
         self.print_epilog(seqCount, seqCount_exp) 
 
 
-if __name__ == '__main__': 
-    fd = Filter() # Create an instance of Filter class
-    fd.process_data() # Process data and filter out target sequences
+if __name__ == '__main__':
+    if (sys.argv[0] == 'Filter' or sys.argv[0] == './Filter') and len(sys.argv) == 1:
+        print (sys.argv[0] + ' docstring:')
+        print(__doc__)
+        sys.exit(0)
+    else:
+        fd = Filter()     # Create an instance of Filter class
+        fd.process_data() # Process data and filter out target sequences
+        sys.exit(0)
