@@ -33,7 +33,8 @@ def locate_GOAfile(infile, work_dir):
         shutil.copy(infile, work_dir)
         print basename(infile) + ' has been copied to workspace.'
     else:
-        print infile + ' is not available.'
+        print infile + ' is not available. Program quitting ...'
+        print ('*************************************************************************')
         sys.exit(1)
     return work_dir + '/' + basename(infile)
 
