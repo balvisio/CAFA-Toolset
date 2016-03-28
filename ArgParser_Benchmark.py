@@ -172,7 +172,6 @@ def parse_args(prog='benchmark'):
     """
 
     parser = collect_args() # Collect user arguments
-
     parser = collect_args(prog) # Collect user supplied argument values
     args_dict = {}
     args, unknown = parser.parse_known_args()
