@@ -1,5 +1,22 @@
 #!/usr/bin/python
 
+'''
+    This methods in this script check the format of an input file. 
+    It has the following methods to check the file format: 
+
+    check_gaf_format(): 
+        It checks wheter the format of the file is in GAF. If an error 
+        is encountered with the format, the program breaks with a message.
+
+    check_benchmark_format:
+        This method returns False:
+            if the input file name is an empty string or
+            if the file does not exist or
+            if the file size is zero or 
+            if the file is in correct format
+        Otherwise, it returns True 
+'''
+
 import os
 import sys
 import re
@@ -8,18 +25,6 @@ from os.path import basename
 import subprocess
 import stat
 
-'''
-    This script checks the format of an input file. It has two methods.
-
-    check_gaf_format(): It checks wheter the format of the file is in 
-    GAF. If an error is encountered with the format, the program breaks 
-    with a message.
-    
-    check_benchmark_format: This method takes a benchmark file as its input
-    and checks for the correctness of its format. This is also the method 
-    gets invoked, when this script is used from the command line.  
-
-'''
 class bcolors:
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
@@ -52,22 +57,31 @@ def check_gaf_format(fname):
             sys.exit(1)
 
 def check_benchmark_format(benchmarkFile):
-    if not os.path.exists(benchmarkFile): 
-        print bcolors.WARNING + 'Warning: Benchmark file ' + \
-            basename(benchmarkFile) + ' or the file path does not exist' + \
-            bcolors.ENDC
+    """
+    This method checks the format of a benchmark file. 
+    It returns False:
+        if file name is an empty strings or 
+        the file does not exist or 
+        the file size is zero or 
+        the the file is NOT in correct format
+    Otherwise, it returns True
+    """
+    if (not benchmarkFile):
+       return False
+    elif not os.path.exists(benchmarkFile):
+        return False 
     elif os.stat(benchmarkFile).st_size == 0:
-        print bcolors.WARNING + 'Warning: Your submitted benchmark file ' + \
-            basename(benchmarkFile) + ' is empty' + bcolors.ENDC
+        return False
     else:
         fh = open(benchmarkFile, 'r')
-        for lines in fh: 
-            cols = lines.strip().split('\t') 
-            if len(cols) != 2: 
-                outfile.close()
-                sys.exit(1)
-
+        for lines in fh:
+            cols = lines.strip().split('\t')
+            if len(cols) != 2:
+                fh.close()
+                return False
+        fh.close()
+        return True
 
 if __name__ == '__main__':
-    benchmark_file = sys.argv[1]
-    check_benchmark_format(benchmark_file)
+    print (sys.argv[0] + ' docstring:')
+    print (__doc__)
