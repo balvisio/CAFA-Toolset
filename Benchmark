@@ -275,7 +275,11 @@ class Benchmark:
         print bcolors.OKGREEN + 'Thank you for using Benchmark Creation Tool' + bcolors.ENDC
         return None
 
-    def process_data(self): # Process user data and create benchmark sets
+    def process_data(self): 
+        """ 
+        This method processes user data, creates necessary intermediate files, 
+        create benchmark sets, and afterwards deletes the intermediate files.
+        """
         self.print_prolog() # Print the wellcome message and argument list
         fc.check_gaf_format(self.t1_input_file) # File format check for t1 file
         fc.check_gaf_format(self.t2_input_file) # File format check for t2 file
