@@ -4,7 +4,7 @@
     This methods in this script check the format of an input file. 
     It has the following methods to check the file format: 
 
-    check_gaf_format(): 
+    check_gaf_format():
         It checks wheter the format of the file is in GAF. If an error 
         is encountered with the format, the program breaks with a message.
 
@@ -14,7 +14,7 @@
             if the file does not exist or
             if the file size is zero or 
             if the file is in correct format
-        Otherwise, it returns True 
+        Otherwise, it returns True
 '''
 
 import os
@@ -66,9 +66,7 @@ def check_benchmark_format(benchmarkFile):
         the the file is NOT in correct format
     Otherwise, it returns True
     """
-    if (not benchmarkFile):
-       return False
-    elif not os.path.exists(benchmarkFile):
+    if not os.path.exists(benchmarkFile):
         return False 
     elif os.stat(benchmarkFile).st_size == 0:
         return False
