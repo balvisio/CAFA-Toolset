@@ -97,8 +97,7 @@ def create_exp_ann_dict(goa_exp_handle):
 def verify_LK_benchmark_xxo(t1_iea_dict,
                             t1_xxo_dict,
                             t2_xxo_dict,
-                            output_filename_LK_xxo, # benchmark file name
-                            LKcount):
+                            output_filename_LK_xxo):
     """
     This method verifies the benchmark entries in the benchmark file
     output_filename_LK_xxo.
@@ -106,69 +105,79 @@ def verify_LK_benchmark_xxo(t1_iea_dict,
     Meaning of xxo: xxo is replaced runtime by bpo, cco, or mfo to make 
     this method specific to a certain type of benchmarks.
     """
-#    if os.path.exists(output_filename_LK_xxo) and \
-#       os.stat(output_filename_LK_xxo).st_size != 0:
-
     outfile_LK_xxo_handle = open(output_filename_LK_xxo, 'r')
+    errMessage = ''
     for lines in outfile_LK_xxo_handle:
         cols = lines.strip().split('\t')
         if cols[0] not in t1_iea_dict:
-            print 'Error: an undesired protein ' + cols[0] + \
+#            print 'Error: an undesired protein ' + cols[0] + \
+#                ' got selected in ' + output_filename_LK_xxo
+            errMessage = 'Error: an undesired protein ' + cols[0] + \
                 ' got selected in ' + output_filename_LK_xxo
             break
         elif cols[0] in t1_xxo_dict:
-            print 'Error: selected protein ' + cols[0] + ' in ' + \
+#            print 'Error: selected protein ' + cols[0] + ' in ' + \
+#                output_filename_LK_xxo + ' already had experimental \
+#                evidence at t1'
+            errMessage = 'Error: selected protein ' + cols[0] + ' in ' + \
                 output_filename_LK_xxo + ' already had experimental \
                 evidence at t1'
             break
         elif cols[0] not in t2_xxo_dict or cols[1] not in t2_xxo_dict[cols[0]]:
-            print 'Error: selected protein ' + cols[0] + ' in ' + \
+#            print 'Error: selected protein ' + cols[0] + ' in ' + \
+#                output_filename_LK_xxo + ' has not gained experimental \
+#                evidence at t2'
+            errMessage = 'Error: selected protein ' + cols[0] + ' in ' + \
                 output_filename_LK_xxo + ' has not gained experimental \
                 evidence at t2'
             break
     outfile_LK_xxo_handle.close()
-    LKcount += 1
-    return LKcount
+    return errMessage
 
 def verify_NK_benchmark_xxo(t1_iea_dict,
                             t1_bpo_dict,
                             t1_cco_dict,
                             t1_mfo_dict,
                             t2_xxo_dict,
-                            output_filename_NK_xxo,
-                            NKcount):
+                            output_filename_NK_xxo):
     """ 
-    This method verify the benchmark entries in the benchmark file 
+    This method verifies the benchmark entries in the benchmark file 
     output_filename_NK_xxo.
 
     Meaning of xxo: xxo is replaced runtime by bpo, cco, or mfo to make 
     this method specific to a certain type of benchmarks.
-
     """
-    if os.path.exists(output_filename_NK_xxo) and \
-       os.stat(output_filename_NK_xxo).st_size != 0:
-        outfile_NK_xxo_handle = open(output_filename_NK_xxo, 'r')
-        for lines in outfile_NK_xxo_handle:
-            cols = lines.strip().split('\t')
-            if cols[0] not in t1_iea_dict:
-                print 'Error: an undesired protein ' + cols[0] + \
-                      ' got selected in ' + output_filename_NK_xxo
-                break
-            elif cols[0] in t1_bpo_dict or \
-                 cols[0] in t1_cco_dict or \
-                 cols[0] in t1_mfo_dict:
-                print 'Error: selected protein ' + cols[0] + ' in ' + \
-                      output_filename_NK_xxo + ' already had experimental \
-                      evidence at t1'
-                break
-            elif cols[0] not in t2_xxo_dict:
-                print 'Error: selected protein ' + cols[0] + ' in ' + \
-                      output_filename_NK_xxo + ' has not gained experimental \
-                      evidence at t2'
-                break
-        outfile_NK_xxo_handle.close()
-        NKcount += 1
-    return NKcount
+
+    outfile_NK_xxo_handle = open(output_filename_NK_xxo, 'r')
+    errMessage = ''
+    for lines in outfile_NK_xxo_handle:
+        cols = lines.strip().split('\t')
+        if cols[0] not in t1_iea_dict:
+#            print 'Error: an undesired protein ' + cols[0] + \
+#                ' got selected in ' + output_filename_NK_xxo
+            errMessage = 'Error: an undesired protein ' + cols[0] + \
+                ' got selected in ' + output_filename_NK_xxo
+            break
+        elif cols[0] in t1_bpo_dict or \
+             cols[0] in t1_cco_dict or \
+             cols[0] in t1_mfo_dict:
+#            print 'Error: selected protein ' + cols[0] + ' in ' + \
+#                  output_filename_NK_xxo + ' already had experimental \
+#                  evidence at t1'
+            errMessage = 'Error: selected protein ' + cols[0] + ' in ' + \
+                  output_filename_NK_xxo + ' already had experimental \
+                  evidence at t1'
+            break
+        elif cols[0] not in t2_xxo_dict:
+#            print 'Error: selected protein ' + cols[0] + ' in ' + \
+#                  output_filename_NK_xxo + ' has not gained experimental \
+#                  evidence at t2'
+            errMessage = 'Error: selected protein ' + cols[0] + ' in ' + \
+                  output_filename_NK_xxo + ' has not gained experimental \
+                  evidence at t2'
+            break
+    outfile_NK_xxo_handle.close()
+    return errMessage  
 
 def verify_LK_benchmark(t1_iea_handle,
                         t1_exp_handle,
@@ -198,27 +207,31 @@ def verify_LK_benchmark(t1_iea_handle,
     LK_cco = fc.check_benchmark_format(output_filename_LK_cco)
     # Check file format for LK_mfo benchmark file:
     LK_mfo = fc.check_benchmark_format(output_filename_LK_mfo) 
-
-    LKcount = 0
-    if (not LK_bpo):
-        LKcount = LKcount + verify_LK_benchmark_xxo(t1_iea_dict,
-                                                    t1_bpo_dict,
-                                                    t2_bpo_dict,
-                                                    output_filename_LK_bpo,
-                                                    LKcount)
-    if (not LK_cco):
-        LKcount = LKcount + verify_LK_benchmark_xxo(t1_iea_dict,
-                                                    t1_cco_dict,
-                                                    t2_cco_dict,
-                                                    output_filename_LK_cco,
-                                                    LKcount)
-    if (not LK_mfo):
-        LKcount = LKcount + verify_LK_benchmark_xxo(t1_iea_dict,
-                                                    t1_mfo_dict,
-                                                    t2_mfo_dict,
-                                                    output_filename_LK_mfo,
-                                                    LKcount)
-    return (LK_bpo, LK_cco, LK_mfo, LKcount)
+   
+    err_bpo = err_cco = err_mfo = '' # Error message holders 
+    if (output_filename_LK_bpo and \
+        os.path.exists(output_filename_LK_bpo) and \
+        LK_bpo):
+        err_bpo = verify_LK_benchmark_xxo(t1_iea_dict,
+                                          t1_bpo_dict,
+                                          t2_bpo_dict,
+                                          output_filename_LK_bpo)
+    if (output_filename_LK_cco and \
+        os.path.exists(output_filename_LK_cco) and \
+        LK_cco):
+        err_cco = verify_LK_benchmark_xxo(t1_iea_dict,
+                                          t1_cco_dict,
+                                          t2_cco_dict,
+                                          output_filename_LK_cco)
+    if (output_filename_LK_cco and \
+        os.path.exists(output_filename_LK_cco) and \
+        LK_mfo):
+        err_mfo = verify_LK_benchmark_xxo(t1_iea_dict,
+                                          t1_mfo_dict,
+                                          t2_mfo_dict,
+                                          output_filename_LK_mfo)
+    err_pack = err_bpo + '|' +  err_cco + '|' + err_mfo
+    return (LK_bpo, LK_cco, LK_mfo, err_pack )
 
 def verify_NK_benchmark(t1_iea_handle,
                         t1_exp_handle,
@@ -248,36 +261,39 @@ def verify_NK_benchmark(t1_iea_handle,
     NK_cco = fc.check_benchmark_format(output_filename_NK_cco)
     # Check file format for LK_mfo benchmark file:
     NK_mfo = fc.check_benchmark_format(output_filename_NK_mfo) 
-
-    NKcount = 0
+    err_bpo = err_cco = err_mfo = ''  # Error message holders
     # Verify NK-BPO benchmarks:
-    if (not NK_bpo):
-        NKcount = NKcount + verify_NK_benchmark_xxo(t1_iea_dict,
-                                                    t1_bpo_dict,
-                                                    t1_cco_dict,
-                                                    t1_mfo_dict,
-                                                    t2_bpo_dict,
-                                                    output_filename_NK_bpo,
-                                                    NKcount)
+    if (output_filename_NK_bpo and \
+        os.path.exists(output_filename_NK_bpo) and \
+        NK_bpo):
+        err_bpo = verify_NK_benchmark_xxo(t1_iea_dict,
+                                          t1_bpo_dict,
+                                          t1_cco_dict,
+                                          t1_mfo_dict,
+                                          t2_bpo_dict,
+                                          output_filename_NK_bpo)
     # Verify NK-CCO benchmarks:
-    if (not NK_cco):
-        NKcount = NKcount + verify_NK_benchmark_xxo(t1_iea_dict,
-                                                    t1_bpo_dict,
-                                                    t1_cco_dict,
-                                                    t1_mfo_dict,
-                                                    t2_cco_dict,
-                                                    output_filename_NK_cco,
-                                                    NKcount)
+    if (output_filename_NK_cco and \
+        os.path.exists(output_filename_NK_cco) and \
+        NK_cco):
+        err_cco = verify_NK_benchmark_xxo(t1_iea_dict,
+                                          t1_bpo_dict,
+                                          t1_cco_dict,
+                                          t1_mfo_dict,
+                                          t2_cco_dict,
+                                          output_filename_NK_cco)
     # Verify NK-MFO benchmarks:
-    if (not NK_mfo):
-        NKcount = NKcount + verify_NK_benchmark_xxo(t1_iea_dict,
-                                                    t1_bpo_dict,
-                                                    t1_cco_dict,
-                                                    t1_mfo_dict,
-                                                    t2_mfo_dict,
-                                                    output_filename_NK_mfo,
-                                                    NKcount)
-    return (NK_bpo, NK_cco, NK_mfo, NKcount)
+    if (output_filename_NK_mfo and \
+        os.path.exists(output_filename_NK_mfo) and \
+        NK_mfo):
+        err_mfo = verify_NK_benchmark_xxo(t1_iea_dict,
+                                          t1_bpo_dict,
+                                          t1_cco_dict,
+                                          t1_mfo_dict,
+                                          t2_mfo_dict,
+                                          output_filename_NK_mfo)
+    err_pack = err_bpo + '|' + err_cco + '|' + err_mfo
+    return (NK_bpo, NK_cco, NK_mfo, err_pack)
 
 if __name__ == "__main__":
     print (sys.argv[0] + ' docstring:')
