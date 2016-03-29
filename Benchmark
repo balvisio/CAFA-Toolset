@@ -100,13 +100,40 @@ class Benchmark:
         self.bmfile_NK_mfo = self.t2_exp_name + '.mfo_NK_bench.txt'
 
     def create_outfilename(self, ontType):
-        # Creates an output filename based on the output file prefix 
-        # provided by the user
+        """
+        This method creates an output filename according to the following
+        rules: 
+            (1) When the user supplies the optional output filename prefix,
+                this method looks for the latest version of the related file
+                name in the workspace (See the while loop). It creates a new
+                file name for the subsequent version:
+
+                output_filename = self.work_dir + '/' + ob + '.' + str(index)
+            
+                This ensures that multiple runs of Benchmark program with the 
+                same arguments creates new version of output files.
+
+            (2) When the user does not supply the optional output filename 
+                prefix, this method creates a new prefix based on the two 
+                input data file names (See code in else block). Then the 
+                program looks for the latest version of the related file 
+                name in the workspace (See the while loop). Then, it creates
+                a new file name for the subsequent version:
+
+                output_filename = self.work_dir + '/' + ob + '.' + str(index)
+
+                Here again, this ensures that multiple runs of Benchmark 
+                program with the same arguments creates new version of output
+                files.
+
+        Finally, the method returns the newly created filename.
+        """
+
         if not self.parsed_dict['outfile'] == '':
             ob = basename(self.parsed_dict['outfile']) + '_' + ontType
         else:
             ob = basename(self.parsed_dict['t2']) + '-' + \
-                ((basename(self.parsed_dict['t1'])).split('.'))[-1] + \
+                 ((basename(self.parsed_dict['t1'])).split('.'))[-1] + \
                 '.benchmark' + '_' + ontType
         index = 1
         while os.path.exists(self.work_dir + '/' + ob + '.' + str(index)):
@@ -115,8 +142,12 @@ class Benchmark:
         return output_filename
 
     def create_iterator(self, infile):
-        # Returns an iterator object for an input uniprot-goa file along with a 
-        # list of all field names contained in the uniprot-goa file
+        """
+        This method creates an iterator object for the input UniProt-GOA file
+        and returns it along with a list of all field names contained in the
+        UniProt-GOA file. The UniProt-GOA file can either be in GAF 1.0 or 
+        GAF 2.0 file format.
+        """
 
         infile_handle = open(infile, 'r')
         iter_handle = GOA.gafiterator(infile_handle)
@@ -188,6 +219,11 @@ class Benchmark:
         return None
 
     def create_intermediate_files(self):
+        """
+        This method creates all the necessary intermediate files 
+        that are needed to create the desired benchmark sets.
+        """
+
         # Create paper-term freq file for t2 file:
         ann_conf = ptf.paper_term_freq( open(self.t2_input_file,'r'),
                                         open(self.t2_ptf_file,'w'),
@@ -278,7 +314,7 @@ class Benchmark:
     def process_data(self): 
         """ 
         This method processes user data, creates necessary intermediate files, 
-        create benchmark sets, and afterwards deletes the intermediate files.
+        creates benchmark sets, and afterwards deletes the intermediate files.
         """
         self.print_prolog() # Print the wellcome message and argument list
         fc.check_gaf_format(self.t1_input_file) # File format check for t1 file
