@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 '''
-    This program takes the following three inputs: 
+    Filter program accepts the following three inputs:
            (1) a UniProtKB/swissProt file 
            (2) a taxon id and 
            (3) an optional output file name 
@@ -12,19 +12,18 @@
     species identified by the taxon id and writes them to the output file.
 
     How to run this program: 
+        For some input file uniprot_sprot.dat.2014_09 and taxon id 559292
 
        > python Filter -I1=uniprot_sprot.dat.2014_09 -G=55929 
   
-    for some input file uniprot_sprot.dat.2014_09 and taxon id 559292.
-   
     Two output files will be created:
         A target sequence file: uniprot_sprot.dat.2014_09.559292.tfa.1
-        This will contain the target sequences specific to the organism
-        55929.
+            This will contain the target sequences specific to the organism
+            55929.
         A target id and protein name mapping file:
-                              uniprot_sprot.dat.2014_09.559292.tfa.1.map
-        This will contain the mapping of target sequence ids and protein
-        names.
+            uniprot_sprot.dat.2014_09.559292.tfa.1.map
+            This will contain the mapping of target sequence ids and protein
+            names.
 '''
 
 import os
@@ -41,9 +40,9 @@ import AppendSprot2GOA as as2g
 import ArgParser_Filter as ap
 import Config
 import Filter_sp_targets as ft
-import FindDataset as fd
+#import FindDataset as fd
 import FormatChecker as fc
-
+import LocateDataset as ld
 
 class bcolors:
     HEADER = '\033[95m'
@@ -59,25 +58,27 @@ config_filename = '.cafarc' # Default configuration file name
 
 class Filter: 
     def __init__(self):
-        self.parsed_dict = ap.parse_args() # Collect user arguments into a dictionary
-        self.ConfigParam = Config.read_config(config_filename) # Collect config file entries
+        # Collect user arguments into a dictionary:
+        self.parsed_dict = ap.parse_args() 
+
+        # Collect config file entries:
+        self.ConfigParam = Config.read_config(config_filename) 
         self.work_dir = self.ConfigParam['workdir']
 
-        # Look for workspace, and if none exists create one :
+        # Look for workspace, and if none exists create one:
         if not os.path.exists(self.work_dir):
             os.makedirs(self.work_dir) # Create work space
 
         t1 = self.parsed_dict['t1'] # Extract input file name
         # Locate the input file:
-        self.t1_input_file = fd.find_dataset(t1,
-                                             self.work_dir,
-                                             self.ConfigParam) 
-
+        self.t1_input_file = ld.locate_SwissProtfile(t1,
+                                                     self.work_dir)
         # Create output file name for target sequences:
         self.output_filename = self.create_outfilename() 
 
-        # Create output file name for mapping between SwissProt protein name 
-        # and sequence id in the target sequence file:
+        # Create output file name for mapping between SwissProt 
+        # protein name and sequence id in the target sequence 
+        # file:
         self.output_map_filename = self.output_filename + '.map'
 
     def create_iterator(self, infile):
@@ -101,9 +102,9 @@ class Filter:
 
     def create_outfilename(self):
         """ 
-         Creates an output filename based on the output file prefix 
-         provided by the user and at the end returns the newly 
-         created output filename.
+        Creates an output filename based on the output file prefix
+        provided by the user and at the end returns the newly
+        created output filename.
         """
         if not self.parsed_dict['outfile'] == '':
             ob = basename(self.parsed_dict['outfile'])
@@ -128,43 +129,53 @@ class Filter:
         print ('*********************************************\n')
 
     def print_epilog(self, seqCount, seqCount_exp): 
-        print 'Total # of sequences for the given organsism with taxonomy id ' + self.parsed_dict['g'] + ': ' + str(seqCount)
+        print ('Total # of sequences for the given organsism with ' +\
+                'taxonomy id ' + self.parsed_dict['g'] + ': ' + \
+                str(seqCount))
         print '# of sequences with NO EXP code: ' + str(seqCount_exp)
         if os.path.exists(self.output_filename):
-            print(bcolors.OKGREEN + 'Target sequence file created: ' + 
+            print(bcolors.OKGREEN + 'Target sequence file created: ' +
                 basename(self.output_filename) + bcolors.ENDC)
         else:
-            print (bcolors.WARNING + 'No target file is created with the given input \
-                parameters' + bcolors.ENDC)
+            print (bcolors.WARNING + 'No target file is created with the ' +\
+                   'given input parameters' + bcolors.ENDC)
         if os.path.exists(self.output_map_filename):
-            print (bcolors.OKGREEN + 'Map file created: ' + 
-                basename(self.output_map_filename) + bcolors.ENDC)
+            print (bcolors.OKGREEN + 'Map file created: ' +
+                   basename(self.output_map_filename) + bcolors.ENDC)
         else:
-            print (bcolors.WARNING + 'No map file is created with the given input \
-                parameters' + bcolors.ENDC)
-        print (bcolors.OKGREEN + 'Thank you for using Target Generation Tool' + 
-                bcolors.ENDC)
+            print (bcolors.WARNING + 'No map file is created with the ' +\
+                   'given input parameters' + bcolors.ENDC)
+        print (bcolors.OKGREEN + 'Thank you for using Target Generation Tool' +\
+               bcolors.ENDC)
 
     def process_data(self):
+        """
+        This method invokes other methods to perform all tasks related
+        to target generation.
+        """
+
         # Print the wellcome message:
         self.print_prolog()
 
         # Filter out target sequences from the UniProt-SwissProt file:
-        seqCount, seqCount_exp = ft.species_filter(open(self.t1_input_file, 'r'), 
-                                                   self.parsed_dict['g'], 
-                                                   open(self.output_filename, 'w'), 
-                                                   open(self.output_map_filename, 'w'), 
-                                                   self.ConfigParam['exp_eec'])
-        #seqCount, seqCount_exp = ft.species_filter_count(open(self.t1_input_file, 'r'), 
-        #                                                  self.parsed_dict['g'], 
-        #                                                  self.ConfigParam['exp_eec'])
+        print('Filtering sequences from ' +  basename(self.t1_input_file) + ' ...')
+
+        seqCount, seqCount_exp = ft.species_filter(open(self.t1_input_file, 'r'),
+                                self.parsed_dict['g'],
+                                open(self.output_filename, 'w'),
+                                open(self.output_map_filename, 'w'),
+                                self.ConfigParam['exp_eec'])
+        #seqCount, seqCount_exp = ft.species_filter_count(open(self.t1_input_file, 'r'),
+        #                       self.parsed_dict['g'],
+        #                       self.ConfigParam['exp_eec'])
 
         # Print the summary of running this program:
-        self.print_epilog(seqCount, seqCount_exp) 
-
+        self.print_epilog(seqCount, seqCount_exp)
 
 if __name__ == '__main__':
-    if (sys.argv[0] == 'Filter' or sys.argv[0] == './Filter') and len(sys.argv) == 1:
+    if (sys.argv[0] == 'Filter' or \
+        sys.argv[0] == './Filter') and \
+        len(sys.argv) == 1:
         print (sys.argv[0] + ' docstring:')
         print(__doc__)
         sys.exit(0)
