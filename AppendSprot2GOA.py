@@ -1,5 +1,43 @@
 #!/usr/bin/env python
 
+'''
+    This program takes four inputs: (1) a uniprot-swissprot file, (2) a 
+    uniprot-GOA file, (3) taxon id, and (4) an output file. The GO terms 
+    in the UniProt-SwissProt file that are NOT in the unprot-GOA file for 
+    the supplied taxon id, are merged together with the uniprot-GOA file i
+    and written to the output file.
+
+    The entry point of this module is appendSprot2goa() method which calls 
+    other the methods defined in this module:
+
+    appendSprot2goa(fh_sprot, goa_file_name, taxon_id, fh_merged_go): 
+        fh_sport: It is a file handle to a UniProtKB/SwissProt file.
+        goa_file_name: It is a file name of a UniProt-GOA file.
+        taxon_id: It is a Taxonomy Id for an organism. 
+        fh_merged_go: It is file handle to the output file which
+            already has all records copied into from the 
+            UniProt-GOA file named goa_file_name. 
+        This method goes over the records in fh_sprot file, checks 
+        whether that records are already in UniProt-GOA file 
+        goa_file_name, and if it is not found there, the method
+        coverts the UniProtKB/SwissProt record to a UniProt-GOA record 
+        by invoking swissProt2GOA and appends it to the end of the output file. 
+
+    swissProt2GOA(sprotRec, crossRef, fields=GOAParser.GAF20FIELDS):
+        This method converts a UniProtKB/SwissProt record to a UniProt-GOA 
+        record by calling other methods defined in this module. And, at 
+       the end, it returns the newly formed method.
+
+    The list of other methods defined in this module are: 
+    assignSymbol(sprotRec)
+    assignGO_REF(sprotRec, crossRef)
+    assignDB_REF(sprotRec, crossRef)
+    assignSynonym(sprotRec)
+    assignTaxoId(sprotRec)
+    assignDate(sprotRec)
+    create_iterator(infile)
+'''
+
 import os
 import sys
 import subprocess
@@ -11,14 +49,6 @@ from dateutil import relativedelta
 from Bio import SwissProt as sp
 import GOAParser
 import GOAParser_cafa as gc
-
-'''
-    This program takes four inputs: (1) a uniprot-swissprot file, (2) a 
-    uniprot-GOA file, (3) taxon id, and (4) an output file. The GO terms 
-    in the UniProt-SwissProt file that are NOT in the unprot-GOA file for 
-    the supplied taxon id, are merged together with the uniprot-GOA file i
-    and written to the output file.
-'''
 
 Months = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
@@ -101,10 +131,11 @@ def assignDate(sprotRec):
     return date
 
 def swissProt2GOA(sprotRec, crossRef, fields=GOAParser.GAF20FIELDS):
-    # Takes a SwissProt record and GO term information as input
-    # Constructs a GOA dictionary using the 'fields' as keys and values taken from sprotRec 
-    # Returns the constructed GOA record
-
+    """
+     Takes a SwissProt record and GO term information as input
+     Constructs a GOA dictionary using the 'fields' as keys and values taken from sprotRec 
+     Returns the constructed GOA record
+    """
     # 15 fields are defined for GAF10FIELDS (GAF 1.0)
     goaRec = {'DB':'SwissProt', # 'SwissProt' is assigned to DB
               'DB_Object_ID': sprotRec.accessions[0],
@@ -129,8 +160,10 @@ def swissProt2GOA(sprotRec, crossRef, fields=GOAParser.GAF20FIELDS):
     return goaRec
 
 def create_iterator(infile):
-    # Returns an iterator object for an input uniprot-goa file along with a list of all
-    # fieldnames contained in the uniprot-goa file
+    """
+    Returns an iterator object for an input uniprot-goa file along with a list of all
+    fieldnames contained in the uniprot-goa file
+    """ 
     infile_handle = open(infile, 'r')
     iter_handle = GOAParser.gafiterator(infile_handle)
     for ingen in iter_handle:
@@ -146,11 +179,10 @@ def create_iterator(infile):
     return iter_handle, GAFFIELDS
 
 def appendSprot2goa(fh_sprot, goa_file_name, taxon_id, fh_merged_go):
-    # Append new GO terms from a uniPort-swisprot file (file handle: fh_sprot) to SwissProt-GOA file 
-    # (goa_file_name), writing the merged file to a merged file (file handle: fh_merged_go)
-
-#    outfile = './mergeFiles/newGOterms_sprot.38_9.txt'
-#    fh_merged_go = open(outfile,'w')
+    """
+     Append new GO terms from a uniPort-swisprot file (file handle: fh_sprot) to SwissProt-GOA file 
+     (goa_file_name), writing the merged file to a merged file (file handle: fh_merged_go)
+    """
 
     iter_handle, GAFFIELDS = create_iterator(goa_file_name) # Creates an iterator object for t1 file
 
@@ -163,7 +195,6 @@ def appendSprot2goa(fh_sprot, goa_file_name, taxon_id, fh_merged_go):
             goa_dict[ingen['DB_Object_ID']] = [[ingen['GO_ID'], ingen['Evidence'], ingen['Aspect']]]
 
 # EXTRACTS the NEW GO terms in t2 file that are NOT found in t1 file
-    print('Merging ...')
     goCount = 0
     for rec in sp.parse(fh_sprot):
         if taxon_id in rec.taxonomy_id: # SELECTS records that are related to a specific taxon_id such as 559292 for yeast
@@ -186,6 +217,5 @@ def appendSprot2goa(fh_sprot, goa_file_name, taxon_id, fh_merged_go):
                         goCount += 1
 
 if __name__ == '__main__':
-    cmd = "cp " + sys.argv[2] + " " + sys.argv[4]
-    subprocess.call(cmd, shell=True)
-    append_sprot2goa(open(sys.argv[1], 'r'), sys.argv[2], sys.argv[3], open(sys.argv[4], 'a'))
+    print (__doc__)
+    sys.exit(0)
