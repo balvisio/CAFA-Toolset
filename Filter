@@ -40,7 +40,6 @@ import AppendSprot2GOA as as2g
 import ArgParser_Filter as ap
 import Config
 import Filter_sp_targets as ft
-#import FindDataset as fd
 import FormatChecker as fc
 import LocateDataset as ld
 
