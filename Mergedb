@@ -28,8 +28,8 @@ import subprocess
 from collections import defaultdict
 
 import AppendSprot2GOA as as2g
-import Config
 import ArgParser_Mergedb as ap
+import Config
 import FormatChecker as fc
 import LocateDataset as ld
 
