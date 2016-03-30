@@ -13,7 +13,7 @@
     BPO, and CCO) and THREE no-knowledge (NK) benchmark files - one in each 
     ontology category.
    
-    Complete usage directions of this program can obtained through the
+    Complete usage directions of this program can be obtained through the
     following command:
 
     python Benchmark --help
