@@ -1,36 +1,39 @@
 #!/usr/bin/env python
 
+'''
+    This module has two methods: read_config and create_config.
+    The entry point of this module is read_config which invokes
+    create_config when it does not find the configuration file.
+
+    read_config: 
+        This method tries to locate the configuration file in 
+        the current directory or any of the subdirectories. If 
+        it does not find the configuration file, it creates one
+        by invoking create_config. At the end, it returns the
+        content of the configuration file as an ordered dictionary.
+
+    create_config: 
+        This method creates a configureation file which is passed 
+        as an argument. This file stores the configuration:
+
+        DEFAULT_PATH: the default workspace
+        HOSTNAME: ftp.ebi.ac.uk
+        CURRENT_FILE_PATH: file path for current GOA release
+        OLD_FILE_PATH: file path for old GOA releases
+        EXP_EVIDENCE_CODES: the set of GO annotation exeperimental 
+                            evidence codes
+        ONTOLOGIES: the thre ontology names
+        TAXONOMOY_FILENAME: the file name for taxonomy definitions
+        BASE_URL: www.uniprot.org/uniprot
+        FTP_DATE: regular expression for ftp dates
+        FTP_FILE_START: gene_association
+'''
+
 import os
 import sys
 import re
 import ConfigParser as cp
 from collections import OrderedDict
-
-'''
-   This module has two methods - creat_config and read_config: 
-
-   create_config: This method creates a configureation file which 
-                  is passed as an argument. This file stores the
-                  configuration:
-       DEFAULT_PATH: the default workspace
-       HOSTNAME: ftp.ebi.ac.uk
-       CURRENT_FILE_PATH: file path for current GOA release
-       OLD_FILE_PATH: file path for old GOA releases
-       EXP_EVIDENCE_CODES: the set of GO annotation exeperimental evidence 
-                      codes
-       ONTOLOGIES: the thre ontology names
-       TAXONOMOY_FILENAME: the file name for taxonomy definitions
-       BASE_URL: www.uniprot.org/uniprot
-       FTP_DATE: regular expression for ftp dates
-       FTP_FILE_START: gene_association
-        
-   read_config: This method reads the configuration and returns it as 
-         an ordered dictionary. 
-   
-   This module can be invoked directly to create a configuration file as shown 
-   below:
-        python Config config_filename
-'''
 
 def create_config(config_filename):
     outfile_handle = open(config_filename, 'w')
@@ -68,10 +71,13 @@ def create_config(config_filename):
     outfile_handle.write('FTP_FILE_START : gene_association\n')
 
 def read_config(config_filename):
-    # reads the conig file supplied by config_filename and returns
-    # the configuration as an ordered dictionary  
-    # If the config file is not found in the current direcotry or 
-    # any subdirectory, it creates one by invoking create_config method
+    """
+    This method reads the conig file supplied by config_filename and returns
+    the configuration as an ordered dictionary
+    If the config file is not found in the current direcotry or
+    any subdirectory, it creates one by invoking create_config method
+    """
+
     fname_ind = 0
     # Search for configuration file. 
     # current directory -> workspace -> create one 
@@ -102,5 +108,4 @@ def read_config(config_filename):
     return ConfigParam
 
 if __name__ == '__main__':
-    config_filename = sys.argv[1]
-    create_config(config_filename)
+    print (__doc__)
