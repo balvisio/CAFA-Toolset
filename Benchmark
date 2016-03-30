@@ -31,9 +31,9 @@ from Bio.UniProt import GOA
 import ArgParser_Benchmark as ap
 import Config
 import CreateBenchmark as cb
-import LocateDataset as ld
 import FormatChecker as fc
 import GOAParser_cafa as gc
+import LocateDataset as ld
 import PaperTermFrequency as ptf
 
 class bcolors:
@@ -130,7 +130,7 @@ class Benchmark:
         """
 
         if not self.parsed_dict['outfile'] == '':
-            ob = basename(self.parsed_dict['outfile']) + '_' + ontType
+            ob = basename(self.parsed_dict['outfile']) + '.benchmark' + '_' + ontType
         else:
             ob = basename(self.parsed_dict['t2']) + '-' + \
                  ((basename(self.parsed_dict['t1'])).split('.'))[-1] + \
