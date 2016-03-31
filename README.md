@@ -28,9 +28,7 @@ algorithms based on their ability to predict Gene Ontology (GO) and Human
 Phenotype Ontology (HPO) terms for a given set of protein sequences. The GO 
 terms can be in any of the following three categories: Molecular Function 
 Ontology (MFO), Biological Process Ontology (BPO), and Cellular Component 
-Ontology (CCO). Here is the link for  CAFA rules and other related 
-announcements: http://biofunctionprediction.org/node/8. The following figure 
-shows the CAFA time-line.
+Ontology (CCO). The following figure shows the CAFA time-line.
 
 ![Alt CAFA time line] (/figures/cafa-timeLine.png?raw=true “CAFA Timeline”)
 
