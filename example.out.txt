@@ -11,26 +11,29 @@ Welcome to Merge Database Tool !!!!!
 
 Following is a list of user supplied inputs:
 
-outfile: 
-t2: gene_association.goa_ref_yeast.38
-g: 559292
 t1: uniprot_sprot.dat.2014_09
+t2: gene_association.goa_ref_yeast.38
+outfile: 
+g: 559292
 *********************************************
 
-uniprot_sprot.dat.2014_09 has been moved to work directory
+Merging records: 
+Copying records from gene_association.goa_ref_yeast.38 to gene_association.goa_ref_yeast.38+sprot.2014_09.2 ...
+Appedning records from uniprot_sprot.dat.2014_09 to gene_association.goa_ref_yeast.38+sprot.2014_09.2 ...
 The following output file is created: gene_association.goa_ref_yeast.38+sprot.2014_09.2
 Thank you for using Merge Database Tool
 *************************************************
 Welcome to Target Generatin Tool !!!!!
 *************************************************
 
-Following is a list of user supplied inputs :
+Following is a list of user supplied inputs:
 
+t1: uniprot_sprot.dat.2014_09
 outfile: 
 g: 559292
-t1: uniprot_sprot.dat.2014_09
 *********************************************
 
+Filtering sequences from uniprot_sprot.dat.2014_09 ...
 Total # of sequences for the given organsism with taxonomy id 559292: 6621
 # of sequences with NO EXP code: 1717
 Target sequence file created: uniprot_sprot.dat.2014_09.559292.tfa.2
@@ -42,91 +45,66 @@ Welcome to Benchmark Creation Tool !!!!!
 
 Following is a list of user supplied inputs:
 
-Confidence: F
-Assigned_By: ['all']
-outfile: 
-Taxon_ID: ['all']
 t1: gene_association.goa_ref_yeast.23
 t2: gene_association.goa_ref_yeast.52
-Evidence: ['all']
-Blacklist: []
-Pubmed: F
-Aspect: ['all']
+outfile: 
+Taxon_ID: set([])
+Aspect: set([])
+Evidence: set([])
+Assigned_By: set([])
+Confidence: F
 Threshold: 4
+Pubmed: F
+Blacklist: set([])
 *********************************************
 
-Creating paper-term frequency file.....
+Populating paper-term frequency file ...
 Parsing t2 file: gene_association.goa_ref_yeast.52 ...
 Parsing t1 file: gene_association.goa_ref_yeast.23 ...
-Creating benchmark set ...
+Creating benchmark sets ...
 Cleaning working directory ...
 The following benchmark files are created:
-gene_association.goa_ref_yeast.52.benchmark_LK_bpo.2
-gene_association.goa_ref_yeast.52.benchmark_LK_cco.2
-gene_association.goa_ref_yeast.52.benchmark_LK_mfo.2
-gene_association.goa_ref_yeast.52.benchmark_NK_bpo.2
-gene_association.goa_ref_yeast.52.benchmark_NK_cco.2
-gene_association.goa_ref_yeast.52.benchmark_NK_mfo.2
+gene_association.goa_ref_yeast.52-23.benchmark_LK_bpo.2
+gene_association.goa_ref_yeast.52-23.benchmark_LK_cco.2
+gene_association.goa_ref_yeast.52-23.benchmark_LK_mfo.2
+gene_association.goa_ref_yeast.52-23.benchmark_NK_bpo.2
+gene_association.goa_ref_yeast.52-23.benchmark_NK_cco.2
+gene_association.goa_ref_yeast.52-23.benchmark_NK_mfo.2
 Thank you for using Benchmark Creation Tool
 *************************************************
 Welcome to Benchmark Verification Tool !!!!!
 *************************************************
 
 Following is a list of user supplied inputs:
-Confidence: F
-Assigned_By: ['all']
-Taxon_ID: ['all']
-Evidence: ['all']
-t2: gene_association.goa_ref_yeast.52
-t3: 
+
 t1: gene_association.goa_ref_yeast.23
-Blacklist: []
-Pubmed: F
-Aspect: ['all']
+t2: gene_association.goa_ref_yeast.52
+t3: gene_association.goa_ref_yeast.52-23.benchmark_LK_bpo.2
+Taxon_ID: set([])
+Aspect: set([])
+Evidence: set([])
+Assigned_By: set([])
+Confidence: F
 Threshold: 4
+Pubmed: F
+Blacklist: set([])
 *********************************************
 
-Creating paper-term frequency file.....
+Populating paper-term frequency file ...
 Parsing t2 file: gene_association.goa_ref_yeast.52 ...
 Parsing t1 file: gene_association.goa_ref_yeast.23 ...
-Verifying benchmark set ...
+Verifying benchmark sets ...
+gene_association.goa_ref_yeast.52-23.benchmark_LK_bpo.2:
+		no error in benchmark creation.
+gene_association.goa_ref_yeast.52-23.benchmark_LK_cco.2:
+		no error in benchmark creation.
+gene_association.goa_ref_yeast.52-23.benchmark_LK_mfo.2:
+		no error in benchmark creation.
+gene_association.goa_ref_yeast.52-23.benchmark_NK_bpo.2:
+		no error in benchmark creation.
+gene_association.goa_ref_yeast.52-23.benchmark_NK_cco.2:
+		no error in benchmark creation.
+gene_association.goa_ref_yeast.52-23.benchmark_NK_mfo.2:
+		no error in benchmark creation.
 Cleaning working directory ...
-Verification successful for the following benchmark files:
-gene_association.goa_ref_yeast.52.benchmark_LK_bpo.2
-gene_association.goa_ref_yeast.52.benchmark_LK_cco.2
-gene_association.goa_ref_yeast.52.benchmark_LK_mfo.2
-gene_association.goa_ref_yeast.52.benchmark_NK_bpo.2
-gene_association.goa_ref_yeast.52.benchmark_NK_cco.2
-gene_association.goa_ref_yeast.52.benchmark_NK_mfo.2
-Thank you for using Benchmark Verification Tool
-*************************************************
-Welcome to Benchmark Verification Tool !!!!!
-*************************************************
-
-Following is a list of user supplied inputs:
-Confidence: F
-Assigned_By: ['all']
-Taxon_ID: ['all']
-Evidence: ['all']
-t2: gene_association.goa_ref_yeast.52
-t3: gene_association.goa_ref_yeast.52.benchmark_LK_bpo.1
-t1: gene_association.goa_ref_yeast.23
-Blacklist: []
-Pubmed: F
-Aspect: ['all']
-Threshold: 4
-*********************************************
-
-Creating paper-term frequency file.....
-Parsing t2 file: gene_association.goa_ref_yeast.52 ...
-Parsing t1 file: gene_association.goa_ref_yeast.23 ...
-Verifying benchmark set ...
-Cleaning working directory ...
-Verification successful for the following benchmark files:
-gene_association.goa_ref_yeast.52.benchmark_LK_bpo.1
-gene_association.goa_ref_yeast.52.benchmark_LK_cco.1
-gene_association.goa_ref_yeast.52.benchmark_LK_mfo.1
-gene_association.goa_ref_yeast.52.benchmark_NK_bpo.1
-gene_association.goa_ref_yeast.52.benchmark_NK_cco.1
-gene_association.goa_ref_yeast.52.benchmark_NK_mfo.1
 Thank you for using Benchmark Verification Tool
