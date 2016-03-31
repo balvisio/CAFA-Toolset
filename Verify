@@ -54,7 +54,15 @@ class bcolors:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
-config_filename = '.cafarc' # Default configuration file name
+# Default configuration file name:
+config_filename = '.cafarc'
+# Default benchmark file name suffices:
+bmSuffix_LK_bpo = '.benchmark_LK_bpo.'
+bmSuffix_LK_cco = '.benchmark_LK_cco.'
+bmSuffix_LK_mfo = '.benchmark_LK_mfo.'
+bmSuffix_NK_bpo = '.benchmark_NK_bpo.'
+bmSuffix_NK_cco = '.benchmark_NK_cco.'
+bmSuffix_NK_mfo = '.benchmark_NK_mfo.'
 
 class Verify:
     def __init__(self):
@@ -76,25 +84,14 @@ class Verify:
         self.t2_input_file = ld.locate_GOAfile(t2, self.work_dir)
 
         # Names for SIX benchmark files: bpo, cco, and mfo for LK and NK benchmark types:
-        benchmarkVersion = basename(t3).strip().split('.')[-1]
-        self.benchmark_LK_bpo = self.t2_input_file + '-' + \
-                                (basename(t1).split('.'))[-1] + \
-                                '.benchmark_LK_bpo.' + benchmarkVersion
-        self.benchmark_LK_cco = self.t2_input_file + '-' + \
-                                (basename(t1).split('.'))[-1] + \
-                                '.benchmark_LK_cco.' + benchmarkVersion
-        self.benchmark_LK_mfo = self.t2_input_file + '-' + \
-                                (basename(t1).split('.'))[-1] + \
-                                '.benchmark_LK_mfo.' + benchmarkVersion
-        self.benchmark_NK_bpo = self.t2_input_file + '-' + \
-                                (basename(t1).split('.'))[-1] + \
-                                '.benchmark_NK_bpo.' + benchmarkVersion
-        self.benchmark_NK_cco = self.t2_input_file + '-' + \
-                                (basename(t1).split('.'))[-1] + \
-                                '.benchmark_NK_cco.' + benchmarkVersion
-        self.benchmark_NK_mfo = self.t2_input_file + '-' + \
-                                (basename(t1).split('.'))[-1] + \
-                                '.benchmark_NK_mfo.' + benchmarkVersion
+        self.get_benchmark_filenames()
+
+        # Locate benchmark files:
+
+        if (self.locate_benchmark_files()): 
+            print ('No benchmark file in the specified version is found. Program quitting ...')
+            print ('*************************************************************************')
+            sys.exit(1)
 
         # Names for THREE files to store non-EXP and EXP type entries:
         # These files will be deleted once the calculation is done
@@ -108,21 +105,24 @@ class Verify:
         # Name for GO ID frequency per pubmed id for t2 file:
         # This file will be deleted once the calculations are done
         self.t2_ptf_file =  self.t2_input_file + '_with_annotations_per_paper.txt'
-        
-    def create_benchmarkFilename(self, ontType):
+    
+    def get_benchmark_filenames(self): 
         """
-        This method creates a benchmark filename based on input file names at times 
-         t1 and t2
+        This method initializes the benchmark file names based on the user 
+        input file name.
         """
-        ob = basename(self.parsed_dict['t2']) + '-' + \
-            ((basename(self.parsed_dict['t1'])).split('.'))[-1] + \
-            '.benchmark' + '_' + ontType
-        index = 1
-        while os.path.exists(self.work_dir + '/' + ob + '.' + str(index)):
-            index = index + 1
-        benchmark_filename = ob + '.' + str(index-1)
-        return benchmark_filename
+        t3_basename = basename(self.parsed_dict['t3']).strip()
+        bmVersion = t3_basename.split('.')[-1]
+        fnPrefix = t3_basename[0:len(t3_basename)-(len(bmVersion) + len(bmSuffix_LK_bpo))]
 
+        self.benchmark_LK_bpo = fnPrefix + bmSuffix_LK_bpo + bmVersion
+        self.benchmark_LK_cco = fnPrefix + bmSuffix_LK_cco + bmVersion
+        self.benchmark_LK_mfo = fnPrefix + bmSuffix_LK_mfo + bmVersion
+        self.benchmark_NK_bpo = fnPrefix + bmSuffix_NK_bpo + bmVersion
+        self.benchmark_NK_cco = fnPrefix + bmSuffix_NK_cco + bmVersion
+        self.benchmark_NK_mfo = fnPrefix + bmSuffix_NK_mfo + bmVersion
+        return None
+        
     def create_iterator(self, infile):
         """
         This method creates an iterator object for the input UniProt-GOA file
@@ -145,42 +145,28 @@ class Verify:
 
     def locate_benchmark_files(self):
         """
-        This method tries to find all the benchmark files. If no benchmark 
+        This method tries to find all the benchmark files. If no benchmark
         file is found, it returns True, otherwise it returns False.
         """
         noneFound = True
         if(ld.locate_benchmark_file(self.benchmark_LK_bpo, self.work_dir)):
             noneFound = False
-            pass
-        else:
-            self.benchmark_LK_bpo = ''
+
         if(ld.locate_benchmark_file(self.benchmark_LK_cco, self.work_dir)):
             noneFound = False
-            pass
-        else:
-            self.benchmark_LK_cco = ''
 
         if(ld.locate_benchmark_file(self.benchmark_LK_mfo, self.work_dir)):
             noneFound = False
-            pass
-        else: 
-            self.benchmark_LK_mfo = ''
 
         if(ld.locate_benchmark_file(self.benchmark_NK_bpo, self.work_dir)):
             noneFound = False
-            pass
-        else:
-            self.benchmark_NK_bpo = ''
+
         if(ld.locate_benchmark_file(self.benchmark_NK_cco, self.work_dir)):
             noneFound = False            
-            pass
-        else: 
-            self.benchmark_NK_cco = ''
+
         if(ld.locate_benchmark_file(self.benchmark_NK_mfo, self.work_dir)):
             noneFound = False
-            pass
-        else:
-            self.benchmark_NK_mfo = ''
+
         return noneFound
 
     def create_intermediate_files(self):
@@ -256,78 +242,77 @@ class Verify:
         print '*********************************************\n'
         return None
 
-    def print_epilog(self, LK_bpo, LK_cco, LK_mfo, err_pack_LK, 
-                           NK_bpo, NK_cco, NK_mfo, err_pack_NK):
-        
-        [err_pack_LK_bpo, err_pack_LK_cco, err_pack_LK_mfo] = err_pack_LK.split('|') 
-        [err_pack_NK_bpo, err_pack_NK_cco, err_pack_NK_mfo] = err_pack_NK.split('|') 
-        if (not LK_bpo and not LK_cco and not LK_mfo):
-            print bcolors.WARNING + \
-                'No valid LK-benchmark file found for verification' + \
-                bcolors.ENDC
-        if (not NK_bpo and not NK_cco and not NK_mfo):
-            print bcolors.WARNING + \
-                'No valid NK-benchmark file found for verification' + \
-                bcolors.ENDC
-
-        if (not LK_bpo and not LK_cco and not LK_mfo and 
-            not LK_bpo and not LK_cco and not LK_mfo):
-            print bcolors.OKGREEN + \
-                  'Thank you for using Benchmark Verification Tool' + \
-                   bcolors.ENDC
-            return None
-
-        print bcolors.OKGREEN + \
-            'Verification successful for the following benchmark files:' + \
-            bcolors.ENDC
-        if (LK_bpo):
-            print basename(self.benchmark_LK_bpo)
-        if (LK_cco):
-            print basename(self.benchmark_LK_cco)
-        if (LK_mfo):
-            print basename(self.benchmark_LK_mfo)
-        if (NK_bpo):
-            print basename(self.benchmark_NK_bpo)
-        if (NK_cco):
-            print basename(self.benchmark_NK_cco)
-        if (NK_mfo):
-            print basename(self.benchmark_NK_mfo)
-
-        if (not LK_bpo or not LK_cco or not LK_mfo or 
-            not LK_bpo or not LK_cco or not LK_mfo):
-            print bcolors.OKGREEN + \
-                'The following benchmark files are either not found in the' + \
-                 bcolors.ENDC
-            print bcolors.OKGREEN + \
-                 'workspace or have no content, or in incorrect format:' + \
-                  bcolors.ENDC
-            if (not LK_bpo):
-                print basename(self.benchmark_LK_bpo)
-            if (err_pack_LK_bpo):
-                print err_pack_LK_bpo           
-            if (not LK_cco):
-                print basename(self.benchmark_LK_cco)
-            if (err_pack_LK_cco):
-                print err_pack_LK_cco
-            if (not LK_mfo):
-                print basename(self.benchmark_LK_mfo)
-            if (err_pack_LK_mfo):
-                print err_pack_LK_mfo
-            if (not NK_bpo):
-                print basename(self.benchmark_NK_bpo)
-            if (err_pack_NK_bpo):
-                print err_pack_NK_bpo          
-            if (not NK_cco):
-                print basename(self.benchmark_NK_cco)
-            if (err_pack_NK_cco):
-                print err_pack_NK_cco
-            if (not NK_mfo):
-                print basename(self.benchmark_NK_mfo)
-
+    def print_epilog(self):
         print bcolors.OKGREEN + \
             'Thank you for using Benchmark Verification Tool' + \
             bcolors.ENDC
         return None
+
+    def verify_LK_benchmark(self, benchmark_filename, ontType):
+        if (not os.path.exists(self.work_dir + '/' + benchmark_filename)):
+           print (benchmark_filename + ':\n' + \
+                  '\t\tfile does not exist.')
+           return None
+        if (os.stat(self.work_dir + '/' + \
+            benchmark_filename).st_size != 0):
+            # Checking file format
+            fmt_flg = fc.check_benchmark_format(open(self.work_dir + '/' + \
+                                                benchmark_filename, 'r'))
+            # Checking whether benchmark creation was successful
+            if (fmt_flg):
+                err_msg = vb.verify_LK_benchmark(open(self.t1_iea_name, 'r'),
+                                                 open(self.t1_exp_name, 'r'),
+                                                 open(self.t2_exp_name, 'r'),
+                                                 open(self.work_dir + '/' + \
+                                                      benchmark_filename, 'r'),
+                                                 ontType)
+                if (not err_msg):
+                    print(benchmark_filename + ':\n' + \
+                          '\t\tno error in benchmark creation.')
+                else:
+                    print(benchmark_filename + ':\n' + err_msg)
+                return None
+            else:
+                print(benchmark_filename + ':\n' + \
+                      '\t\tfile is NOT in CORRECT format')
+                return None
+        else:
+            print(benchmark_filename + ':\n' + \
+                  '\t\tfile size is zero')
+            return None
+
+    def verify_NK_benchmark(self, benchmark_filename, ontType):
+        if (not os.path.exists(self.work_dir + '/' + benchmark_filename)):
+           print (benchmark_filename + ':\n' + \
+                  '\t\tfile does not exist.')
+           return None
+        if (os.stat(self.work_dir + '/' + \
+            benchmark_filename).st_size != 0):
+            # Checking file format
+            fmt_flg = fc.check_benchmark_format(open(self.work_dir + '/' + \
+                                                benchmark_filename, 'r'))
+            # Checking whether benchmark creation was successful
+            if (fmt_flg):
+                err_msg = vb.verify_NK_benchmark(open(self.t1_iea_name, 'r'),
+                                                 open(self.t1_exp_name, 'r'),
+                                                 open(self.t2_exp_name, 'r'),
+                                                 open(self.work_dir + '/' + \
+                                                      benchmark_filename, 'r'),
+                                                 ontType)
+                if (not err_msg):
+                    print(benchmark_filename + ':\n' + \
+                          '\t\tno error in benchmark creation.')
+                else:
+                    print(benchmark_filename + ':\n' + err_msg)
+                return None
+            else:
+                print(benchmark_filename + ':\n' + \
+                      '\t\tfile is NOT in CORRECT format')
+                return None
+        else:
+            print(benchmark_filename + ':\n' + \
+                  '\t\tfile size is zero')
+            return None
 
     def process_data(self):
         """ 
@@ -343,12 +328,6 @@ class Verify:
         # Print the welcome message and user argument list:
         self.print_prolog() 
        
-        # Locate benchmark files:
-        if (self.locate_benchmark_files()): 
-            print ('No benchmark file in the specified version is found. Program quitting ...')
-            print ('*************************************************************************')
-            sys.exit(1)
-
         # File format check for t1 file:
         fc.check_gaf_format(self.t1_input_file)
 
@@ -358,38 +337,23 @@ class Verify:
         # Create necessary intermediate files:
         self.create_intermediate_files()
       
-        # Check file format for LK-benchmark sets:
-        if (not self.benchmark_LK_bpo): # if the file exists, check its format
-            fc.check_benchmark_format(self.benchmark_LK_bpo)
-        if (not self.benchmark_LK_cco):
-            fc.check_benchmark_format(self.benchmark_LK_cco)
-        if (not self.benchmark_LK_mfo):
-            fc.check_benchmark_format(self.benchmark_LK_mfo)
-
         # Verifying the benchmarks:
         print 'Verifying benchmark sets ...'
         # Verify LK-benchmark sets:
+        self.verify_LK_benchmark( self.benchmark_LK_bpo, 'BPO')
+        self.verify_LK_benchmark( self.benchmark_LK_cco, 'CCO')
+        self.verify_LK_benchmark( self.benchmark_LK_mfo, 'MFO')
 
-        LK_bpo, LK_cco, LK_mfo, err_pack_LK = vb.verify_LK_benchmark(open(self.t1_iea_name, 'r'),
-                                                                     open(self.t1_exp_name, 'r'),
-                                                                     open(self.t2_exp_name, 'r'),
-                                                                     self.benchmark_LK_bpo,
-                                                                     self.benchmark_LK_cco,
-                                                                     self.benchmark_LK_mfo)
         # Verify NK-benchmark sets:
-        NKcount = 0
-        LK_bpo, LK_cco, LK_mfo, err_pack_NK = vb.verify_NK_benchmark(open(self.t1_iea_name, 'r'),
-                                                                     open(self.t1_exp_name, 'r'),
-                                                                     open(self.t2_exp_name, 'r'),
-                                                                     self.benchmark_NK_bpo,
-                                                                     self.benchmark_NK_cco,
-                                                                     self.benchmark_NK_mfo)
+        self.verify_NK_benchmark( self.benchmark_NK_bpo, 'BPO')
+        self.verify_NK_benchmark( self.benchmark_NK_cco, 'CCO')
+        self.verify_NK_benchmark( self.benchmark_NK_mfo, 'MFO')
+
         # Delete intermediate files:
         self.delete_intermediate_files()
 
         # Print summary of running this program:
-        self.print_epilog(LK_bpo, LK_cco, LK_mfo, err_pack_LK, 
-                          LK_bpo, LK_cco, LK_mfo, err_pack_NK)
+        self.print_epilog()
         return None
 
 if __name__ == '__main__':
@@ -397,7 +361,7 @@ if __name__ == '__main__':
         print(sys.argv[0] + ' : docstring')
         print(__doc__)
         sys.exit(0)
-    else: 
+    else:
         vm = Verify()     # Create an instance of Verify class 
         vm.process_data() # Process data and verify the benchmark sets
         sys.exit(0)
