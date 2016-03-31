@@ -32,16 +32,32 @@
                 This method builds a dictionary for <protein, GO ID> tuples 
                 from t1_iea file.
 
-       create_exp_ann_dict: 
+        create_exp_ann_dict: 
                 This method builds three dictionaries in BPO, CCO, and MFO 
                 categories for <protein, GO ID> tuples from a 
                 t1_exp or t2_exp file.
 
-       verify_LK_benchmark_xxo: 
-               This method verifies any of the LK-benchmark sets.
+        check_LK_benchmark_creation(t1_iea_dict,
+                                   t1_xxo_dict, 
+                                   t2_xxo_dict,
+                                   benchmark_fh):
+            This method verifies the benchmark entries in the benchmark file
+            passed by the file handle benchmark_fh. 
 
-       verify_NK_benchmark_xxo: 
-               This method verifies any of the NK-benchmark sets.
+            Meaning of xxo: xxo is replaced runtime by bpo, cco, or mfo to 
+            make this method specific to a certain type of benchmarks.
+
+        check_NK_benchmark_creation(t1_iea_dict,
+                                    t1_bpo_dict,
+                                    t1_cco_dict,
+                                    t1_mfo_dict,
+                                    t2_xxo_dict,
+                                    benchmark_fh):
+            This method verifies the benchmark entries in the benchmark file
+            passed by the file handle benchmark_fh.
+
+            Meaning of xxo: xxo is replaced runtime by bpo, cco, or mfo to 
+            make this method specific to a certain type of benchmarks.
 """
 
 import os.path
@@ -103,7 +119,7 @@ def check_LK_benchmark_creation(t1_iea_dict,
                                 benchmark_fh):
     """
     This method verifies the benchmark entries in the benchmark file
-    output_filename_LK_xxo.
+    passed by the file handle benchmark_fh. 
 
     Meaning of xxo: xxo is replaced runtime by bpo, cco, or mfo to make 
     this method specific to a certain type of benchmarks.
@@ -180,7 +196,7 @@ def check_NK_benchmark_creation(t1_iea_dict,
                                 benchmark_fh):
     """ 
     This method verifies the benchmark entries in the benchmark file 
-    output_filename_NK_xxo.
+    passed by the file handle benchmark_fh. 
 
     Meaning of xxo: xxo is replaced runtime by bpo, cco, or mfo to make 
     this method specific to a certain type of benchmarks.
@@ -235,7 +251,6 @@ def verify_NK_benchmark(t1_iea_handle,
                                               t1_mfo_dict,
                                               t2_bpo_dict,
                                               benchmark_fh)
-
     elif (ontType == 'CCO'):
         # Verify NK-CCO benchmarks:
         err_msg = check_NK_benchmark_creation(t1_iea_dict,
@@ -244,7 +259,6 @@ def verify_NK_benchmark(t1_iea_handle,
                                               t1_mfo_dict,
                                               t2_cco_dict,
                                               benchmark_fh)
-
     elif (ontType == 'MFO'):
         # Verify NK-MFO benchmarks:
         err_msg = check_NK_benchmark_creation(t1_iea_dict,
