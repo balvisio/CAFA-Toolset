@@ -70,8 +70,7 @@ class Filter:
 
         t1 = self.parsed_dict['t1'] # Extract input file name
         # Locate the input file:
-        self.t1_input_file = ld.locate_SwissProtfile(t1,
-                                                     self.work_dir)
+        self.t1_input_file = ld.locate_SwissProtfile(t1, self.work_dir)
         # Create output file name for target sequences:
         self.output_filename = self.create_outfilename() 
 
