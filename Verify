@@ -86,8 +86,7 @@ class Verify:
         # Names for SIX benchmark files: bpo, cco, and mfo for LK and NK benchmark types:
         self.get_benchmark_filenames()
 
-        # Locate benchmark files:
-
+        # Locate the benchmark files:
         if (self.locate_benchmark_files()): 
             print ('No benchmark file in the specified version is found. Program quitting ...')
             print ('*************************************************************************')
@@ -317,12 +316,11 @@ class Verify:
     def process_data(self):
         """ 
         This method is the entry point of Benchmark Verification Tool. 
-        It invokes different functions to print welcome message, 
-        format checking for input files, create necessary 
-        intermediate files, checks file format of the benchmark 
-        sets, verify correctness of the entries in the benchmark 
-        sets, delete intermediate files, and print summary of 
-        running this program.  
+        It invokes other method for 
+            (1) file format checking
+            (2) creating intermediate files
+            (3) verifying benchmark sets
+            (4) deleting intermediate files
         """ 
 
         # Print the welcome message and user argument list:
@@ -337,7 +335,7 @@ class Verify:
         # Create necessary intermediate files:
         self.create_intermediate_files()
       
-        # Verifying the benchmarks:
+        # Verifying benchmark sets:
         print 'Verifying benchmark sets ...'
         # Verify LK-benchmark sets:
         self.verify_LK_benchmark( self.benchmark_LK_bpo, 'BPO')
