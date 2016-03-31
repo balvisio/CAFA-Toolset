@@ -56,7 +56,20 @@ def check_gaf_format(fname):
             fhandle.close()
             sys.exit(1)
 
-def check_benchmark_format(benchmarkFile):
+def check_benchmark_format(benchmark_fh):
+    """
+    This method checks the format of a benchmark file. 
+    It returns False:
+        if the the file is NOT in correct  2-column format
+    Otherwise, it returns True
+    """
+    for lines in benchmark_fh:
+        cols = lines.strip().split('\t')
+        if len(cols) != 2:
+            return False
+    return True
+
+def check_benchmark_format_old(benchmarkFile, work_dir):
     """
     This method checks the format of a benchmark file. 
     It returns False:
@@ -66,12 +79,12 @@ def check_benchmark_format(benchmarkFile):
         the the file is NOT in correct format
     Otherwise, it returns True
     """
-    if not os.path.exists(benchmarkFile):
+    if not os.path.exists(work_dir + '/' + benchmarkFile):
         return False 
-    elif os.stat(benchmarkFile).st_size == 0:
+    elif os.stat(work_dir + '/' + benchmarkFile).st_size == 0:
         return False
     else:
-        fh = open(benchmarkFile, 'r')
+        fh = open(work_dir + '/' + benchmarkFile, 'r')
         for lines in fh:
             cols = lines.strip().split('\t')
             if len(cols) != 2:
