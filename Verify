@@ -88,8 +88,9 @@ class Verify:
 
         # Locate the benchmark files:
         if (self.locate_benchmark_files()): 
-            print ('No benchmark file in the specified version is found. Program quitting ...')
-            print ('*************************************************************************')
+            print ('No benchmark file in the specified version is found.') 
+            print('Verify Program quitting ...')
+            print ('****************************************************')
             sys.exit(1)
 
         # Names for THREE files to store non-EXP and EXP type entries:
