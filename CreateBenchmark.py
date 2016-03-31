@@ -81,13 +81,13 @@ def write_benchmarks(protName,
                     t2_xxo_dict,
                     bmfile_LK_xxo_handle,
                     bmfile_NK_xxo_handle,
-                    LKtype # Can take string BPO, CCO, or MFO
+                    ontType # Can take string BPO, CCO, or MFO
                    ):
-    if LKtype.upper() == 'BPO':
+    if ontType.upper() == 'BPO':
         t1_xxo_dict = t1_bpo_dict
-    elif LKtype.upper() == 'CCO':
+    elif ontType.upper() == 'CCO':
         t1_xxo_dict = t1_cco_dict
-    elif LKtype.upper() == 'MFO':
+    elif ontType.upper() == 'MFO':
         t1_xxo_dict = t1_mfo_dict
     else:
         print 'Error in write_benchmarks parameter passing'
