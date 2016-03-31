@@ -37,10 +37,11 @@ CAFA 3 experiment. The CAFA 1 results are published [1] and CAFA 2 results
 are submitted for publication. 
 
 #### Some important sites 
-* CAFA rules and announcements: http://biofunctionprediction.org/node/8 
 * Automated Protein Function Prediction: http://biofunctionprediction.org/
 * Function-SIG (formerly AFP-SIG) at ISMB 2016: https://www.iscb.org/ismb2016program/ismb2016-sigs#afp-sig  
- 
+* CAFA rules and announcements: http://biofunctionprediction.org/node/8 
+
+
 The definitions of some of the terms used in this document are as follows.
 
 #### UniProt-GOA 
