@@ -16,8 +16,12 @@
             includes the name of program that invoked this method.
 
     locate_SwissProtfile:
-        Does the same thing as locate_GOAfile. Please see the description for 
-        locate_GOAfile.
+        If the file is found in the source directory: 
+            it returns the file path to the source directory
+        else if the file is found in the workspace:
+            it returns the file path to the workspace 
+        otherwise:
+            it print error message and exit the program.  
 
     Note: locate_GOAfile and locate_SwissProtfile are maintained as two separate 
         methods so that in the future file type specific code could be 
@@ -52,16 +56,14 @@ def locate_GOAfile(infile, work_dir):
     return work_dir + '/' + basename(infile)
 
 def locate_SwissProtfile(infile, work_dir):
-    if os.path.exists(work_dir + '/' + basename(infile)):
-        pass
-    elif os.path.exists(infile):
-        shutil.copy(infile, work_dir)
-        print basename(infile) + ' has been copied to workspace.'
+    if os.path.exists(infile):
+        return infile
+    elif os.path.exists(work_dir + '/' + basename(infile)):
+        return work_dir + '/' + basename(infile)
     else:
         print (infile + ' is NOT available. Quitting ' + inspect.stack() [1][1] + ' Tool ...')  
         print ('*********************************************************************')
         sys.exit(1)
-    return work_dir + '/' + basename(infile)
 
 def locate_benchmark_file(infile, work_dir):
     if os.path.exists(work_dir + '/' + basename(infile)):
