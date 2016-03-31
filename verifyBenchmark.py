@@ -153,16 +153,19 @@ def verify_LK_benchmark(t1_iea_handle,
 
     err_msg = '' # Error message holders
     if ontType == 'BPO':
+        # Verify LK-BPO benchmarks
         err_msg = check_LK_benchmark_creation(t1_iea_dict,
                                               t1_bpo_dict,
                                               t2_bpo_dict,
                                               benchmark_fh)
-    elif ontType == 'CCO': 
+    elif ontType == 'CCO':
+        # Verify LK-CCO benchmarks
         err_msg = check_LK_benchmark_creation(t1_iea_dict,
                                               t1_cco_dict,
                                               t2_cco_dict,
                                               benchmark_fh)
-    elif ontType == 'MFO': 
+    elif ontType == 'MFO':
+        # Verify LK-MFO benchmarks
         err_msg = check_LK_benchmark_creation(t1_iea_dict,
                                               t1_mfo_dict,
                                               t2_mfo_dict,
@@ -224,8 +227,8 @@ def verify_NK_benchmark(t1_iea_handle,
     t2_bpo_dict, t2_cco_dict, t2_mfo_dict = create_exp_ann_dict(t2_exp_handle)
 
     err_msg  = ''  # Error message holders
-    # Verify NK-BPO benchmarks:
     if (ontType == 'BPO'):
+        # Verify NK-BPO benchmarks:
         err_msg = check_NK_benchmark_creation(t1_iea_dict,
                                               t1_bpo_dict,
                                               t1_cco_dict,
@@ -234,6 +237,7 @@ def verify_NK_benchmark(t1_iea_handle,
                                               benchmark_fh)
 
     elif (ontType == 'CCO'):
+        # Verify NK-CCO benchmarks:
         err_msg = check_NK_benchmark_creation(t1_iea_dict,
                                               t1_bpo_dict,
                                               t1_cco_dict,
@@ -242,6 +246,7 @@ def verify_NK_benchmark(t1_iea_handle,
                                               benchmark_fh)
 
     elif (ontType == 'MFO'):
+        # Verify NK-MFO benchmarks:
         err_msg = check_NK_benchmark_creation(t1_iea_dict,
                                               t1_bpo_dict,
                                               t1_cco_dict,
