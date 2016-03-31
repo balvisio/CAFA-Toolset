@@ -316,7 +316,7 @@ class Verify:
     def process_data(self):
         """ 
         This method is the entry point of Benchmark Verification Tool. 
-        It invokes other method for 
+        It invokes other methods for 
             (1) file format checking
             (2) creating intermediate files
             (3) verifying benchmark sets
