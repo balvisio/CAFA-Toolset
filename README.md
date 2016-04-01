@@ -2,13 +2,13 @@
 #####         A software package for managing the CAFA community experiment 
 #### Features 
 
-  1. Integration of protein annotation databases: This tool integrates 
+  (1) Integration of protein annotation databases: this tool integrates 
       multiple protein annotation datasets in different file formats into 
       one larger dataset. Current release merges two datasets, one in 
       UniProtKB/SwissProt format and the other in UniProt-GOA format, into a 
       larger single dataset in UniProt-GOA format.
 
-  2. Target generation: This tool generates a set of protein sequences 
+  2. Target generation: this tool generates a set of protein sequences 
        in fasta file format that will be sent out to the community participating 
        in the CAFA challenge.
 
@@ -36,7 +36,7 @@ This software is specifically designed for the participants in the upcoming
 CAFA 3 experiment. The CAFA 1 results are published [1] and CAFA 2 results 
 are submitted for publication. 
 
-#### Some important sites 
+#### Some informative sites 
 * Automated Protein Function Prediction: http://biofunctionprediction.org/
 * Function-SIG (formerly AFP-SIG) at ISMB 2016: https://www.iscb.org/ismb2016program/ismb2016-sigs#afp-sig  
 * CAFA rules and announcements: http://biofunctionprediction.org/node/8 
@@ -198,7 +198,7 @@ the name of the input file where the extension is formed in the following way:
 [taxon id].[tfa].[version #]. 
 
 * The map file name is created by adding '.map' at the end of the target sequence 
-output file name: [taxon id].[tfa].[version #]. map
+output file name: [taxon id].[tfa].[version #].map
 
 * Multiple run of this program with the same input file name will create 
 subsequent versions of the output file where the file name will end with 
