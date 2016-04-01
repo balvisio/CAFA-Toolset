@@ -70,10 +70,10 @@ cross-reference.
   ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/
 * UniProtKB/SwissProt dataset archive (release 46 and greater):
   ftp://ftp.uniprot.org/pub/databases/uniprot/previous_releases/
-* Detailed release statistics:
-  http://web.expasy.org/docs/relnotes/relstat.html
 * UniProtKB/SwissProt dataset archive (release 9 to 45):
   ftp://ftp.ebi.ac.uk/pub/databases/SwissProt/sw_old_releases/
+* Detailed release statistics:
+  http://web.expasy.org/docs/relnotes/relstat.html
 * UniProtKB/SwissProt file format:
   http://arep.med.harvard.edu/labgc/jong/Fetch/SwissProtAll.html
 
