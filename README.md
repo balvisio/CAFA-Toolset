@@ -15,7 +15,7 @@
 
   3. Benchmark creation and verification: this is a twin toolset of which one
      creates the benchmark protein sets for the CAFA challenge and the other
-     one verifies these benchmark sets.
+     one verifies those benchmark sets.
 
   4. Assessment of protein annotation prediction models: this tool evaluates 
       the protein annotation prediction models submitted by the participants 
@@ -50,6 +50,7 @@ The definitions of some of the terms used in this document are as follows.
 This is a database for protein assignments to GO resources which maintains a 
 dynamically controlled vocabulary.  
 *  UniProt-GOA dataset archive: ftp://ftp.ebi.ac.uk/pub/databases/GO/goa
+*  UniProt-GOA dataset archive: ftp://ftp.ebi.ac.uk/pub/databases/GO/goa/old
 *  UniProt-GOA datasets can be in GAF 1.0 or GAF 2.0 file format.
 *  GAF 1.0 format: http://geneontology.org/page/go-annotation-file-gaf-format-10
 *  GAF 2.0 format: http://geneontology.org/page/go-annotation-file-format-20
@@ -64,13 +65,13 @@ cross-reference.
 
 * UniProtKB/SwissProt dataset current release:
   ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/
+* UniProtKB/SwissProt dataset archive (release 46 and greater):
+  ftp://ftp.uniprot.org/pub/databases/uniprot/previous_releases/
 * Detailed release statistics:
   http://web.expasy.org/docs/relnotes/relstat.html
 * UniProtKB/SwissProt dataset archive (release 9 to 45):
   ftp://ftp.ebi.ac.uk/pub/databases/SwissProt/sw_old_releases/
-* UniProtKB/SwissProt dataset archive (release 46 and greater):
-  ftp://ftp.uniprot.org/pub/databases/uniprot/previous_releases/
-* UniProtKB/SwissProt file format: 
+* UniProtKB/SwissProt file format:
   http://arep.med.harvard.edu/labgc/jong/Fetch/SwissProtAll.html
 
 #### Time points t0, t1, t2, and t3
