@@ -171,9 +171,7 @@ class Filter:
         self.print_epilog(seqCount, seqCount_exp)
 
 if __name__ == '__main__':
-    if (sys.argv[0] == 'Filter' or \
-        sys.argv[0] == './Filter') and \
-        len(sys.argv) == 1:
+    if len(sys.argv) == 1:
         print (sys.argv[0] + ' docstring:')
         print(__doc__)
         sys.exit(0)
