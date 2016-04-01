@@ -125,8 +125,7 @@ class Benchmark:
                 Here again, this ensures that multiple runs of Benchmark 
                 program with the same arguments creates new version of output
                 files.
-
-        Finally, the method returns the newly created filename.
+        At the end, the method returns the newly created filename.
         """
 
         if not self.parsed_dict['outfile'] == '':
