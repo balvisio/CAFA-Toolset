@@ -48,13 +48,16 @@ The definitions of some of the terms used in this document are as follows.
 
 #### UniProt-GOA 
 This is a database for protein assignments to GO resources which maintains a 
-dynamically controlled vocabulary.  
-*  UniProt-GOA dataset archive: ftp://ftp.ebi.ac.uk/pub/databases/GO/goa
-*  UniProt-GOA dataset archive: ftp://ftp.ebi.ac.uk/pub/databases/GO/goa/old
+dynamically controlled vocabulary. 
+*  UniProt-GOA dataset current release: 
+   ftp://ftp.ebi.ac.uk/pub/databases/GO/goa
+*  UniProt-GOA dataset archive: 
+   ftp://ftp.ebi.ac.uk/pub/databases/GO/goa/old
 *  UniProt-GOA datasets can be in GAF 1.0 or GAF 2.0 file format.
 *  GAF 1.0 format: http://geneontology.org/page/go-annotation-file-gaf-format-10
 *  GAF 2.0 format: http://geneontology.org/page/go-annotation-file-format-20
-*  UniProt-GOA README: http://www.geneontology.org/gene-associations/readme/goa.README  
+*  UniProt-GOA README: 
+   http://www.geneontology.org/gene-associations/readme/goa.README
 
 #### UniProtKB/SwissProt 
 This is a non-redundant protein sequence database. Each entry in this database
