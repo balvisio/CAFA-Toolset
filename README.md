@@ -53,7 +53,7 @@ dynamically controlled vocabulary.
    ftp://ftp.ebi.ac.uk/pub/databases/GO/goa
 *  UniProt-GOA dataset archive: 
    ftp://ftp.ebi.ac.uk/pub/databases/GO/goa/old
-*  UniProt-GOA datasets can be in GAF 1.0 or GAF 2.0 file format.
+*  UniProt-GOA datasets can be either in GAF 1.0 or GAF 2.0 file format.
 *  GAF 1.0 format: http://geneontology.org/page/go-annotation-file-gaf-format-10
 *  GAF 2.0 format: http://geneontology.org/page/go-annotation-file-format-20
 *  UniProt-GOA README: 
