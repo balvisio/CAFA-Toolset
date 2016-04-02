@@ -9,7 +9,7 @@
       a larger single dataset in UniProt-GOA format.
 
   2. Target generation: this tool generates a set of protein sequences 
-       in the fasta file format that can be used by the scientific community 
+       in the FASTA file format that can be used by the scientific community 
        participating in the CAFA challenge or anyone performing research in 
        protein function annotation.
 
