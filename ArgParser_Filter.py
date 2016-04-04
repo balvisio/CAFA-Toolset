@@ -24,28 +24,29 @@ import argparse
 import re
 from collections import OrderedDict
 
-
 def collect_args():
     """ 
     This method collects the user supplied arguments and returns them 
     at the end.
     """
-    parser = argparse.ArgumentParser(description='Generate a set of target \
-        sequences for a specific organism by filtering them out fro a \
-        UniProt-SwissProt file.')
-    parser.add_argument('-I1', '--input1', help=' Specifies path to a \
-        UniProt-SwissProt file. This opton is mandatory.')
-    parser.add_argument('-G','--organism', help=' Specifies an organism id, \
-        for example, 559292 for Saccharomyces cerevisiae. This opton is \
-        mandatory.')
-    parser.add_argument('-O', '--output', default='', help='Provides user an\
-        option to specify an output filename prefix. When not specified, \
-        the program will create an output file name.')
+    parser = argparse.ArgumentParser(description='Generate a set of target ' + \
+        'sequences for a specific organism by filtering them out fro a ' + \
+        'UniProt-SwissProt file.')
+    parser.add_argument('-I1', '--input1', help=' Specifies path to a ' + \
+        'UniProt-SwissProt file. This opton is mandatory.')
+    parser.add_argument('-G','--organism', help=' Specifies an organism ' + \
+       'id, for example, 559292 for Saccharomyces cerevisiae. This opton ' + \
+        'is mandatory.')
+    parser.add_argument('-O', '--output', default='', help='Provides user ' + \
+        'an option to specify an output filename prefix. When not ' + \
+        'specified, the program will create an output file name.')
     return parser
 
 def extract_args(args):
-    # This method builds a dicitonary from the user supplied arguments
-    # and returns the constructed dictionary at the end.
+    """
+     This method builds a dicitonary from the user supplied arguments
+     and returns the constructed dictionary at the end.
+    """
     args_dict = OrderedDict() 
     args_dict['t1'] = args.input1
     args_dict['outfile'] = args.output
