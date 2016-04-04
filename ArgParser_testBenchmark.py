@@ -35,12 +35,12 @@ def collect_args():
     This method collects the user supplied arguments and returns 
     them at the end.
     """
-    parser = argparse.ArgumentParser(description='Runs the Benchmark and ' + \n
+    parser = argparse.ArgumentParser(description='Runs the Benchmark and ' + \
              'Verify twin toolset on a set of data files')
-    parser.add_argument('-I', '--input1', help='Specifies path to a file ' + \n
+    parser.add_argument('-I', '--input1', help='Specifies path to a file ' + \
              'listing UniProt-GOA data file names. This option is mandatory.')
-    parser.add_argument('-O', '--output1', help='Specifies path to a file to ' + \n
-             'write messages from running Benchmark and Verify toolsets.' +\ 
+    parser.add_argument('-O', '--output1', help='Specifies path to a file to ' + \
+             'write messages from running Benchmark and Verify toolsets.' + \
              'This option is mandatory.')
     return parser
 
