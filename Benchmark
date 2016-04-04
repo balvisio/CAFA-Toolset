@@ -50,27 +50,36 @@ config_filename = '.cafarc' # Default configuration file name
 
 class Benchmark:
     def __init__(self):
+
+        # Obtain user supplied argument values in a dictionary: 
         self.parsed_dict = ap.parse_args('benchmark')
-                        # Obtain user supplied argument values in a dictionary 
-        self.ConfigParam = Config.read_config(config_filename) # Collect config file entries
-        t1 = self.parsed_dict['t1'] # Retreive file name at time t1
-        t2 = self.parsed_dict['t2'] # Retreive file name at time t2
+        # Collect config file entries:
+        self.ConfigParam = Config.read_config(config_filename) 
+        # Retreive file name at time t1:
+        t1 = self.parsed_dict['t1'] 
+        # Retreive file name at time t2:
+        t2 = self.parsed_dict['t2'] 
         if self.parsed_dict['t1'] == self.parsed_dict['t2']:
             print 'Both input files are from the same time point.\
                 This will not create a valid benchmark set.'
             print 'Program quiting ...'
             sys.exit(1)
+
+        # Retreive output file name:
         outfile_basename = basename(self.parsed_dict['outfile'])
-                                   # Retreive output file name
+        # Retreive work directory name:
         self.work_dir = (self.ConfigParam['workdir']).rstrip('/')
-                                   # Retreive work directory name
+
+        # Create work direcoty, if it does not exist:
         if not os.path.exists(self.work_dir):
             os.makedirs(self.work_dir)
-                # Create work direcoty, if it does not exist
-        self.t1_input_file = ld.locate_GOAfile(t1, self.work_dir) # Locate t1 file
-        self.t2_input_file = ld.locate_GOAfile(t2, self.work_dir) # Locate t2 file
+        # Locate t1 file:
+        self.t1_input_file = ld.locate_GOAfile(t1, self.work_dir) 
+        # Locate t2 file:
+        self.t2_input_file = ld.locate_GOAfile(t2, self.work_dir) 
 
-        # Names for SIX ouput files: bpo, cco, and mfo for LK and NK benchmark types:
+        # Names for SIX ouput files: bpo, cco, and mfo for 
+        # LK and NK benchmark types:
         self.output_filename_LK_bpo = self.create_outfilename('LK_bpo')
         self.output_filename_LK_cco = self.create_outfilename('LK_cco')
         self.output_filename_LK_mfo = self.create_outfilename('LK_mfo')
@@ -80,12 +89,15 @@ class Benchmark:
 
         # Names for THREE files to store non-EXP and EXP type entries:
         # These files will be deleted once the calculation is done
+
+        # File name for entries in t1 file with non-EXP evidence codes:
         self.t1_iea_name = self.t1_input_file + '.iea'
-                # File name for entries in t1 file with non-EXP evidence codes
+
+        # File name for entries in t1 file with EXP evidence codes:
         self.t1_exp_name = self.t1_input_file + '.exp'
-                # File name for entries in t1 file with EXP evidence codes
+
+        # File name for entries in t2 file with EXP evidence codes:
         self.t2_exp_name = self.t2_input_file + '.exp'
-                # File name for entries in t2 file with EXP evidence codes
 
         # Name for GO ID frequency per pubmed id for t2 file:
         # This file will be deleted once the calculations are done
