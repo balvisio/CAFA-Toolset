@@ -7,15 +7,7 @@
    Description of these methods are the following:
    
    collect_args: 
-       This method collects the user supplied arguments. The method takes
-       a string argument which can take two string values 'benchmark' or
-       'verify'. The string value 'benchmark' indicates that the method is
-        invoked by Benchmark program and 'verify' indicates that the
-        method is invoked by Verify program. When this method is invoked
-        by Benchmark program, the method gives user an option to provide
-        an output file name. On the other hand, when the method is invoked
-        by Verify program, the method accepts a mandatory benchmark file
-        name as the user argument.
+       This method collects the user supplied arguments.
 
    extract_args:
        This method puts the user supplied arguments into an ordered
@@ -43,9 +35,13 @@ def collect_args():
     This method collects the user supplied arguments and returns 
     them at the end.
     """
-    parser = argparse.ArgumentParser(description='Runs the Benchmark and Verify twin toolset on a set of data files')
-    parser.add_argument('-I', '--input1', help='Specifies path to a file listing UniProt-GOA data file names. This option is mandatory.')
-    parser.add_argument('-O', '--output1', help='Specifies path to a file to write messages from running Benchmark and Verify toolsets. This option is mandatory.')
+    parser = argparse.ArgumentParser(description='Runs the Benchmark and ' + \n
+             'Verify twin toolset on a set of data files')
+    parser.add_argument('-I', '--input1', help='Specifies path to a file ' + \n
+             'listing UniProt-GOA data file names. This option is mandatory.')
+    parser.add_argument('-O', '--output1', help='Specifies path to a file to ' + \n
+             'write messages from running Benchmark and Verify toolsets.' +\ 
+             'This option is mandatory.')
     return parser
 
 def extract_args(args):
