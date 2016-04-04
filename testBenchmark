@@ -5,9 +5,12 @@
     
     How to run this program: 
 
-       python testBenchmark 'bmTest.txt'
+       python testBenchmark -I=testDataset.txt -O='output.txt'
   
-    bmTest.txt will have all the messages coming from running this program. 
+    testDataset lists the pairs of UniProt-GOA annotatation file names 
+        at time points t1 and t2. 
+    output.txt will have all the messages coming from running 
+        Benchmark and Verify programs.
 '''
 
 import os
@@ -22,91 +25,61 @@ import urllib2
 import gzip 
 import zipfile
 
+import ArgParser_testBenchmark as ap
+import Config
+
+config_filename = '.cafarc' # Default configuration file name
+
 class testBenchmark: 
-    def __init__(self, orgName, versionStart, versionEnd, output_filename):
-        self.url_goa_cur = 'ftp://ftp.ebi.ac.uk/pub/databases/GO/goa/' + orgName.upper() + '/'
-        self.url_goa_arc = 'ftp://ftp.ebi.ac.uk/pub/databases/GO/goa/old/' + orgName.upper() + '/'
-        self.dataDir = 'goa/' + orgName.lower() + '/'
-        self.check_dataDir()
-        self.download_byOrganism(orgName, versionStart, versionEnd)
-        self.output_filename = output_filename
+    def __init__(self):
+        self.parsed_dict = ap.parse_args()
+        self.ConfigParam = Config.read_config(config_filename)
+        self.work_dir = (self.ConfigParam['workdir'].rstrip('/'))
+
+        self.testData_filename = self.work_dir + '/' + basename(self.parsed_dict['input1'])
+        self.output_filename = self.work_dir + '/' + basename(self.parsed_dict['output1'])
+
+        self.goa_arc = 'ftp://ftp.ebi.ac.uk/pub/databases/GO/goa/old'
         self.bmVersion = 1 # The benchmark verion number that will be verified
- 
-    def check_dataDir(self): 
-        downloadDir = self.dataDir
-        parentDir = downloadDir.split('/')[0]
-        if(not os.path.isdir(parentDir)):
-            print('Creating '+ parentDir + ' directory ...')
-            os.system('mkdir ' + parentDir)
-            print('Creating ' + downloadDir.split('/')[1] + ' directory ...')   
-            os.system('mkdir ' + downloadDir)
-        elif(not os.path.isdir(downloadDir)): 
-            print('Creating ' + downloadDir.split('/')[1] + ' directory ...')   
-            os.system('mkdir ' + downloadDir)
+
+        if not os.path.exists(self.work_dir):
+            os.makedirs(self.work_dir)
+                # Create work direcoty, if it does not exist
+
+    def download_testDataset(self, testDataset_fh):
+        for line in testDataset_fh:
+            if (not os.path.isfile(self.work_dir + '/' + line.strip())):
+                fname = line.strip() + '.gz'
+                folder_name = line.strip().split('.')[1].split('_')[-1]
+                      # Organism specific folder name
+                url = self.goa_arc + '/' + \
+                      line.strip().split('.')[1].split('_')[-1].upper() +'/'
+                     # Organism specific URL
+                self.download(url, fname)
         return None
-
-    def download_byOrganism(self, orgName, versionStart, versionEnd):
-        downloadDir = self.dataDir
-
-        prefix = 'gene_association.goa_ref_'+ orgName.lower()
-        suffix = 'gz'
-
-        if (commands.getoutput('ls ' + downloadDir + ' | wc -l') < 
-            versionEnd - versionStart + 2):
-            print('Downloading and unzipping UniProt-GOA files for ' + orgName + ' ...')
-
-        # Download the current UniProt-GOA file
-        if (not os.path.isfile(downloadDir + prefix + '.' + str(versionEnd+1))):
-            fname = prefix + '.' + suffix
-#            urllib.urlretrieve(self.url_goa_cur + fname, downloadDir + fname)
-            # unzip_file(downloadDir + fname, downloadDir + fname.rstrip('.gz'))
-            if(self.download(self.url_goa_cur,fname)):
-                #os.system('gunzip ' +  downloadDir + fname)
-                os.system('mv ' + downloadDir + fname.replace('.gz','') + ' ' +\
-                                  downloadDir + fname.replace('.gz','') + '.' + \
-                                                str(versionEnd+1))
-        # Download the archived UniProt-GOA files:
-        for vno in range(versionStart, versionEnd+1):
-            if (not os.path.isfile(downloadDir + prefix + '.' + str(vno))):
-                fname = prefix + '.' + str(vno) + '.' + suffix
-#                urllib.urlretrieve(self.url_goa_arc + fname, downloadDir + fname)
-                self.download(self.url_goa_arc, fname)
-                #os.system('gunzip ' +  downloadDir + fname)
 
     def download(self, url, fname):
         print('Downloading ' + fname + ' ... ')
-        downloadDir = self.dataDir
         try:
             response = urllib2.urlopen(url + fname)
         except urllib2.HTTPError, err:
             return False
         except urllib2.URLError, err: 
             return False
-#        out_fh = open(downloadDir +  fname, 'w')
-#        out_fh.write(response.read())
-
-        gzFile = StringIO.StringIO()
-        gzFile.write(response.read())
-        gzFile.seek(0)
-        dcompressedFile = gzip.GzipFile(fileobj=gzFile)
-        with open(downloadDir +  fname.replace('.gz',''), 'w') as outfile:
-            outfile.write(dcompressedFile.read())
-        return True
-
-    def unzip_file(gz_filename, unzipped_filename):
-        gz_fh = gzip.open(gz_filename, 'rb')
-        out_fh = open(unzipped_filename, 'wb')
-        out_fh.write(gz_fh.read())
-        gz_fh.close()
+        out_fh = open(self.work_dir + '/' + fname, 'w')
+        out_fh.write(response.read())
         out_fh.close()
-        return None
+        os.system('gzip -d ' + self.work_dir + '/' + fname)
+        return True
 
     def exec_twinToolset(self, input1, input2):
         # Create benchmark files:
-        cmd_benchmark = 'python' + ' ' + 'Benchmark' + ' ' + '-I1=' + input1 + ' ' + '-I2=' + input2 + '>>' + self.output_filename 
+        cmd_benchmark = 'python' + ' ' + 'Benchmark' + ' ' + '-I1=' +\
+                        input1 + ' ' + '-I2=' + input2 + '>>' +\
+                        self.output_filename
         subprocess.call(cmd_benchmark, shell=True) 
 
-        # Verify the benchmark files just created:
+        # Verify the benchmark files that are just created:
         input3 = basename(input2) + '-' + (basename(input1).split('.'))[-1] + \
                  '.benchmark_LK_bpo.' + str(self.bmVersion)
         cmd_verify = 'python' + ' ' + 'Verify' + ' ' + '-I1=' + input1 + ' ' +\
@@ -115,27 +88,22 @@ class testBenchmark:
         subprocess.call(cmd_verify, shell=True)
         return None
 
-    def runTest(self, orgName):
-        # Run 1: 
-        subprocess.call('echo ' +  'Run 1:' +\
-                        '>>' + self.output_filename, shell=True)
-        input1 = self.dataDir + 'gene_association.goa_ref_' + orgName + '.23'
-        input2 = self.dataDir + 'gene_association.goa_ref_' + orgName + '.52'
-        self.exec_twinToolset(input1, input2)
-        # Run 2: 
-        subprocess.call('echo ' +  'Run 2:' +\
-                        '>>' + self.output_filename, shell=True)
+    def run_test(self, testDataset_fh):
+        for line in testDataset_fh:
+            input1 = self.work_dir + '/' + line.rstrip('\n')
+            input2 = self.work_dir + '/' + (next(testDataset_fh)).strip('\n')
+            self.exec_twinToolset(input1, input2)
+        return None
 
-        input1 = self.dataDir + 'gene_association.goa_ref_' + orgName + '.24'
-        input2 = self.dataDir + 'gene_association.goa_ref_' + orgName + '.52'
-        self.exec_twinToolset(input1, input2)
-
-        # Run 3: 
-        subprocess.call('echo ' +  'Run 3:' +\
-                        '>>' + self.output_filename, shell=True)
-        input1 = self.dataDir + 'gene_association.goa_ref_' + orgName + '.30'
-        input2 = self.dataDir + 'gene_association.goa_ref_' + orgName + '.50'
-
+    def process_test(self):
+        self.download_testDataset(open(self.testData_filename, 'r'))
+        subprocess.call('echo ' +  'This is the output from running ' +\
+                        'testBenchmark program' + ' ' + \
+                        '>' + self.output_filename, shell=True)
+        self.run_test(open(self.testData_filename, 'r'))
+        subprocess.call('echo ' +  'End of running testBenchmark ' +\
+                        'program' + ' ' + '>>' + \
+                         self.output_filename, shell=True)
         return None
 
 if __name__ == '__main__':
@@ -143,43 +111,7 @@ if __name__ == '__main__':
         print (sys.argv[0] + ' docstring:')
         print(__doc__)
         sys.exit(0)
-    elif len(sys.argv) == 2:
-        subprocess.call('echo ' +  'This is the output file for running ' +\
-                        'Bencharmk and Verify twin programs' + ' ' + \
-                        '>' + sys.argv[1], shell=True)
-        # Running for yeast
-        subprocess.call('echo ' +  'Running for ' + 'yeast' + ' ' + \
-                        '>>' + sys.argv[1], shell=True)
-        subprocess.call('echo ' +  '-----------------' + ' ' + \
-                        '>>' + sys.argv[1], shell=True)
-        testObject = testBenchmark('yeast', 23, 55, sys.argv[1])
-
-        testObject.runTest('yeast')
-        subprocess.call('echo ' +  'End of running for yeast' +\
-                        '>>' + sys.argv[1], shell=True)
-        subprocess.call('echo ' +  '-----------------------' + ' ' + \
-                        '>>' + sys.argv[1], shell=True)
-        subprocess.call('echo ' +  '-----------------------' + ' ' + \
-                        '>>' + sys.argv[1], shell=True)
-
-
-        # Running for yeast
-        subprocess.call('echo ' +  'Running for ' + 'fly' + ' ' + \
-                        '>>' + sys.argv[1], shell=True)
-        subprocess.call('echo ' +  '-----------------' + ' ' + \
-                        '>>' + sys.argv[1], shell=True)
-        testObject = testBenchmark('fly', 23, 55, sys.argv[1])
-        testObject.runTest('fly')
-        subprocess.call('echo ' +  'End of running for fly' +\
-                        '>>' + sys.argv[1], shell=True)
-        subprocess.call('echo ' +  '-----------------------' + ' ' + \
-                        '>>' + sys.argv[1], shell=True)
-        subprocess.call('echo ' +  '-----------------------' + ' ' + \
-                        '>>' + sys.argv[1], shell=True)
-#        testObject = testBenchmark('arabidopsis', 95, 100, sys.argv[1])
-#        raise SystemExit
-
-    else: 
-         print ('Missing output file name')
-         print(__doc__)
-         sys.exit(0)
+    else:
+        testObject = testBenchmark()
+        testObject.process_test()
+        sys.exit(0)
