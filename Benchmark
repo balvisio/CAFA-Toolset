@@ -60,8 +60,8 @@ class Benchmark:
         # Retreive file name at time t2:
         t2 = self.parsed_dict['t2'] 
         if self.parsed_dict['t1'] == self.parsed_dict['t2']:
-            print 'Both input files are from the same time point.\
-                This will not create a valid benchmark set.'
+            print 'Both input files are from the same time point. ' + \
+                'This will not create a valid benchmark set.'
             print 'Program quiting ...'
             sys.exit(1)
 
