@@ -37,19 +37,20 @@ def collect_args():
     and returns them at the end.
     """
 
-    parser = argparse.ArgumentParser(description='Merges \
-                    UniProtKB/SwissProt and UniProt-GOA files for some specific \
-                    organism.')
-    parser.add_argument('-I1', '--input1', help='Specifies path to a \
-                    UniProt/Swissprot file. This opton is mandatory.')
-    parser.add_argument('-I2', '--input2', help='Specifies path to a \
-                    UniProt-GOA file. This option is mandatory.')
-    parser.add_argument('-G','--organism', help='Specifies an organism id, \
-                    for example, 559292 for Saccharomyces cerevisiae. This \
-                    opton is mandatory.')
-    parser.add_argument('-O', '--output', default='', help='Provides user \
-                    an option to specify an output filename prefix. When not \
-                    specified, the program will create an output file name.')
+    parser = argparse.ArgumentParser(description='Merges UniProtKB/' + \
+                    'SwissProt and UniProt-GOA files for some ' + \
+                    'specific organism.')
+    parser.add_argument('-I1', '--input1', help='Specifies path to ' +  \
+                    'a UniProt/Swissprot file. This opton is mandatory.')
+    parser.add_argument('-I2', '--input2', help='Specifies path to a ' + \
+                    'UniProt-GOA file. This option is mandatory.')
+    parser.add_argument('-G','--organism', help='Specifies an organism id,' + \
+                    'for example, 559292 for Saccharomyces cerevisiae. ' + \
+                    'This opton is mandatory.')
+    parser.add_argument('-O', '--output', default='', help='Provides user ' + \
+                    'an option to specify an output filename prefix. When ' + \
+                    'not specified, the program will create an output ' + \
+                    'file name.')
     return parser
 
 def extract_args(args):
