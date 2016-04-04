@@ -5,7 +5,7 @@
     
     How to run this program: 
 
-       python testBenchmark -I=testDataset.txt -O='output.txt'
+       python testBenchmark -I=testDataset.txt -O=output.txt
   
     testDataset lists the pairs of UniProt-GOA annotatation file names 
         at time points t1 and t2. 
