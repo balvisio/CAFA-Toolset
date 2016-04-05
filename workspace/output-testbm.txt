@@ -1,6 +1,6 @@
 This is the output from running testBenchmark program
 
-python Benchmark -I1=./workspace/gene_association.goa_ref_arabidopsis.95 -I2=./workspace/gene_association.goa_ref_arabidopsis.127 >> ./workspace/output.txt
+python Benchmark -I1=./workspace/gene_association.goa_ref_arabidopsis.95 -I2=./workspace/gene_association.goa_ref_arabidopsis.127 >> ./workspace/output-testbm.txt
 *************************************************
 Welcome to Benchmark Creation Tool !!!!!
 *************************************************
@@ -34,7 +34,7 @@ gene_association.goa_ref_arabidopsis.127-95.benchmark_NK_cco.1
 gene_association.goa_ref_arabidopsis.127-95.benchmark_NK_mfo.1
 [92mThank you for using Benchmark Creation Tool[0m
 
-python Verify -I1=./workspace/gene_association.goa_ref_arabidopsis.95 -I2=./workspace/gene_association.goa_ref_arabidopsis.127 -I3=gene_association.goa_ref_arabidopsis.127-95.benchmark_LK_bpo.1 >> ./workspace/output.txt
+python Verify -I1=./workspace/gene_association.goa_ref_arabidopsis.95 -I2=./workspace/gene_association.goa_ref_arabidopsis.127 -I3=gene_association.goa_ref_arabidopsis.127-95.benchmark_LK_bpo.1 >> ./workspace/output-testbm.txt
 *************************************************
 Welcome to Benchmark Verification Tool !!!!!
 *************************************************
@@ -73,7 +73,7 @@ gene_association.goa_ref_arabidopsis.127-95.benchmark_NK_mfo.1:
 Cleaning working directory ...
 [92mThank you for using Benchmark Verification Tool[0m
 
-python Benchmark -I1=./workspace/gene_association.goa_ref_chicken.92 -I2=./workspace/gene_association.goa_ref_chicken.124 >> ./workspace/output.txt
+python Benchmark -I1=./workspace/gene_association.goa_ref_chicken.92 -I2=./workspace/gene_association.goa_ref_chicken.124 >> ./workspace/output-testbm.txt
 *************************************************
 Welcome to Benchmark Creation Tool !!!!!
 *************************************************
@@ -107,7 +107,7 @@ gene_association.goa_ref_chicken.124-92.benchmark_NK_cco.1
 gene_association.goa_ref_chicken.124-92.benchmark_NK_mfo.1
 [92mThank you for using Benchmark Creation Tool[0m
 
-python Verify -I1=./workspace/gene_association.goa_ref_chicken.92 -I2=./workspace/gene_association.goa_ref_chicken.124 -I3=gene_association.goa_ref_chicken.124-92.benchmark_LK_bpo.1 >> ./workspace/output.txt
+python Verify -I1=./workspace/gene_association.goa_ref_chicken.92 -I2=./workspace/gene_association.goa_ref_chicken.124 -I3=gene_association.goa_ref_chicken.124-92.benchmark_LK_bpo.1 >> ./workspace/output-testbm.txt
 *************************************************
 Welcome to Benchmark Verification Tool !!!!!
 *************************************************
@@ -146,7 +146,7 @@ gene_association.goa_ref_chicken.124-92.benchmark_NK_mfo.1:
 Cleaning working directory ...
 [92mThank you for using Benchmark Verification Tool[0m
 
-python Benchmark -I1=./workspace/gene_association.goa_ref_cow.85 -I2=./workspace/gene_association.goa_ref_cow.117 >> ./workspace/output.txt
+python Benchmark -I1=./workspace/gene_association.goa_ref_cow.85 -I2=./workspace/gene_association.goa_ref_cow.117 >> ./workspace/output-testbm.txt
 *************************************************
 Welcome to Benchmark Creation Tool !!!!!
 *************************************************
@@ -180,7 +180,7 @@ gene_association.goa_ref_cow.117-85.benchmark_NK_cco.1
 gene_association.goa_ref_cow.117-85.benchmark_NK_mfo.1
 [92mThank you for using Benchmark Creation Tool[0m
 
-python Verify -I1=./workspace/gene_association.goa_ref_cow.85 -I2=./workspace/gene_association.goa_ref_cow.117 -I3=gene_association.goa_ref_cow.117-85.benchmark_LK_bpo.1 >> ./workspace/output.txt
+python Verify -I1=./workspace/gene_association.goa_ref_cow.85 -I2=./workspace/gene_association.goa_ref_cow.117 -I3=gene_association.goa_ref_cow.117-85.benchmark_LK_bpo.1 >> ./workspace/output-testbm.txt
 *************************************************
 Welcome to Benchmark Verification Tool !!!!!
 *************************************************
@@ -219,7 +219,7 @@ gene_association.goa_ref_cow.117-85.benchmark_NK_mfo.1:
 Cleaning working directory ...
 [92mThank you for using Benchmark Verification Tool[0m
 
-python Benchmark -I1=./workspace/gene_association.goa_ref_dicty.23 -I2=./workspace/gene_association.goa_ref_dicty.55 >> ./workspace/output.txt
+python Benchmark -I1=./workspace/gene_association.goa_ref_dicty.23 -I2=./workspace/gene_association.goa_ref_dicty.55 >> ./workspace/output-testbm.txt
 *************************************************
 Welcome to Benchmark Creation Tool !!!!!
 *************************************************
@@ -253,7 +253,7 @@ gene_association.goa_ref_dicty.55-23.benchmark_NK_cco.1
 gene_association.goa_ref_dicty.55-23.benchmark_NK_mfo.1
 [92mThank you for using Benchmark Creation Tool[0m
 
-python Verify -I1=./workspace/gene_association.goa_ref_dicty.23 -I2=./workspace/gene_association.goa_ref_dicty.55 -I3=gene_association.goa_ref_dicty.55-23.benchmark_LK_bpo.1 >> ./workspace/output.txt
+python Verify -I1=./workspace/gene_association.goa_ref_dicty.23 -I2=./workspace/gene_association.goa_ref_dicty.55 -I3=gene_association.goa_ref_dicty.55-23.benchmark_LK_bpo.1 >> ./workspace/output-testbm.txt
 *************************************************
 Welcome to Benchmark Verification Tool !!!!!
 *************************************************
@@ -292,7 +292,7 @@ gene_association.goa_ref_dicty.55-23.benchmark_NK_mfo.1:
 Cleaning working directory ...
 [92mThank you for using Benchmark Verification Tool[0m
 
-python Benchmark -I1=./workspace/gene_association.goa_ref_dog.23 -I2=./workspace/gene_association.goa_ref_dog.55 >> ./workspace/output.txt
+python Benchmark -I1=./workspace/gene_association.goa_ref_dog.23 -I2=./workspace/gene_association.goa_ref_dog.55 >> ./workspace/output-testbm.txt
 *************************************************
 Welcome to Benchmark Creation Tool !!!!!
 *************************************************
@@ -326,7 +326,7 @@ gene_association.goa_ref_dog.55-23.benchmark_NK_cco.1
 gene_association.goa_ref_dog.55-23.benchmark_NK_mfo.1
 [92mThank you for using Benchmark Creation Tool[0m
 
-python Verify -I1=./workspace/gene_association.goa_ref_dog.23 -I2=./workspace/gene_association.goa_ref_dog.55 -I3=gene_association.goa_ref_dog.55-23.benchmark_LK_bpo.1 >> ./workspace/output.txt
+python Verify -I1=./workspace/gene_association.goa_ref_dog.23 -I2=./workspace/gene_association.goa_ref_dog.55 -I3=gene_association.goa_ref_dog.55-23.benchmark_LK_bpo.1 >> ./workspace/output-testbm.txt
 *************************************************
 Welcome to Benchmark Verification Tool !!!!!
 *************************************************
@@ -365,7 +365,7 @@ gene_association.goa_ref_dog.55-23.benchmark_NK_mfo.1:
 Cleaning working directory ...
 [92mThank you for using Benchmark Verification Tool[0m
 
-python Benchmark -I1=./workspace/gene_association.goa_ref_fly.23 -I2=./workspace/gene_association.goa_ref_fly.55 >> ./workspace/output.txt
+python Benchmark -I1=./workspace/gene_association.goa_ref_fly.23 -I2=./workspace/gene_association.goa_ref_fly.55 >> ./workspace/output-testbm.txt
 *************************************************
 Welcome to Benchmark Creation Tool !!!!!
 *************************************************
@@ -399,7 +399,7 @@ gene_association.goa_ref_fly.55-23.benchmark_NK_cco.1
 gene_association.goa_ref_fly.55-23.benchmark_NK_mfo.1
 [92mThank you for using Benchmark Creation Tool[0m
 
-python Verify -I1=./workspace/gene_association.goa_ref_fly.23 -I2=./workspace/gene_association.goa_ref_fly.55 -I3=gene_association.goa_ref_fly.55-23.benchmark_LK_bpo.1 >> ./workspace/output.txt
+python Verify -I1=./workspace/gene_association.goa_ref_fly.23 -I2=./workspace/gene_association.goa_ref_fly.55 -I3=gene_association.goa_ref_fly.55-23.benchmark_LK_bpo.1 >> ./workspace/output-testbm.txt
 *************************************************
 Welcome to Benchmark Verification Tool !!!!!
 *************************************************
@@ -438,7 +438,7 @@ gene_association.goa_ref_fly.55-23.benchmark_NK_mfo.1:
 Cleaning working directory ...
 [92mThank you for using Benchmark Verification Tool[0m
 
-python Benchmark -I1=./workspace/gene_association.goa_ref_human.122 -I2=./workspace/gene_association.goa_ref_human.154 >> ./workspace/output.txt
+python Benchmark -I1=./workspace/gene_association.goa_ref_human.122 -I2=./workspace/gene_association.goa_ref_human.154 >> ./workspace/output-testbm.txt
 *************************************************
 Welcome to Benchmark Creation Tool !!!!!
 *************************************************
@@ -472,7 +472,7 @@ gene_association.goa_ref_human.154-122.benchmark_NK_cco.1
 gene_association.goa_ref_human.154-122.benchmark_NK_mfo.1
 [92mThank you for using Benchmark Creation Tool[0m
 
-python Verify -I1=./workspace/gene_association.goa_ref_human.122 -I2=./workspace/gene_association.goa_ref_human.154 -I3=gene_association.goa_ref_human.154-122.benchmark_LK_bpo.1 >> ./workspace/output.txt
+python Verify -I1=./workspace/gene_association.goa_ref_human.122 -I2=./workspace/gene_association.goa_ref_human.154 -I3=gene_association.goa_ref_human.154-122.benchmark_LK_bpo.1 >> ./workspace/output-testbm.txt
 *************************************************
 Welcome to Benchmark Verification Tool !!!!!
 *************************************************
@@ -511,7 +511,7 @@ gene_association.goa_ref_human.154-122.benchmark_NK_mfo.1:
 Cleaning working directory ...
 [92mThank you for using Benchmark Verification Tool[0m
 
-python Benchmark -I1=./workspace/gene_association.goa_ref_mouse.108 -I2=./workspace/gene_association.goa_ref_mouse.140 >> ./workspace/output.txt
+python Benchmark -I1=./workspace/gene_association.goa_ref_mouse.108 -I2=./workspace/gene_association.goa_ref_mouse.140 >> ./workspace/output-testbm.txt
 *************************************************
 Welcome to Benchmark Creation Tool !!!!!
 *************************************************
@@ -545,7 +545,7 @@ gene_association.goa_ref_mouse.140-108.benchmark_NK_cco.1
 gene_association.goa_ref_mouse.140-108.benchmark_NK_mfo.1
 [92mThank you for using Benchmark Creation Tool[0m
 
-python Verify -I1=./workspace/gene_association.goa_ref_mouse.108 -I2=./workspace/gene_association.goa_ref_mouse.140 -I3=gene_association.goa_ref_mouse.140-108.benchmark_LK_bpo.1 >> ./workspace/output.txt
+python Verify -I1=./workspace/gene_association.goa_ref_mouse.108 -I2=./workspace/gene_association.goa_ref_mouse.140 -I3=gene_association.goa_ref_mouse.140-108.benchmark_LK_bpo.1 >> ./workspace/output-testbm.txt
 *************************************************
 Welcome to Benchmark Verification Tool !!!!!
 *************************************************
@@ -584,7 +584,7 @@ gene_association.goa_ref_mouse.140-108.benchmark_NK_mfo.1:
 Cleaning working directory ...
 [92mThank you for using Benchmark Verification Tool[0m
 
-python Benchmark -I1=./workspace/gene_association.goa_ref_pig.23 -I2=./workspace/gene_association.goa_ref_pig.55 >> ./workspace/output.txt
+python Benchmark -I1=./workspace/gene_association.goa_ref_pig.23 -I2=./workspace/gene_association.goa_ref_pig.55 >> ./workspace/output-testbm.txt
 *************************************************
 Welcome to Benchmark Creation Tool !!!!!
 *************************************************
@@ -618,7 +618,7 @@ gene_association.goa_ref_pig.55-23.benchmark_NK_cco.1
 gene_association.goa_ref_pig.55-23.benchmark_NK_mfo.1
 [92mThank you for using Benchmark Creation Tool[0m
 
-python Verify -I1=./workspace/gene_association.goa_ref_pig.23 -I2=./workspace/gene_association.goa_ref_pig.55 -I3=gene_association.goa_ref_pig.55-23.benchmark_LK_bpo.1 >> ./workspace/output.txt
+python Verify -I1=./workspace/gene_association.goa_ref_pig.23 -I2=./workspace/gene_association.goa_ref_pig.55 -I3=gene_association.goa_ref_pig.55-23.benchmark_LK_bpo.1 >> ./workspace/output-testbm.txt
 *************************************************
 Welcome to Benchmark Verification Tool !!!!!
 *************************************************
@@ -657,7 +657,7 @@ gene_association.goa_ref_pig.55-23.benchmark_NK_mfo.1:
 Cleaning working directory ...
 [92mThank you for using Benchmark Verification Tool[0m
 
-python Benchmark -I1=./workspace/gene_association.goa_ref_rat.108 -I2=./workspace/gene_association.goa_ref_rat.140 >> ./workspace/output.txt
+python Benchmark -I1=./workspace/gene_association.goa_ref_rat.108 -I2=./workspace/gene_association.goa_ref_rat.140 >> ./workspace/output-testbm.txt
 *************************************************
 Welcome to Benchmark Creation Tool !!!!!
 *************************************************
@@ -691,7 +691,7 @@ gene_association.goa_ref_rat.140-108.benchmark_NK_cco.1
 gene_association.goa_ref_rat.140-108.benchmark_NK_mfo.1
 [92mThank you for using Benchmark Creation Tool[0m
 
-python Verify -I1=./workspace/gene_association.goa_ref_rat.108 -I2=./workspace/gene_association.goa_ref_rat.140 -I3=gene_association.goa_ref_rat.140-108.benchmark_LK_bpo.1 >> ./workspace/output.txt
+python Verify -I1=./workspace/gene_association.goa_ref_rat.108 -I2=./workspace/gene_association.goa_ref_rat.140 -I3=gene_association.goa_ref_rat.140-108.benchmark_LK_bpo.1 >> ./workspace/output-testbm.txt
 *************************************************
 Welcome to Benchmark Verification Tool !!!!!
 *************************************************
@@ -730,7 +730,7 @@ gene_association.goa_ref_rat.140-108.benchmark_NK_mfo.1:
 Cleaning working directory ...
 [92mThank you for using Benchmark Verification Tool[0m
 
-python Benchmark -I1=./workspace/gene_association.goa_ref_worm.23 -I2=./workspace/gene_association.goa_ref_worm.55 >> ./workspace/output.txt
+python Benchmark -I1=./workspace/gene_association.goa_ref_worm.23 -I2=./workspace/gene_association.goa_ref_worm.55 >> ./workspace/output-testbm.txt
 *************************************************
 Welcome to Benchmark Creation Tool !!!!!
 *************************************************
@@ -764,7 +764,7 @@ gene_association.goa_ref_worm.55-23.benchmark_NK_cco.1
 gene_association.goa_ref_worm.55-23.benchmark_NK_mfo.1
 [92mThank you for using Benchmark Creation Tool[0m
 
-python Verify -I1=./workspace/gene_association.goa_ref_worm.23 -I2=./workspace/gene_association.goa_ref_worm.55 -I3=gene_association.goa_ref_worm.55-23.benchmark_LK_bpo.1 >> ./workspace/output.txt
+python Verify -I1=./workspace/gene_association.goa_ref_worm.23 -I2=./workspace/gene_association.goa_ref_worm.55 -I3=gene_association.goa_ref_worm.55-23.benchmark_LK_bpo.1 >> ./workspace/output-testbm.txt
 *************************************************
 Welcome to Benchmark Verification Tool !!!!!
 *************************************************
@@ -803,7 +803,7 @@ gene_association.goa_ref_worm.55-23.benchmark_NK_mfo.1:
 Cleaning working directory ...
 [92mThank you for using Benchmark Verification Tool[0m
 
-python Benchmark -I1=./workspace/gene_association.goa_ref_yeast.23 -I2=./workspace/gene_association.goa_ref_yeast.55 >> ./workspace/output.txt
+python Benchmark -I1=./workspace/gene_association.goa_ref_yeast.23 -I2=./workspace/gene_association.goa_ref_yeast.55 >> ./workspace/output-testbm.txt
 *************************************************
 Welcome to Benchmark Creation Tool !!!!!
 *************************************************
@@ -837,7 +837,7 @@ gene_association.goa_ref_yeast.55-23.benchmark_NK_cco.1
 gene_association.goa_ref_yeast.55-23.benchmark_NK_mfo.1
 [92mThank you for using Benchmark Creation Tool[0m
 
-python Verify -I1=./workspace/gene_association.goa_ref_yeast.23 -I2=./workspace/gene_association.goa_ref_yeast.55 -I3=gene_association.goa_ref_yeast.55-23.benchmark_LK_bpo.1 >> ./workspace/output.txt
+python Verify -I1=./workspace/gene_association.goa_ref_yeast.23 -I2=./workspace/gene_association.goa_ref_yeast.55 -I3=gene_association.goa_ref_yeast.55-23.benchmark_LK_bpo.1 >> ./workspace/output-testbm.txt
 *************************************************
 Welcome to Benchmark Verification Tool !!!!!
 *************************************************
@@ -876,7 +876,7 @@ gene_association.goa_ref_yeast.55-23.benchmark_NK_mfo.1:
 Cleaning working directory ...
 [92mThank you for using Benchmark Verification Tool[0m
 
-python Benchmark -I1=./workspace/gene_association.goa_ref_zebrafish.95 -I2=./workspace/gene_association.goa_ref_zebrafish.127 >> ./workspace/output.txt
+python Benchmark -I1=./workspace/gene_association.goa_ref_zebrafish.95 -I2=./workspace/gene_association.goa_ref_zebrafish.127 >> ./workspace/output-testbm.txt
 *************************************************
 Welcome to Benchmark Creation Tool !!!!!
 *************************************************
@@ -910,7 +910,7 @@ gene_association.goa_ref_zebrafish.127-95.benchmark_NK_cco.1
 gene_association.goa_ref_zebrafish.127-95.benchmark_NK_mfo.1
 [92mThank you for using Benchmark Creation Tool[0m
 
-python Verify -I1=./workspace/gene_association.goa_ref_zebrafish.95 -I2=./workspace/gene_association.goa_ref_zebrafish.127 -I3=gene_association.goa_ref_zebrafish.127-95.benchmark_LK_bpo.1 >> ./workspace/output.txt
+python Verify -I1=./workspace/gene_association.goa_ref_zebrafish.95 -I2=./workspace/gene_association.goa_ref_zebrafish.127 -I3=gene_association.goa_ref_zebrafish.127-95.benchmark_LK_bpo.1 >> ./workspace/output-testbm.txt
 *************************************************
 Welcome to Benchmark Verification Tool !!!!!
 *************************************************
@@ -949,7 +949,7 @@ gene_association.goa_ref_zebrafish.127-95.benchmark_NK_mfo.1:
 Cleaning working directory ...
 [92mThank you for using Benchmark Verification Tool[0m
 
-python Benchmark -I1=./workspace/gene_association.goa_ref_uniprot.121 -I2=./workspace/gene_association.goa_ref_uniprot.152 >> ./workspace/output.txt
+python Benchmark -I1=./workspace/gene_association.goa_ref_uniprot.121 -I2=./workspace/gene_association.goa_ref_uniprot.152 >> ./workspace/output-testbm.txt
 *************************************************
 Welcome to Benchmark Creation Tool !!!!!
 *************************************************
@@ -983,7 +983,7 @@ gene_association.goa_ref_uniprot.152-121.benchmark_NK_cco.1
 gene_association.goa_ref_uniprot.152-121.benchmark_NK_mfo.1
 [92mThank you for using Benchmark Creation Tool[0m
 
-python Verify -I1=./workspace/gene_association.goa_ref_uniprot.121 -I2=./workspace/gene_association.goa_ref_uniprot.152 -I3=gene_association.goa_ref_uniprot.152-121.benchmark_LK_bpo.1 >> ./workspace/output.txt
+python Verify -I1=./workspace/gene_association.goa_ref_uniprot.121 -I2=./workspace/gene_association.goa_ref_uniprot.152 -I3=gene_association.goa_ref_uniprot.152-121.benchmark_LK_bpo.1 >> ./workspace/output-testbm.txt
 *************************************************
 Welcome to Benchmark Verification Tool !!!!!
 *************************************************
