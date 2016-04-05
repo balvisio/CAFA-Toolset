@@ -66,15 +66,18 @@ bmSuffix_NK_mfo = '.benchmark_NK_mfo.'
 
 class Verify:
     def __init__(self):
+
+        # Obtain user supplied argument values in a dictionary: 
         self.parsed_dict = ap.parse_args('verify')
-                        # Obtain user supplied argument values in a dictionary 
-        self.ConfigParam = Config.read_config(config_filename) # Collect config file entries
+        # Collect config file entries:
+        self.ConfigParam = Config.read_config(config_filename) 
+
         t1 = self.parsed_dict['t1'] # Retreive file name at time t1
         t2 = self.parsed_dict['t2'] # Retreive file name at time t2
         t3 = self.parsed_dict['t3'] # Retreive file name at time t2
 
+        # Retreive work directory name:
         self.work_dir = (self.ConfigParam['workdir']).rstrip('/')
-                                   # Retreive work directory name
         if not os.path.exists(self.work_dir):
             print ('Work space not found. Check ' + config_filename + \
                 ' file for correct assignment of work directory.')
@@ -103,7 +106,7 @@ class Verify:
                 # File name for entries in t2 file with EXP evidence codes
 
         # Name for GO ID frequency per pubmed id for t2 file:
-        # This file will be deleted once the calculations are done
+        # This file will be deleted once the calculations are completed 
         self.t2_ptf_file =  self.t2_input_file + '_with_annotations_per_paper.txt'
     
     def get_benchmark_filenames(self): 
@@ -289,10 +292,10 @@ class Verify:
            return None
         if (os.stat(self.work_dir + '/' + \
             benchmark_filename).st_size != 0):
-            # Checking file format
+            # Checking file format:
             fmt_flg = fc.check_benchmark_format(open(self.work_dir + '/' + \
                                                 benchmark_filename, 'r'))
-            # Checking whether benchmark creation was successful
+            # Checking whether benchmark creation was successful:
             if (fmt_flg):
                 err_msg = vb.verify_NK_benchmark(open(self.t1_iea_name, 'r'),
                                                  open(self.t1_exp_name, 'r'),
@@ -339,14 +342,14 @@ class Verify:
         # Verifying benchmark sets:
         print 'Verifying benchmark sets ...'
         # Verify LK-benchmark sets:
-        self.verify_LK_benchmark( self.benchmark_LK_bpo, 'BPO')
-        self.verify_LK_benchmark( self.benchmark_LK_cco, 'CCO')
-        self.verify_LK_benchmark( self.benchmark_LK_mfo, 'MFO')
+        self.verify_LK_benchmark(self.benchmark_LK_bpo, 'BPO')
+        self.verify_LK_benchmark(self.benchmark_LK_cco, 'CCO')
+        self.verify_LK_benchmark(self.benchmark_LK_mfo, 'MFO')
 
         # Verify NK-benchmark sets:
-        self.verify_NK_benchmark( self.benchmark_NK_bpo, 'BPO')
-        self.verify_NK_benchmark( self.benchmark_NK_cco, 'CCO')
-        self.verify_NK_benchmark( self.benchmark_NK_mfo, 'MFO')
+        self.verify_NK_benchmark(self.benchmark_NK_bpo, 'BPO')
+        self.verify_NK_benchmark(self.benchmark_NK_cco, 'CCO')
+        self.verify_NK_benchmark(self.benchmark_NK_mfo, 'MFO')
 
         # Delete intermediate files:
         self.delete_intermediate_files()
@@ -361,6 +364,6 @@ if __name__ == '__main__':
         print(__doc__)
         sys.exit(0)
     else:
-        vm = Verify()     # Create an instance of Verify class 
+        vm = Verify()     # Create an instance of Verify class
         vm.process_data() # Process data and verify the benchmark sets
         sys.exit(0)
