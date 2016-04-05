@@ -7,9 +7,9 @@
 
        python testBenchmark -I=testDataset.txt -O=output-testbm.txt
   
-    testDataset lists the pairs of UniProt-GOA annotatation file names 
+    testDataset.txt lists the pairs of UniProt-GOA annotatation file names 
         at time points t1 and t2. 
-    output.txt will have all the messages coming from running 
+    output-testbm.txt will have all the messages coming from running 
         Benchmark and Verify programs.
 '''
 
