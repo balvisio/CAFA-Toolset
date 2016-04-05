@@ -18,12 +18,7 @@ import sys
 import subprocess
 from os.path import basename
 
-import commands
-import StringIO
-import urllib
 import urllib2
-import gzip
-import zipfile
 
 import ArgParser_testBenchmark as ap
 import Config
