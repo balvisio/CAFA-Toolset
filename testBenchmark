@@ -58,7 +58,7 @@ class testBenchmark:
                 # Download the file from the UniProt-GOA archive: 
                 print('Downloading ' + fname + ' ... ')
                 if (not self.download(url, fname)): 
-                    print('Download failed for ' + fname)
+                    print('Downloading failed for ' + fname)
         return None
 
     def download(self, url, fname):
