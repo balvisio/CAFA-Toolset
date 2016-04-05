@@ -57,7 +57,8 @@ class testBenchmark:
                 url = self.goa_arc + '/' + folder_name 
                 # Download the file from the UniProt-GOA archive: 
                 print('Downloading ' + fname + ' ... ')
-                self.download(url, fname)
+                if (not self.download(url, fname)): 
+                    print('Download failed for ' + fname)
         return None
 
     def download(self, url, fname):
