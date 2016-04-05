@@ -80,7 +80,7 @@ class testBenchmark:
                         input1 + ' ' + '-I2=' + input2 + ' >> ' + \
                         self.output_filename
         fh = open(self.output_filename, 'a')
-        fh.write('\n'+cmd_benchmark + '\n')
+        fh.write('\n' + cmd_benchmark + '\n')
         fh.close()
         subprocess.call(cmd_benchmark, shell=True)
 
@@ -91,7 +91,7 @@ class testBenchmark:
                      '-I2=' + input2 + ' ' + '-I3=' + input3 + ' >> ' + \
                      self.output_filename
         fh = open(self.output_filename, 'a')
-        fh.write('\n'+cmd_verify + '\n')
+        fh.write('\n' + cmd_verify + '\n')
         fh.close()
         subprocess.call(cmd_verify, shell=True)
         return None
