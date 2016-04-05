@@ -71,7 +71,7 @@ def check_args(args_dict, parser):
                 user_dict['input1'] = args_dict[arg]
         elif arg == 'output1':
             if args_dict[arg] == None:
-                print 'Missing file to list messages\n'
+                print 'Missing file to write messages\n'
                 print parser.parse_args(['--help'])
             else:
                 user_dict['output1'] = args_dict[arg]
