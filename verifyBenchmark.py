@@ -121,7 +121,7 @@ def check_LK_benchmark_creation(t1_iea_dict,
     This method verifies the benchmark entries in the benchmark file
     passed by the file handle benchmark_fh. 
 
-    Meaning of xxo: xxo is replaced runtime by bpo, cco, or mfo to make 
+    Meaning of xxo: xxo is replaced runtime by bpo, cco, or mfo to make
     this method specific to a certain type of benchmarks.
     """
     err_msg = ''
@@ -231,7 +231,8 @@ def verify_NK_benchmark(t1_iea_handle,
     """
     This method verifies No-Knowledge benchmark sets.
     """
-    # Create a dictionary for the <protein, GO ID> tuples from t1_iea file:
+    # Create a dictionary for the 
+    # <protein, GO ID> tuples from t1_iea file:
     t1_iea_dict = create_iea_ann_dict(t1_iea_handle)
 
     # Create BPO, CCO and MFO dictionaries for the
