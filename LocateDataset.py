@@ -23,9 +23,11 @@
         otherwise:
             it print error message and exit the program.  
 
-    Note: locate_GOAfile and locate_SwissProtfile are maintained as two separate 
-        methods so that in the future file type specific code could be 
-        added if the need arise.   
+    Note: The main difference between locate_GOAfile and locate_SwissProtfile 
+        methods is that locate_GOAfile copies the file to the workspace and 
+        returns the file path to this workspace, whereas locate_SwissProtfile 
+        method does not copy the file to the workspace and returns the file 
+        path to the source of the file. 
             
     locate_benchmark_file: 
         This method takes a benchmark file as input.
