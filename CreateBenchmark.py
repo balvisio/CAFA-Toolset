@@ -30,11 +30,11 @@
        creates three LK-benchmark files - one for each ontology.
              For NK-benchmarks: It extracts the proteins that did not have 
        experimental evidence in any of the three ontologies at time t1 but 
-       gained experimental evidence at some ontology at time t2. This option
+       gained experimental evidence in some ontology at time t2. This option
        creates three NK-benchmark files - one for each ontology.
             The filtered proteins are saved in SIX 2-column tab delimited 
        files - one file for each ontology - for both LK and NK types. Thus,
-       create_benchmark() populate total SIX files.
+       create_benchmark() populates total SIX files.
 
    The module also has the following two methods to aid the benchmark creation
    by the above method:
@@ -154,7 +154,7 @@ def create_benchmarks(t1_iea_handle,
                              t2_cco_dict,
                              bmfile_LK_cco_handle,
                              bmfile_NK_cco_handle,
-                             'CCO',
+                             'CCO'
                             )
     # Clear all dictionaries: 
     t1_bpo_dict.clear()
