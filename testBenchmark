@@ -5,7 +5,7 @@
     
     How to run this program: 
 
-       python testBenchmark -I=testDataset.txt -O=output.txt
+       python testBenchmark -I=testDataset.txt -O=output-testbm.txt
   
     testDataset lists the pairs of UniProt-GOA annotatation file names 
         at time points t1 and t2. 
@@ -22,7 +22,7 @@ import commands
 import StringIO
 import urllib
 import urllib2
-import gzip 
+import gzip
 import zipfile
 
 import ArgParser_testBenchmark as ap
@@ -30,7 +30,7 @@ import Config
 
 config_filename = '.cafarc' # Default configuration file name
 
-class testBenchmark: 
+class testBenchmark:
     def __init__(self):
         self.parsed_dict = ap.parse_args()
         self.ConfigParam = Config.read_config(config_filename)
@@ -54,10 +54,10 @@ class testBenchmark:
                 # Organism specific archived file name at UniProt-GOA archive:
                 fname = line.strip() + '.gz'
                 # Organism specific URL at UniProt-GOA archive:
-                url = self.goa_arc + '/' + folder_name.upper() 
-                # Download the file from the UniProt-GOA archive: 
+                url = self.goa_arc + '/' + folder_name.upper()
+                # Download the file from the UniProt-GOA archive:
                 print('Downloading ' + fname + ' ... ')
-                if (not self.download(url, fname)): 
+                if (not self.download(url, fname)):
                     print('Downloading failed for ' + fname)
         return None
 
@@ -66,7 +66,7 @@ class testBenchmark:
             response = urllib2.urlopen(url + '/' + fname)
         except urllib2.HTTPError, err:
             return False
-        except urllib2.URLError, err: 
+        except urllib2.URLError, err:
             return False
         out_fh = open(self.work_dir + '/' + fname, 'w')
         out_fh.write(response.read())
@@ -82,16 +82,16 @@ class testBenchmark:
         fh = open(self.output_filename, 'a')
         fh.write('\n'+cmd_benchmark + '\n')
         fh.close()
-        subprocess.call(cmd_benchmark, shell=True) 
+        subprocess.call(cmd_benchmark, shell=True)
 
         # Verify the benchmark files that are just created:
         input3 = basename(input2) + '-' + (basename(input1).split('.'))[-1] + \
                  '.benchmark_LK_bpo.' + str(self.bmVersion)
         cmd_verify = 'python' + ' ' + 'Verify' + ' ' + '-I1=' + input1 + ' ' + \
                      '-I2=' + input2 + ' ' + '-I3=' + input3 + ' >> ' + \
-                     self.output_filename 
+                     self.output_filename
         fh = open(self.output_filename, 'a')
-        fh.write('\n'+cmd_verify + '\n') 
+        fh.write('\n'+cmd_verify + '\n')
         fh.close()
         subprocess.call(cmd_verify, shell=True)
         return None
