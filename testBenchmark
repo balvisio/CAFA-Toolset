@@ -54,7 +54,7 @@ class testBenchmark:
                 # Organism specific archived file name at UniProt-GOA archive:
                 fname = line.strip() + '.gz'
                 # Organism specific URL at UniProt-GOA archive:
-                url = self.goa_arc + '/' + folder_name 
+                url = self.goa_arc + '/' + folder_name.upper() 
                 # Download the file from the UniProt-GOA archive: 
                 print('Downloading ' + fname + ' ... ')
                 if (not self.download(url, fname)): 
