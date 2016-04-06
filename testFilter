@@ -1,0 +1,150 @@
+#!/usr/bin/env python
+'''
+    The methods in this module are designed to test Benchmark Creation and 
+    Verification twin toolset.    
+    
+    How to run this program: 
+
+       python testFilter -I=dataset-testfr.txt -O=output-testbm.txt
+  
+    dataset-testfr.txt lists the UniProtKB/SwissProt release names  
+        to be used to download the UniProtKB/SwissProt files.
+    output-testfr.txt will have all the messages coming from running 
+        Filter.
+'''
+
+import os
+import sys
+import subprocess
+from os.path import basename
+import urllib2
+
+import ArgParser_testToolset as ap
+import Config
+
+config_filename = '.cafarc' # Default configuration file name
+
+class testFilter:
+    def __init__(self):
+        self.parsed_dict = ap.parse_args()
+        self.ConfigParam = Config.read_config(config_filename)
+        self.work_dir = (self.ConfigParam['workdir'].rstrip('/'))
+
+        self.testData_filename = self.work_dir + '/' + \
+                                 basename(self.parsed_dict['input1'])
+        self.output_filename = self.work_dir + '/' + \
+                               basename(self.parsed_dict['output1'])
+
+        self.goa_arc = 'ftp://ftp.ebi.ac.uk/pub/databases/GO/goa/old'
+        self.sprot_arc_base = 'ftp://ftp.uniprot.org/pub/databases/uniprot/previous_releases'
+        self.bmVersion = 1 # The benchmark verion number that will be verified
+
+        if not os.path.exists(self.work_dir):
+            os.makedirs(self.work_dir)
+                # Create work direcoty, if it does not exist
+
+    def download_testDataset(self, testDataset_fh):
+        for line in testDataset_fh:
+            target_fname = line.strip().lower()
+            release_name = 'release-' + target_fname.split('.dat.')[1]
+            folder_name = release_name + '/' + \
+                          'knowledgebase'
+            url = self.sprot_arc_base + '/' + folder_name
+            download_fname = target_fname.split('.dat.')[0] + '-only' + \
+                             target_fname.split('.dat.')[1] + '.tar.gz'
+            tar_fname = download_fname.rstrip('.gz')
+            zip_fname = 'uniprot_sprot.dat.gz'
+            if (os.path.isfile(self.work_dir + '/' + target_fname)):
+                pass
+            elif (os.path.isfile(self.work_dir + '/' + tar_fname)):
+                os.system('tar -xC ' + self.work_dir + ' -f ' + \
+                          self.work_dir + '/' + tar_fname + \
+                          ' ' + zip_fname)
+                os.system('gzip -d ' + self.work_dir + '/' + zip_fname)
+                os.system('mv ' +  self.work_dir + '/' + \
+                          zip_fname.rstrip('.gz') + ' ' + \
+                          self.work_dir + '/' + target_fname)
+                os.system('rm ' + self.work_dir + '/' + tar_fname)
+            elif (os.path.isfile(self.work_dir + '/' + download_fname)):
+                os.system('gzip -d ' + self.work_dir + '/' + download_fname)
+                os.system('tar -xC ' + self.work_dir + ' -f ' + \
+                          self.work_dir + '/' + tar_fname + \
+                          ' ' + zip_fname)
+                os.system('gzip -d ' + self.work_dir + '/' + zip_fname)
+                os.system('mv ' +  self.work_dir + '/' + \
+                          zip_fname.rstrip('.gz') + ' ' + \
+                          self.work_dir + '/' + target_fname)
+                os.system('rm ' + self.work_dir + '/' + tar_fname)
+            else:
+                print('Downloading ' + download_fname + ' ...')
+                if (not self.download(url, download_fname)): 
+                    print('Downloading failed for ' + download_fname)
+                    continue
+                os.system('gzip -d ' + self.work_dir + '/' + download_fname)
+                os.system('tar -xC ' + self.work_dir + ' -f ' + \
+                          self.work_dir + '/' + tar_fname + \
+                          ' ' + zip_fname)
+                os.system('tar -xC ' + self.work_dir + ' -f ' + \
+                          self.work_dir + '/' + tar_fname + \
+                          ' ' + zip_fname)
+                os.system('gzip -d ' + self.work_dir + '/' + zip_fname)
+                os.system('mv ' +  self.work_dir + '/' + \
+                          zip_fname.rstrip('.gz') + ' ' + \
+                          self.work_dir + '/' + target_fname)
+                os.system('rm ' + self.work_dir + '/' + tar_fname)
+            break
+        return True 
+
+    def download(self, url, fname):
+        try:
+            response = urllib2.urlopen(url + '/' + fname)
+        except urllib2.HTTPError, err:
+            return False
+        except urllib2.URLError, err:
+            print url 
+            print fname
+            print err 
+            return False
+        out_fh = open(self.work_dir + '/' + fname, 'w')
+        out_fh.write(response.read())
+        out_fh.close()
+        return True
+
+    def exec_Filter(self, input1, input2):
+        # Filter target sequences:
+        cmd_filter = 'python' + ' ' + 'Filter' + ' ' + '-I1=' + \
+                        input1 + ' ' + '-G=' + input2 + ' >> ' + \
+                        self.output_filename
+        fh = open(self.output_filename, 'a')
+        fh.write('\n' + cmd_filter+ '\n')
+        fh.close()
+        subprocess.call(cmd_filter, shell=True)
+        return None
+
+    def run_test(self, testDataset_fh):
+        for line in testDataset_fh:
+            input1 = self.work_dir + '/' + line.strip()
+            input2 = '559292'
+            self.exec_Filter(input1, input2)
+        return None
+
+    def process_test(self):
+        self.download_testDataset(open(self.testData_filename, 'r'))
+        subprocess.call('echo ' +  'This is the output from running ' + \
+                        'testFilter program' + ' ' + \
+                        '>' + self.output_filename, shell=True)
+        self.run_test(open(self.testData_filename, 'r'))
+        subprocess.call('echo ' +  'End of running testFilter' + \
+                        'program' + ' ' + '>>' + \
+                         self.output_filename, shell=True)
+        return None
+
+if __name__ == '__main__':
+    if len(sys.argv) == 1:
+        print (sys.argv[0] + ' docstring:')
+        print(__doc__)
+        sys.exit(0)
+    else:
+        testObject = testFilter()
+        testObject.process_test()
+        sys.exit(0)
