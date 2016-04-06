@@ -19,7 +19,7 @@ import subprocess
 from os.path import basename
 import urllib2
 
-import ArgParser_testBenchmark as ap
+import ArgParser_testToolset as ap
 import Config
 
 config_filename = '.cafarc' # Default configuration file name
