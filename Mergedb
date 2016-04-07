@@ -1,19 +1,34 @@
 #!/usr/bin/env python
 
 '''
+    The Mergedb program Merges UniProtKB/SwissProt and Uniprot-GOA
+    annotation datasets.
+
     This program takes the following four inputs:
         (1) a UniProtKB/SwissProt file
         (2) a UniProt-GOA file
         (3) a taxon id
         (4) an optional output file
 
-    When the output file name is NOT given, the program will construct 
-    an output file name by combining the UniProtKB/SwissProt and 
-    UniProt-GOA file names supplied by the user. 
+    When the output file name is NOT given, the program will construct
+    an output file name by combining the UniProtKB/SwissProt and
+    UniProt-GOA file names supplied by the user.
 
     The GO terms in the UniProtKB/SwissProt file that are NOT in the
     UniProt-GOA file for the supplied taxon id, are merged together
     with those in the UniProt-GOA file and written to the output file.
+
+    How to run this program: 
+        For some input UniProtKB/SwissProt file uniprot_sprot.dat.2014_09
+    and UniProt-GOA file gene_association.goa_ref_yeast.38 and taxon id
+    55929:
+        
+        python Mergedb -I1=uniprot_sprot.dat.2014_09 -I2=gene_association.goa_ref_yeast.38 -G 559292
+       
+        One output file will be created: gene_association.goa_ref_yeast.38+sprot.38.1
+    which will contain all the entries from the second input file together 
+    with all the new annotations for yeast (taxon id 559292) from the first 
+    input file. 
 '''
 
 import os
