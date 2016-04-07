@@ -1,7 +1,8 @@
 #!/usr/bin/env python
+
 '''
-    The methods in this module are designed to test Benchmark Creation and 
-    Verification twin toolset.    
+    The testBenchmark program runs the Benchmark and Verify twin programs 
+    repeatedly on a set of UniProt-GOA annoation file pairs.    
     
     How to run this program: 
 
@@ -9,7 +10,7 @@
   
     dataset-testbm.txt lists the pairs of UniProt-GOA annotatation file names 
         at time points t1 and t2.
-    -V1=1 tells testBenchmark to execute Verify Program on benchmark sets of 
+    -V1=1 tells testBenchmark to execute the Verify Program on benchmark sets of 
         version 1.
     output-testbm.txt will have all the messages coming from running 
         Benchmark and Verify programs.
@@ -21,7 +22,7 @@ import subprocess
 from os.path import basename
 import urllib2
 
-import ArgParser_testToolset as ap
+import ArgParser_testBenchmark as ap
 import Config
 
 config_filename = '.cafarc' # Default configuration file name
@@ -34,10 +35,10 @@ class testBenchmark:
 
         self.testData_filename = self.work_dir + '/' + basename(self.parsed_dict['input1'])
         self.output_filename = self.work_dir + '/' + basename(self.parsed_dict['output1'])
+        self.bmVersion = self.parsed_dict['version'] # The benchmark verion number that will be verified
 
         self.goa_arc = 'ftp://ftp.ebi.ac.uk/pub/databases/GO/goa/old'
-        self.bmVersion = 1 # The benchmark verion number that will be verified
-
+        
         if not os.path.exists(self.work_dir):
             os.makedirs(self.work_dir)
                 # Create work direcoty, if it does not exist
