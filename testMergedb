@@ -153,13 +153,14 @@ class testMergedb:
 
     def exec_Mergedb(self, input1, input2):
         # Create benchmark files:
-        cmd_mergedb = 'python' + ' ' + 'Mergedb' + ' ' + '-I1=' + \
-                      input1 + ' ' + '-I2=' + input2 + ' >> ' + \
+        cmd_mergedb = 'python' + ' ' + 'Mergedb' + ' -I1=' + \
+                      input1 + ' -I2=' + input2 + \
+                      ' -G ' + self.taxon_id + ' >> ' + \
                       self.output_filename
         fh = open(self.output_filename, 'a')
-        fh.write('\n' + cmd_benchmark + '\n')
+        fh.write('\n' + cmd_mergedb + '\n')
         fh.close()
-        subprocess.call(cmd_benchmark, shell=True)
+        subprocess.call(cmd_mergedb, shell=True)
         return None
 
     def run_test(self, testDataset_fh):
@@ -172,7 +173,7 @@ class testMergedb:
 
     def process_test(self):
         self.download_testDataset(open(self.testData_filename, 'r'))
-        raise SystemExit
+#        raise SystemExit
         subprocess.call('echo ' +  'This is the output from running ' + \
                         'testBenchmark program' + ' ' + \
                         '>' + self.output_filename, shell=True)
