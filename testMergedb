@@ -57,6 +57,7 @@ class testMergedb:
             goa_fname = (next(testDataset_fh)).strip().lower()
             print sprot_fname 
             print goa_fname
+            break
 
     def download_goa_file(self, goa_fname):
         '''
@@ -65,6 +66,7 @@ class testMergedb:
         onto the workspace.
         Otherwise, it returns False.
         '''
+
         if (not os.path.isfile(self.work_dir + '/' + goa_fname)):
             # Organism specific folder name at UniProt-GOA archive:
             folder_name = line.strip().split('.')[1].split('_')[-1]
@@ -79,7 +81,6 @@ class testMergedb:
                 return False 
             os.system('gzip -d ' + self.work_dir + '/' + fname)
         return True 
-
 
     def download_sprot_file(self, sprot_fname):
         '''
@@ -138,7 +139,6 @@ class testMergedb:
             os.system('rm ' + self.work_dir + '/' + tar_fname)
         return True 
 
-
     def download(self, url, fname):
         try:
             response = urllib2.urlopen(url + '/' + fname)
@@ -151,33 +151,23 @@ class testMergedb:
         out_fh.close()
         return True
 
-    def exec_twinMergedb(self, input1, input2):
+    def exec_Mergedb(self, input1, input2):
         # Create benchmark files:
-        cmd_benchmark = 'python' + ' ' + 'Benchmark' + ' ' + '-I1=' + \
-                        input1 + ' ' + '-I2=' + input2 + ' >> ' + \
-                        self.output_filename
+        cmd_mergedb = 'python' + ' ' + 'Mergedb' + ' ' + '-I1=' + \
+                      input1 + ' ' + '-I2=' + input2 + ' >> ' + \
+                      self.output_filename
         fh = open(self.output_filename, 'a')
         fh.write('\n' + cmd_benchmark + '\n')
         fh.close()
         subprocess.call(cmd_benchmark, shell=True)
-
-        # Verify the benchmark files that are just created:
-        input3 = basename(input2) + '-' + (basename(input1).split('.'))[-1] + \
-                 '.benchmark_LK_bpo.' + str(self.bmVersion)
-        cmd_verify = 'python' + ' ' + 'Verify' + ' ' + '-I1=' + input1 + ' ' + \
-                     '-I2=' + input2 + ' ' + '-I3=' + input3 + ' >> ' + \
-                     self.output_filename
-        fh = open(self.output_filename, 'a')
-        fh.write('\n' + cmd_verify + '\n')
-        fh.close()
-        subprocess.call(cmd_verify, shell=True)
         return None
 
     def run_test(self, testDataset_fh):
         for line in testDataset_fh:
             input1 = self.work_dir + '/' + line.strip()
             input2 = self.work_dir + '/' + (next(testDataset_fh)).strip()
-            self.exec_twinToolset(input1, input2)
+            self.exec_Mergedb(input1, input2)
+            break
         return None
 
     def process_test(self):
@@ -198,6 +188,6 @@ if __name__ == '__main__':
         print(__doc__)
         sys.exit(0)
     else:
-        testObject = testBenchmark()
+        testObject = testMergedb()
         testObject.process_test()
         sys.exit(0)
