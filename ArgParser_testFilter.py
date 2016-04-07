@@ -60,7 +60,6 @@ def check_args(args_dict, parser):
     dictionary of the input arguments and returns the created dictionary
     at the end.
     """
-
     user_dict = OrderedDict()
     for arg in args_dict:
         if arg == 'input1':
@@ -86,7 +85,6 @@ def parse_args():
           returns an dictionary of correct arguments
        4. Finally, it returns the dictionary at the end.
     """
-
     parser = collect_args() # Collect user arguments
     args_dict = {}
     args, unknown = parser.parse_known_args()
