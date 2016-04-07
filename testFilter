@@ -1,16 +1,18 @@
 #!/usr/bin/env python
 '''
-    The methods in this module are designed to test Benchmark Creation and 
-    Verification twin toolset.    
+    This testFilter program runs the Filter program repeatedly
+    on a set of UniProtKB/SwissProt protein annotation files 
+    and records the messages coming from running the Filter 
+    program.
     
     How to run this program: 
 
        python testFilter -I=dataset-testfr.txt -O=output-testbm.txt
   
-    dataset-testfr.txt lists the UniProtKB/SwissProt release names  
-        to be used to download the UniProtKB/SwissProt files.
-    output-testfr.txt will have all the messages coming from running 
-        Filter.
+    dataset-testfr.txt lists UniProtKB/SwissProt data file names  
+        to be used to test the Filter program.
+    output-testfr.txt will have all the messages coming from running
+        the Filter program.
 '''
 
 import os
@@ -19,7 +21,7 @@ import subprocess
 from os.path import basename
 import urllib2
 
-import ArgParser_testToolset as ap
+import ArgParser_testFilter as ap
 import Config
 
 config_filename = '.cafarc' # Default configuration file name
@@ -37,7 +39,6 @@ class testFilter:
 
         self.goa_arc = 'ftp://ftp.ebi.ac.uk/pub/databases/GO/goa/old'
         self.sprot_arc_base = 'ftp://ftp.uniprot.org/pub/databases/uniprot/previous_releases'
-        self.bmVersion = 1 # The benchmark verion number that will be verified
 
         if not os.path.exists(self.work_dir):
             os.makedirs(self.work_dir)
@@ -112,9 +113,8 @@ class testFilter:
 
     def exec_Filter(self, input1, input2):
         # Filter target sequences:
-        cmd_filter = 'python' + ' ' + 'Filter' + ' ' + '-I1=' + \
-                        input1 + ' ' + '-G=' + input2 + ' >> ' + \
-                        self.output_filename
+        cmd_filter = 'python ' + 'Filter ' + '-I1=' + input1 + \
+                     ' -G= ' + input2 + ' >> ' + self.output_filename
         fh = open(self.output_filename, 'a')
         fh.write('\n' + cmd_filter+ '\n')
         fh.close()
@@ -125,6 +125,8 @@ class testFilter:
         for line in testDataset_fh:
             input1 = self.work_dir + '/' + line.strip()
             input2 = '559292'
+            print('Running testFilter on UniProtKB/SwissProt file ' + \
+                  basename(input1) + ' and taxon id ' + input2)
             self.exec_Filter(input1, input2)
         return None
 
@@ -134,7 +136,7 @@ class testFilter:
                         'testFilter program' + ' ' + \
                         '>' + self.output_filename, shell=True)
         self.run_test(open(self.testData_filename, 'r'))
-        subprocess.call('echo ' +  'End of running testFilter' + \
+        subprocess.call('echo ' +  'End of running testFilter ' + \
                         'program' + ' ' + '>>' + \
                          self.output_filename, shell=True)
         return None
