@@ -5,10 +5,12 @@
     
     How to run this program: 
 
-       python testBenchmark -I=dataset-testbm.txt -O=output-testbm.txt
+       python testBenchmark -I=dataset-testbm.txt -V=1 -O=output-testbm.txt
   
     dataset-testbm.txt lists the pairs of UniProt-GOA annotatation file names 
-        at time points t1 and t2. 
+        at time points t1 and t2.
+    -V1=1 tells testBenchmark to execute Verify Program on benchmark sets of 
+        version 1.
     output-testbm.txt will have all the messages coming from running 
         Benchmark and Verify programs.
 '''
