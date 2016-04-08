@@ -331,6 +331,9 @@ class Benchmark:
         fc.check_gaf_format(self.t1_input_file) # File format check for t1 file
         fc.check_gaf_format(self.t2_input_file) # File format check for t2 file
         self.create_intermediate_files() # Create necessary intermediate files
+#        print self.t1_exp_name
+#        print self.t2_exp_name 
+#        raise SystemExit
         cb.create_benchmarks(open(self.t1_iea_name, 'r'),
                              open(self.t1_exp_name, 'r'),
                              open(self.t2_exp_name, 'r'),
