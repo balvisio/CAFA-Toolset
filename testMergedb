@@ -34,6 +34,9 @@ class testMergedb:
         self.parsed_dict = ap.parse_args()
         self.ConfigParam = Config.read_config(config_filename)
         self.work_dir = (self.ConfigParam['workdir'].rstrip('/'))
+        if not os.path.exists(self.work_dir):
+            os.makedirs(self.work_dir)
+                # Create work direcoty, if it does not exist
 
         self.testData_filename = self.work_dir + '/' + basename(self.parsed_dict['input1'])
         self.output_filename = self.work_dir + '/' + basename(self.parsed_dict['output1'])
@@ -41,9 +44,20 @@ class testMergedb:
 
         self.goa_arc = 'ftp://ftp.ebi.ac.uk/pub/databases/GO/goa/old'
         
-        if not os.path.exists(self.work_dir):
-            os.makedirs(self.work_dir)
-                # Create work direcoty, if it does not exist
+        self.taxon_dict = OrderedDict()
+        self.taxon_dict['arabidopsis'] = 3702 
+        self.taxon_dict['chicken'] = 9031  
+        self.taxon_dict['cow'] = 9913
+        self.taxon_dict['dicty'] = 44689 
+        self.taxon_dict['dog'] = 9615 
+        self.taxon_dict['fly'] = 7227
+        self.taxon_dict['human'] = 9606 
+        self.taxon_dict['mouse'] = 10090 
+        self.taxon_dict['pig'] = 9823 
+        self.taxon_dict['rat'] = 10116
+        self.taxon_dict['worm'] = 6239
+        self.taxon_dict['yeast'] = 559292
+        self.taxon_dict['zebrafish'] = 7955 
 
     def download_testDataset(self, testDataset_fh):
         '''
@@ -175,10 +189,10 @@ class testMergedb:
         self.download_testDataset(open(self.testData_filename, 'r'))
 #        raise SystemExit
         subprocess.call('echo ' +  'This is the output from running ' + \
-                        'testBenchmark program' + ' ' + \
+                        'testMergedb program' + ' ' + \
                         '>' + self.output_filename, shell=True)
         self.run_test(open(self.testData_filename, 'r'))
-        subprocess.call('echo ' +  'End of running testBenchmark ' + \
+        subprocess.call('echo ' +  'End of running testMergedb ' + \
                         'program' + ' ' + '>>' + \
                          self.output_filename, shell=True)
         return None
