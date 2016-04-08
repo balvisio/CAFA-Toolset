@@ -57,12 +57,12 @@ from collections import defaultdict
 
 def create_exp_ann_dict(goa_exp_handle):
     # Initialize THREE dictionaries:
-    t1_mfo_dict = defaultdict(lambda:set())  
+    t1_mfo_dict = defaultdict(lambda:set())
     t1_bpo_dict = defaultdict(lambda:set())
     t1_cco_dict = defaultdict(lambda:set())
 
-    # Populate the dictionaries: 
-    for lines in goa_exp_handle: 
+    # Populate the dictionaries:
+    for lines in goa_exp_handle:
         cols = lines.strip().split('\t')
         if len(cols) < 15: # Skip lines NOT in GAF 1.0 or GAF 2.0 format
             continue
@@ -97,6 +97,7 @@ def write_benchmarks(protName,
         # Limited-Knowledge benchmarks: BPO, CCO, or MFO type based on LKtype
         for term in t2_xxo_dict[protName]:
             print >> bmfile_LK_xxo_handle, str(protName) + '\t' + str(term)
+
     if protName not in t1_mfo_dict and protName not in t1_bpo_dict and \
        protName not in t1_cco_dict and protName in t2_xxo_dict:
         # No-Knowledge benchmarks: BPO, CCO, or MFO type based on LKtype
