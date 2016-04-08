@@ -3,5 +3,6 @@ uniprot_sprot.dat.2011_01
 uniprot_sprot.dat.2012_01
 uniprot_sprot.dat.2013_01
 uniprot_sprot.dat.2014_01
+uniprot_sprot.dat.2014_09
 uniprot_sprot.dat.2015_01
 uniprot_sprot.dat.2016_02
