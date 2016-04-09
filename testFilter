@@ -7,7 +7,7 @@
     
     How to run this program: 
 
-       python testFilter -I=dataset-testfr.txt -O=output-testbm.txt
+       python testFilter -I=dataset-testfr.txt -O=output-testfr.txt
   
     dataset-testfr.txt lists UniProtKB/SwissProt data file names  
         to be used to test the Filter program.
