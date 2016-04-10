@@ -277,9 +277,6 @@ def appendSprot2goa(fh_sprot, goa_file_name, taxon_id, fh_merged_go):
 #                        if goCount in range(1, 20) or goCount in range(6400, 6420):
 #                            print ('goCount: ' + str(goCount) + '\n')
 #                            goaRec = swissProt2GOA(rec, crossRef, GAFFIELDS) # Convert the sprot record to a GOA record
-#                        print (goCount) 
-#                        if goCount == 6409:
-#                            GOAParser.writerec(goaRec, fh_merged_go, GAFFIELDS) # Write the converted GOA record to the output file
                         goCount += 1
 
 if __name__ == '__main__':
