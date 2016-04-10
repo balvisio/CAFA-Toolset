@@ -147,6 +147,7 @@ class Mergedb:
 
         cmd = "cp " + self.t2_input_file + " " + self.output_filename 
         subprocess.call(cmd, shell=True)
+
         # Step 2: 
             # Fetch records from from Uniprot-SwissProt file
             # Check for duplicacy in UniProt-GOA file 
@@ -156,9 +157,9 @@ class Mergedb:
                 basename(self.t1_input_file) + ' to ' + \
                 basename(self.output_filename) + ' ...')
 
-        as2g.appendSprot2goa(open(self.t1_input_file, 'r'), 
-                             self.t2_input_file, 
-                             self.parsed_dict['g'], 
+        as2g.appendSprot2goa(open(self.t1_input_file, 'r'),
+                             self.t2_input_file,
+                             self.parsed_dict['g'],
                              open(self.output_filename, 'a'))
 
         # Print the summary of running this program:
