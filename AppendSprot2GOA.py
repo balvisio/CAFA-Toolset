@@ -73,7 +73,37 @@ def assignGO_REF(sprotRec, crossRef):
     go_ref = ''
     return go_ref
 
+def find_pubmed(sprotRec):
+    for ro in sprotRec.references:
+        for tp in ro.references:
+            if len(tp) >= 2 and tp[0].upper() == 'PUBMED':
+                return tp[1] 
+    return None 
+
+def find_doi(sprotRec):
+    for ro in sprotRec.references:
+        for tp in ro.references:
+            if len(tp) >= 2 and tp[0].upper() == 'DOI':
+                return tp[1] 
+    return None 
+
+def find_reactome_id(sprotRec):
+    for tp in sprotRec.cross_references: 
+        if len(tp)>=2 and tp[0].upper() == 'REACTOME':
+            return tp[1]
+    return None 
+
 def assignDB_REF(sprotRec, crossRef):
+    if (find_pubmed(sprotRec) is not None):
+        return 'PMID' + ':' + find_pubmed(sprotRec)
+    elif (find_doi(sprotRec) is not None):
+        return 'DOI' + ':' + find_doi(sprotRec)
+    elif (find_reactome_id(sprotRec) is not None):
+        return 'Reactome' + ':' + find_reactome_id(sprotRec)
+    else:
+        return assignGO_REF(sprotRec, crossRef)
+     
+def assignDB_REF_old(sprotRec, crossRef):
     dbRef = ''
     if sprotRec.references and sprotRec.references[0].references: # assign goaRec['DB:Reference'] with a pubmed id or DOI
         if (sprotRec.references[0].references[0])[0].upper() == 'PUBMED': # assign with PubMed id
@@ -131,6 +161,36 @@ def assignDate(sprotRec):
     return date
 
 def swissProt2GOA(sprotRec, crossRef, fields=GOAParser.GAF20FIELDS):
+    """
+     Takes a SwissProt record and GO term information as input
+     Constructs a GOA dictionary using the 'fields' as keys and values taken from sprotRec 
+     Returns the constructed GOA record
+    """
+    # 15 fields are defined for GAF10FIELDS (GAF 1.0)
+    goaRec = {'DB':'SwissProt', # 'SwissProt' is assigned to DB
+              'DB_Object_ID': sprotRec.accessions[0],
+              'DB_Object_Symbol': assignSymbol(sprotRec),
+              'Qualifier': [], # is assinged an empty list
+              'GO_ID': crossRef[1],
+              'DB:Reference': assignDB_REF(sprotRec, crossRef),
+              'Evidence': (crossRef[3].split(':'))[0],
+              'With': [],
+              'Aspect': (crossRef[2].split(':'))[0],
+              'DB_Object_Name' : (crossRef[2].split(':'))[1],
+              'Synonym': assignSynonym(sprotRec),
+              'DB_Object_Type': 'protein',
+              'Taxon_ID': assignTaxoId(sprotRec),
+              'Date': assignDate(sprotRec),
+              'Assigned_By': (crossRef[3].split(':'))[1]
+              }
+#    print goaRec['DB:Reference']
+
+    if len(fields) == 17: # Two extra fields are defined for GAF20FIELDS (GAF 2.0)
+        goaRec['Annotation_Extension'] = ''
+        goaRec['Gene_Product_Form_ID'] = ''
+    return goaRec
+
+def swissProt2GOA_old(sprotRec, crossRef, fields=GOAParser.GAF20FIELDS):
     """
      Takes a SwissProt record and GO term information as input
      Constructs a GOA dictionary using the 'fields' as keys and values taken from sprotRec 
@@ -214,6 +274,12 @@ def appendSprot2goa(fh_sprot, goa_file_name, taxon_id, fh_merged_go):
                         # 2. if knownProt is not empty but the GO annotation is not found in the GOA file
                         goaRec = swissProt2GOA(rec, crossRef, GAFFIELDS) # Convert the sprot record to a GOA record
                         GOAParser.writerec(goaRec, fh_merged_go, GAFFIELDS) # Write the converted GOA record to the output file
+#                        if goCount in range(1, 20) or goCount in range(6400, 6420):
+#                            print ('goCount: ' + str(goCount) + '\n')
+#                            goaRec = swissProt2GOA(rec, crossRef, GAFFIELDS) # Convert the sprot record to a GOA record
+#                        print (goCount) 
+#                        if goCount == 6409:
+#                            GOAParser.writerec(goaRec, fh_merged_go, GAFFIELDS) # Write the converted GOA record to the output file
                         goCount += 1
 
 if __name__ == '__main__':
