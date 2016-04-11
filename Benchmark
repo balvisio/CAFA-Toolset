@@ -175,7 +175,8 @@ class Benchmark:
 
     def remove_redundant_benchmarks(self):
         if os.stat(self.bmfile_LK_bpo).st_size == 0:
-            print 'Your limited-knowledge benchmark set for Biological Process Ontology is empty.'
+            print('Your limited-knowledge benchmark set for Biological ' + \
+                  'Process Ontology is empty.')
             copy =  self.bmfile_LK_bpo + ' ' + self.output_filename_LK_bpo
             subprocess.call(copy, shell=True)
         else:
