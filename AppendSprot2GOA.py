@@ -103,22 +103,6 @@ def assignDB_REF(sprotRec, crossRef):
     else:
         return assignGO_REF(sprotRec, crossRef)
      
-def assignDB_REF_old(sprotRec, crossRef):
-    dbRef = ''
-    if sprotRec.references and sprotRec.references[0].references: # assign goaRec['DB:Reference'] with a pubmed id or DOI
-        if (sprotRec.references[0].references[0])[0].upper() == 'PUBMED': # assign with PubMed id
-            dbRef = 'PMID' + ':' + str((sprotRec.references[0].references[0])[1])
-        else:     # assign with DOI id
-            dbRef = 'DOI' + ':' + str((sprotRec.references[0].references[1])[1])
-    elif sprotRec.cross_references:
-        for k in sprotRec.cross_references:
-            if k[0].upper() == 'REACTOME':
-                dbRef = k[0] + ':' + k[1]
-                break
-    else:
-        dbRef = assignGO_REF(sprotRec, crossRef)
-    return dbRef
-
 def assignSynonym(sprotRec):
     synonym = []
 # scenario 1: entry_name=> DBP5_YEAST
