@@ -252,11 +252,13 @@ class Benchmark:
                                                 tax_id_name_mapping,
                                                 self.ConfigParam['exp_eec'],
                                                 GAFFIELDS)
-            if retval: # If retval is TRUE, write out the record to t2.exp file
-                GOA.writerec(ingen, t2_exp_handle, GAFFIELDS) # Create t2.exp file
+            # If retval is TRUE, write out the record to t2.exp file:
+            if retval: 
+                GOA.writerec(ingen, t2_exp_handle, GAFFIELDS) 
         t2_exp_handle.close()
 
-        if os.stat(self.t2_exp_name).st_size == 0: # If t2.exp is empty, program quits
+        # If t2.exp is empty, program quits:
+        if os.stat(self.t2_exp_name).st_size == 0: 
             print('Your benchmark set will be empty with the ' + \
                   'parameters provided. Quiting ...')
             sys.exit(1)
@@ -330,6 +332,8 @@ class Benchmark:
         fc.check_gaf_format(self.t1_input_file) # File format check for t1 file
         fc.check_gaf_format(self.t2_input_file) # File format check for t2 file
         self.create_intermediate_files() # Create necessary intermediate files
+
+        # Populate benchmark files:
         cb.create_benchmarks(open(self.t1_iea_name, 'r'),
                              open(self.t1_exp_name, 'r'),
                              open(self.t2_exp_name, 'r'),
@@ -338,8 +342,10 @@ class Benchmark:
                              open(self.bmfile_LK_mfo, 'w'), 
                              open(self.bmfile_NK_bpo, 'w'), 
                              open(self.bmfile_NK_cco, 'w'), 
-                             open(self.bmfile_NK_mfo, 'w')) # Populate benchmark files
-        self.remove_redundant_benchmarks() # Remove redundant benchmark entries
+                             open(self.bmfile_NK_mfo, 'w')) 
+
+        # Remove redundant benchmark entries:
+        self.remove_redundant_benchmarks() 
         self.delete_intermediate_files() # Delete intermediate files
         self.print_epilog() # Print summary of running this program
         return None
