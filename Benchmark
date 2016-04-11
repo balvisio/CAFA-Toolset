@@ -185,7 +185,8 @@ class Benchmark:
             subprocess.call(cmd, shell=True)
 
         if os.stat(self.bmfile_LK_cco).st_size == 0:
-            print 'Your limited-knowledge benchmark set for Cellular Component Process Ontology is empty.'
+            print('Your limited-knowledge benchmark set for Cellular ' + \
+                  'Component Process Ontology is empty.')
             copy =  self.bmfile_LK_cco + ' ' + self.output_filename_LK_cco
             subprocess.call(copy, shell=True)
         else:
@@ -194,7 +195,8 @@ class Benchmark:
             subprocess.call(cmd, shell=True)
 
         if os.stat(self.bmfile_LK_mfo).st_size == 0:
-            print 'Your limited-knowledge benchmark set for Molecular Function Ontology is empty.'
+            print('Your limited-knowledge benchmark set for Molecular ' + \
+                  'Function Ontology is empty.')
             copy =  self.bmfile_LK_mfo + ' ' + self.output_filename_LK_mfo
             subprocess.call(copy, shell=True)
         else:
@@ -203,7 +205,8 @@ class Benchmark:
             subprocess.call(cmd, shell=True)
 
         if os.stat(self.bmfile_NK_bpo).st_size == 0:
-            print 'Your no-knowledge benchmark set for Biological Process Ontology is empty.'
+            print('Your no-knowledge benchmark set for Biological ' + \
+                  'Process Ontology is empty.')
             copy =  self.bmfile_NK_bpo + ' ' + self.output_filename_NK_bpo
             subprocess.call(copy, shell=True)
         else:
@@ -212,7 +215,8 @@ class Benchmark:
             subprocess.call(cmd, shell=True)
 
         if os.stat(self.bmfile_NK_cco).st_size == 0:
-            print 'Your no-knowledge benchmark set for Cellular Component Process Ontology is empty.'
+            print('Your no-knowledge benchmark set for Cellular Component ' + \
+                  'Process Ontology is empty.')
             copy =  self.bmfile_NK_cco + ' ' + self.output_filename_NK_cco
             subprocess.call(copy, shell=True)
         else:
@@ -221,7 +225,8 @@ class Benchmark:
             subprocess.call(cmd, shell=True)
 
         if os.stat(self.bmfile_NK_mfo).st_size == 0:
-            print 'Your no-knowledge benchmark set for Molecular Function Ontology is empty.'
+            print('Your no-knowledge benchmark set for Molecular ' + \
+                  'Function Ontology is empty.')
             copy =  self.bmfile_NK_mfo + ' ' + self.output_filename_NK_mfo
             subprocess.call(copy, shell=True)
         else:
