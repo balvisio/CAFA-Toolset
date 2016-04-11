@@ -100,7 +100,8 @@ class Benchmark:
 
         # Name for GO ID frequency per pubmed id for t2 file:
         # This file will be deleted once the calculations are done
-        self.t2_ptf_file =  self.t2_input_file + '_with_annotations_per_paper.txt'
+        self.t2_ptf_file =  self.t2_input_file + \
+                            '_with_annotations_per_paper.txt'
         
         # Names for SIX intermediate benchmark files:
         self.bmfile_LK_bpo = self.t2_exp_name + '.bpo_LK_bench.txt'
@@ -256,7 +257,8 @@ class Benchmark:
         t2_exp_handle.close()
 
         if os.stat(self.t2_exp_name).st_size == 0: # If t2.exp is empty, program quits
-            print 'Your benchmark set will be empty with the parameters provided. Quiting ...'
+            print('Your benchmark set will be empty with the ' + \
+                  'parameters provided. Quiting ...')
             sys.exit(1)
        
         # Create t1.iea_name and t1.exp_name files: 
@@ -301,7 +303,8 @@ class Benchmark:
         return None
 
     def print_epilog(self):
-        print bcolors.OKGREEN + 'The following benchmark files are created:' + bcolors.ENDC 
+        print(bcolors.OKGREEN + 'The following benchmark files ' + \
+                                'are created:' + bcolors.ENDC)
         if os.path.exists(self.output_filename_LK_bpo):
             print basename(self.output_filename_LK_bpo)
         if os.path.exists(self.output_filename_LK_cco):
@@ -314,7 +317,8 @@ class Benchmark:
             print basename(self.output_filename_NK_cco)
         if os.path.exists(self.output_filename_NK_mfo):
             print basename(self.output_filename_NK_mfo)
-        print bcolors.OKGREEN + 'Thank you for using Benchmark Creation Tool' + bcolors.ENDC
+        print(bcolors.OKGREEN + 'Thank you for using Benchmark ' + \
+                                'Creation Tool' + bcolors.ENDC)
         return None
 
     def process_data(self): 
