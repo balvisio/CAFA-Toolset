@@ -177,62 +177,51 @@ class Benchmark:
         if os.stat(self.bmfile_LK_bpo).st_size == 0:
             print('Your limited-knowledge benchmark set for Biological ' + \
                   'Process Ontology is empty.')
-            copy =  self.bmfile_LK_bpo + ' ' + self.output_filename_LK_bpo
-            subprocess.call(copy, shell=True)
+            os.system('cp ' + self.bmfile_LK_bpo + ' ' + \
+                              self.output_filename_LK_bpo)
         else:
-            cmd = "awk -F \'\t\' '{print;}' " + self.bmfile_LK_bpo + \
-                    " | sort | uniq " + " > " + self.output_filename_LK_bpo
-            subprocess.call(cmd, shell=True)
-
+            os.system('sort ' + self.bmfile_LK_bpo + ' | ' + \
+                   'uniq >' + self.output_filename_LK_bpo)
         if os.stat(self.bmfile_LK_cco).st_size == 0:
             print('Your limited-knowledge benchmark set for Cellular ' + \
                   'Component Process Ontology is empty.')
-            copy =  self.bmfile_LK_cco + ' ' + self.output_filename_LK_cco
-            subprocess.call(copy, shell=True)
+            os.system('cp ' + self.bmfile_LK_cco + ' ' + \
+                              self.output_filename_LK_cco)
         else:
-            cmd = "awk -F \'\t\' '{print;}' " + self.bmfile_LK_cco + \
-                    " | sort | uniq " + " > " + self.output_filename_LK_cco
-            subprocess.call(cmd, shell=True)
-
+            os.system('sort ' + self.bmfile_LK_cco + ' | ' + \
+                   'uniq > ' + self.output_filename_LK_cco)
         if os.stat(self.bmfile_LK_mfo).st_size == 0:
             print('Your limited-knowledge benchmark set for Molecular ' + \
                   'Function Ontology is empty.')
-            copy =  self.bmfile_LK_mfo + ' ' + self.output_filename_LK_mfo
-            subprocess.call(copy, shell=True)
+            os.system('cp ' + self.bmfile_LK_mfo + ' ' + \
+                              self.output_filename_LK_mfo)
         else:
-            cmd = "awk -F \'\t\' '{print;}' " + self.bmfile_LK_mfo + \
-                    " | sort | uniq " + " > " + self.output_filename_LK_mfo
-            subprocess.call(cmd, shell=True)
-
+            os.system('sort ' + self.bmfile_LK_mfo + ' | ' + \
+                   'uniq > ' + self.output_filename_LK_mfo)
         if os.stat(self.bmfile_NK_bpo).st_size == 0:
             print('Your no-knowledge benchmark set for Biological ' + \
                   'Process Ontology is empty.')
-            copy =  self.bmfile_NK_bpo + ' ' + self.output_filename_NK_bpo
-            subprocess.call(copy, shell=True)
+            os.system('cp ' + self.bmfile_NK_bpo + ' ' + \
+                              self.output_filename_NK_bpo)
         else:
-            cmd = "awk -F \'\t\' '{print;}' " + self.bmfile_NK_bpo + \
-                    " | sort | uniq " + " > " + self.output_filename_NK_bpo
-            subprocess.call(cmd, shell=True)
-
+            os.system('sort ' + self.bmfile_NK_bpo + ' | ' + \
+                   'uniq > ' + self.output_filename_NK_bpo)
         if os.stat(self.bmfile_NK_cco).st_size == 0:
             print('Your no-knowledge benchmark set for Cellular Component ' + \
                   'Process Ontology is empty.')
-            copy =  self.bmfile_NK_cco + ' ' + self.output_filename_NK_cco
-            subprocess.call(copy, shell=True)
+            os.system('cp ' + self.bmfile_NK_cco + ' ' + \
+                              self.output_filename_NK_cco)
         else:
-            cmd = "awk -F \'\t\' '{print;}' " + self.bmfile_NK_cco + \
-                    " | sort | uniq " + " > " + self.output_filename_NK_cco
-            subprocess.call(cmd, shell=True)
-
+            os.system('sort ' + self.bmfile_NK_cco + ' | ' + \
+                   'uniq > ' + self.output_filename_NK_cco)
         if os.stat(self.bmfile_NK_mfo).st_size == 0:
             print('Your no-knowledge benchmark set for Molecular ' + \
                   'Function Ontology is empty.')
-            copy =  self.bmfile_NK_mfo + ' ' + self.output_filename_NK_mfo
-            subprocess.call(copy, shell=True)
+            os.system('cp ' + self.bmfile_NK_mfo + ' ' + \
+                              self.output_filename_NK_mfo)
         else:
-            cmd = "awk -F \'\t\' '{print;}' " + self.bmfile_NK_mfo + \
-                    " | sort | uniq " + " > " + self.output_filename_NK_mfo
-            subprocess.call(cmd, shell=True)
+            os.system('sort ' + self.bmfile_NK_mfo + ' | ' + \
+                   'uniq > ' + self.output_filename_NK_mfo)
         return None
 
     def create_intermediate_files(self):
