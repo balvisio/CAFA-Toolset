@@ -162,9 +162,10 @@ def assignDate(sprotRec):
 
 def swissProt2GOA(sprotRec, crossRef, fields=GOAParser.GAF20FIELDS):
     """
-     Takes a SwissProt record and GO term information as input
-     Constructs a GOA dictionary using the 'fields' as keys and values taken from sprotRec 
-     Returns the constructed GOA record
+     This method takes a SwissProt record and GO term information 
+     as input arguments. It then constructs a GOA dictionary using 
+     the 'fields' as keys and values taken from sprotReci, and then 
+     returns the constructed GOA record.
     """
     # 15 fields are defined for GAF10FIELDS (GAF 1.0)
     goaRec = {'DB':'SwissProt', # 'SwissProt' is assigned to DB
@@ -190,39 +191,11 @@ def swissProt2GOA(sprotRec, crossRef, fields=GOAParser.GAF20FIELDS):
         goaRec['Gene_Product_Form_ID'] = ''
     return goaRec
 
-def swissProt2GOA_old(sprotRec, crossRef, fields=GOAParser.GAF20FIELDS):
-    """
-     Takes a SwissProt record and GO term information as input
-     Constructs a GOA dictionary using the 'fields' as keys and values taken from sprotRec 
-     Returns the constructed GOA record
-    """
-    # 15 fields are defined for GAF10FIELDS (GAF 1.0)
-    goaRec = {'DB':'SwissProt', # 'SwissProt' is assigned to DB
-              'DB_Object_ID': sprotRec.accessions[0],
-              'DB_Object_Symbol': assignSymbol(sprotRec),
-              'Qualifier': [], # is assinged an empty list
-              'GO_ID': crossRef[1],
-              'DB:Reference': assignDB_REF(sprotRec, crossRef),
-              'Evidence': (crossRef[3].split(':'))[0],
-              'With': [],
-              'Aspect': (crossRef[2].split(':'))[0],
-              'DB_Object_Name' : (crossRef[2].split(':'))[1],
-              'Synonym': assignSynonym(sprotRec),
-              'DB_Object_Type': 'protein',
-              'Taxon_ID': assignTaxoId(sprotRec),
-              'Date': assignDate(sprotRec),
-              'Assigned_By': (crossRef[3].split(':'))[1]
-              }
-
-    if len(fields) == 17: # Two extra fields are defined for GAF20FIELDS (GAF 2.0)
-        goaRec['Annotation_Extension'] = ''
-        goaRec['Gene_Product_Form_ID'] = ''
-    return goaRec
-
 def create_iterator(infile):
     """
-    Returns an iterator object for an input uniprot-goa file along with a list of all
-    fieldnames contained in the uniprot-goa file
+    It returns an iterator object for an input uniprot-goa file 
+    along with a list of all fieldnames contained in the 
+    uniprot-goa file.
     """ 
     infile_handle = open(infile, 'r')
     iter_handle = GOAParser.gafiterator(infile_handle)
@@ -240,13 +213,15 @@ def create_iterator(infile):
 
 def appendSprot2goa(fh_sprot, goa_file_name, taxon_id, fh_merged_go):
     """
-     Append new GO terms from a uniPort-swisprot file (file handle: fh_sprot) to SwissProt-GOA file 
-     (goa_file_name), writing the merged file to a merged file (file handle: fh_merged_go)
+     Append new GO terms from a uniPort-swisprot file 
+     (file handle: fh_sprot) to SwissProt-GOA file (goa_file_name), 
+     writing the merged file to a merged file (file handle: fh_merged_go)
     """
+    # Creates an iterator object for t1 file:
+    iter_handle, GAFFIELDS = create_iterator(goa_file_name) 
 
-    iter_handle, GAFFIELDS = create_iterator(goa_file_name) # Creates an iterator object for t1 file
-
-# Construct a dictionary goa_dict with the proteins and the corresponding GO terms in t1 file
+    # Construct a dictionary goa_dict with the proteins and 
+    # the corresponding GO terms in t1 file:
     goa_dict = {}
     for ingen in iter_handle:
         if ingen['DB_Object_ID'] in goa_dict.keys():
