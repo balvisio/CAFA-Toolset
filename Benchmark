@@ -50,7 +50,6 @@ config_filename = '.cafarc' # Default configuration file name
 
 class Benchmark:
     def __init__(self):
-
         # Obtain user supplied argument values in a dictionary: 
         self.parsed_dict = ap.parse_args('benchmark')
         # Collect config file entries:
@@ -141,7 +140,8 @@ class Benchmark:
         """
 
         if not self.parsed_dict['outfile'] == '':
-            ob = basename(self.parsed_dict['outfile']) + '.benchmark' + '_' + ontType
+            ob = basename(self.parsed_dict['outfile']) + \
+                 '.benchmark' + '_' + ontType
         else:
             ob = basename(self.parsed_dict['t2']) + '-' + \
                  ((basename(self.parsed_dict['t1'])).split('.'))[-1] + \
@@ -331,9 +331,6 @@ class Benchmark:
         fc.check_gaf_format(self.t1_input_file) # File format check for t1 file
         fc.check_gaf_format(self.t2_input_file) # File format check for t2 file
         self.create_intermediate_files() # Create necessary intermediate files
-#        print self.t1_exp_name
-#        print self.t2_exp_name 
-#        raise SystemExit
         cb.create_benchmarks(open(self.t1_iea_name, 'r'),
                              open(self.t1_exp_name, 'r'),
                              open(self.t2_exp_name, 'r'),
