@@ -28,12 +28,12 @@
         One output file will be created: gene_association.goa_ref_yeast.38+sprot.38.1
     which will contain all the entries from the second input file together 
     with all the new annotations for yeast (taxon id 559292) from the first 
-    input file. 
+    input file.
 '''
 
 import os
 import sys
-from os.path import basename 
+from os.path import basename
 
 import argparse
 #import configparser as cp
@@ -60,26 +60,33 @@ class bcolors:
 
 config_filename = '.cafarc' # Default configuration file name
 
-class Mergedb: 
-    def __init__(self): 
-        self.parsed_dict = ap.parse_args() # Collect user arguments into a dictionary
-        self.ConfigParam = Config.read_config(config_filename) # Collect config file entries
+class Mergedb:
+    def __init__(self):
+        # Collect user arguments into a dictionary:
+        self.parsed_dict = ap.parse_args()
+        # Collect config file entries:
+        self.ConfigParam = Config.read_config(config_filename)
+        # Extract workspace name
         self.work_dir = self.ConfigParam['workdir']
-
-        # Find workspace: 
+        # Create workspace, if one does not exist:
         if not os.path.exists(self.work_dir):
-            os.makedirs(self.work_dir) # Create work space, if it does not exist
+            os.makedirs(self.work_dir)
+        # Extract filename at time t1:
         t1 = self.parsed_dict['t1']
+        # Extract filename at time t2:
         t2 = self.parsed_dict['t2']
+        # Extract output filename:
         outfile_basename = basename(self.parsed_dict['outfile'])
-
+        # Locate t1 file:
         self.t1_input_file = ld.locate_SwissProtfile(t1,
-                                                     self.work_dir) # Locate t1 file.
+                                                     self.work_dir)
+        # Locate t2 file:
         self.t2_input_file = ld.locate_GOAfile(t2,
-                                               self.work_dir) # Locate t2 file.
+                                               self.work_dir)
+        # Create output file name together with file version number:
         self.output_filename = self.create_outfilename(self.parsed_dict,
                                                   outfile_basename,
-                                                  self.work_dir) # Create output file name
+                                                  self.work_dir)
 
     def create_iterator(self, infile):
         # Returns an iterator object for an input uniprot-goa file along 
@@ -126,8 +133,8 @@ class Mergedb:
             print(bcolors.OKGREEN + 'The following output file is created: ' + \
                   basename(self.output_filename) + bcolors.ENDC)
         else:
-            print(bcolors.WARNING + 'No output file is created with the given \
-                  input parameters' + bcolors.ENDC)
+            print(bcolors.WARNING + 'No output file is created with the ' + \
+                  'given input parameters' + bcolors.ENDC)
         print(bcolors.OKGREEN + 'Thank you for using Merge Database Tool' + \
               bcolors.ENDC)
         return None
@@ -137,8 +144,10 @@ class Mergedb:
         self.print_prolog() 
         # Check UniProt-GOA file format:
         fc.check_gaf_format(self.t2_input_file) 
+
+        # Merging in TWO steps:
         print ('Merging records: ')
-        # Merge steps:
+
         # Step 1: 
            # Copy the gene association file to the output file:
         print ('Copying records from ' + \
@@ -149,10 +158,11 @@ class Mergedb:
         subprocess.call(cmd, shell=True)
 
         # Step 2: 
-            # Fetch records from from Uniprot-SwissProt file
+            # Fetch records from Uniprot-SwissProt file
             # Check for duplicacy in UniProt-GOA file 
             # Convert them to GOA records
-            # Append them at the end of the output file
+            # Append them at the end of the output file one by one
+            # All these are performed in appendSprot2goa method
         print ('Appedning records from ' + \
                 basename(self.t1_input_file) + ' to ' + \
                 basename(self.output_filename) + ' ...')
