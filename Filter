@@ -167,9 +167,11 @@ class Filter:
                                          open(self.output_filename, 'w'),
                                          open(self.output_map_filename, 'w'),
                                               self.ConfigParam['exp_eec'])
-        #seqCount, seqCount_no_exp = ft.species_filter_count(open(self.t1_input_file, 'r'),
-        #                               self.parsed_dict['g'],
-        #                               self.ConfigParam['exp_eec'])
+
+#        seqCount, seqCount_no_exp = ft.species_filter_count(
+#                                       open(self.t1_input_file, 'r'),
+#                                            self.parsed_dict['g'],
+#                                            self.ConfigParam['exp_eec'])
 
         # Print the summary of running this program:
         self.print_epilog(target_count)
