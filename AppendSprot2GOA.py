@@ -254,14 +254,14 @@ def appendSprot2goa(fh_sprot, goa_file_name, taxon_id, fh_merged_go):
                         #    is not found in the GOA file
 
                         # Convert the sprot record to a GOA record:
-                        goaRec = swissProt2GOA(rec, crossRef, GAFFIELDS) 
+                        goaRec = swissProt2GOA(rec, crossRef, GAFFIELDS)
                         # Write the converted GOA record to the output file:
-                        GOAParser.writerec(goaRec, fh_merged_go, GAFFIELDS) 
+                        GOAParser.writerec(goaRec, fh_merged_go, GAFFIELDS)
 #                        if goCount in range(1, 20) or goCount in range(6400, 6420):
 #                            print ('goCount: ' + str(goCount) + '\n')
 #                            goaRec = swissProt2GOA(rec, crossRef, GAFFIELDS)
                         goCount += 1
-
+    return goCount
 if __name__ == '__main__':
     print (__doc__)
     sys.exit(0)
