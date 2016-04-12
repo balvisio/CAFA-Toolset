@@ -253,23 +253,25 @@ class Benchmark:
                                                 self.ConfigParam['exp_eec'],
                                                 GAFFIELDS)
             # If retval is TRUE, write out the record to t2.exp file:
-            if retval: 
-                GOA.writerec(ingen, t2_exp_handle, GAFFIELDS) 
+            if retval:
+                GOA.writerec(ingen, t2_exp_handle, GAFFIELDS)
         t2_exp_handle.close()
 
         # If t2.exp is empty, program quits:
-        if os.stat(self.t2_exp_name).st_size == 0: 
+        if os.stat(self.t2_exp_name).st_size == 0:
             print('Your benchmark set will be empty with the ' + \
                   'parameters provided. Quiting ...')
             sys.exit(1)
        
-        # Create t1.iea_name and t1.exp_name files: 
-        # Filter t1 file to create t1.iea and t1.exp files
+        # Create t1.iea_name and t1.exp_name files:
+
+        # Create an iterator handle for t1_input_file:
         iter_handle, GAFFIELDS = self.create_iterator(self.t1_input_file)
-        print 'Parsing t1 file: ' + basename(self.t1_input_file) + ' ...' 
-        gc.t1_filter(iter_handle, self.t1_iea_name, self.t1_exp_name, 
+        print 'Parsing t1 file: ' + basename(self.t1_input_file) + ' ...'
+        # Filter t1 file and create t1.iea and t1.exp files:
+        gc.t1_filter(iter_handle, self.t1_iea_name, self.t1_exp_name,
                     self.t2_exp_name, GAFFIELDS, self.ConfigParam['exp_eec'])
-        return None 
+        return None
 
     def delete_intermediate_files(self):
         print 'Cleaning working directory ...'
@@ -328,11 +330,14 @@ class Benchmark:
         This method processes user data, creates necessary intermediate files, 
         creates benchmark sets, and afterwards deletes the intermediate files.
         """
-        self.print_prolog() # Print the wellcome message and argument list
-        fc.check_gaf_format(self.t1_input_file) # File format check for t1 file
-        fc.check_gaf_format(self.t2_input_file) # File format check for t2 file
-        self.create_intermediate_files() # Create necessary intermediate files
-
+        # Print the wellcome message and argument list:
+        self.print_prolog() 
+        # File format check for t1 file:
+        fc.check_gaf_format(self.t1_input_file) 
+        # File format check for t2 file:
+        fc.check_gaf_format(self.t2_input_file) 
+        # Create necessary intermediate files:
+        self.create_intermediate_files() 
         # Populate benchmark files:
         cb.create_benchmarks(open(self.t1_iea_name, 'r'),
                              open(self.t1_exp_name, 'r'),
@@ -343,11 +348,12 @@ class Benchmark:
                              open(self.bmfile_NK_bpo, 'w'), 
                              open(self.bmfile_NK_cco, 'w'), 
                              open(self.bmfile_NK_mfo, 'w')) 
-
         # Remove redundant benchmark entries:
         self.remove_redundant_benchmarks() 
-        self.delete_intermediate_files() # Delete intermediate files
-        self.print_epilog() # Print summary of running this program
+        # Delete intermediate files:
+        self.delete_intermediate_files() 
+        # Print summary of running this program:
+        self.print_epilog() 
         return None
 
 if __name__ == '__main__': 
