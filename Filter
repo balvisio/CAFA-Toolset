@@ -78,6 +78,7 @@ class Filter:
         # protein name and sequence id in the target sequence 
         # file:
         self.output_map_filename = self.output_filename + '.map'
+        return None
 
     def create_iterator(self, infile):
         """ 
@@ -125,26 +126,27 @@ class Filter:
         for arg in self.parsed_dict:
             print (arg + ': ' + str(self.parsed_dict[arg]))
         print ('*********************************************\n')
+        return None
 
-    def print_epilog(self, seqCount, seqCount_exp): 
-        print ('Total # of sequences for the given organsism with ' +\
-                'taxonomy id ' + self.parsed_dict['g'] + ': ' + \
-                str(seqCount))
-        print '# of sequences with NO EXP code: ' + str(seqCount_exp)
-        if os.path.exists(self.output_filename):
-            print(bcolors.OKGREEN + 'Target sequence file created: ' +
-                basename(self.output_filename) + bcolors.ENDC)
+    def print_epilog(self, target_count): 
+        if(os.path.exists(self.output_filename) or 
+           os.path.exists(self.output_map_filename)):
+           print(bcolors.OKGREEN + 'The following output files are created: ' +
+                 bcolors.ENDC)
+           if os.path.exists(self.output_filename):
+                print('    Target sequence file: ' + \
+                       basename(self.output_filename))
+           if os.path.exists(self.output_map_filename):
+                print('    Target id to protein name map file: ' + \
+                       basename(self.output_map_filename))
+           print('    Note: ' + str(target_count) + \
+                 ' target sequences generated')
         else:
-            print (bcolors.WARNING + 'No target file is created with the ' +\
+            print(bcolors.WARNING + 'No output file is created with the ' + \
                    'given input parameters' + bcolors.ENDC)
-        if os.path.exists(self.output_map_filename):
-            print (bcolors.OKGREEN + 'Map file created: ' +
-                   basename(self.output_map_filename) + bcolors.ENDC)
-        else:
-            print (bcolors.WARNING + 'No map file is created with the ' +\
-                   'given input parameters' + bcolors.ENDC)
-        print (bcolors.OKGREEN + 'Thank you for using Target Generation Tool' +\
+        print(bcolors.OKGREEN + 'Thank you for using Target Generation Tool' + \
                bcolors.ENDC)
+        return None
 
     def process_data(self):
         """
@@ -156,26 +158,27 @@ class Filter:
         self.print_prolog()
 
         # Filter out target sequences from the UniProt-SwissProt file:
-        print('Filtering sequences from ' +  basename(self.t1_input_file) + ' ...')
+        print('Filtering sequences from ' + \
+               basename(self.t1_input_file) + ' ...')
 
-        seqCount, seqCount_exp = ft.species_filter(open(self.t1_input_file, 'r'),
-                                self.parsed_dict['g'],
-                                open(self.output_filename, 'w'),
-                                open(self.output_map_filename, 'w'),
-                                self.ConfigParam['exp_eec'])
+        target_count = ft.species_filter(open(self.t1_input_file, 'r'),
+                                              self.parsed_dict['g'],
+                                         open(self.output_filename, 'w'),
+                                         open(self.output_map_filename, 'w'),
+                                              self.ConfigParam['exp_eec'])
         #seqCount, seqCount_exp = ft.species_filter_count(open(self.t1_input_file, 'r'),
         #                       self.parsed_dict['g'],
         #                       self.ConfigParam['exp_eec'])
 
         # Print the summary of running this program:
-        self.print_epilog(seqCount, seqCount_exp)
+        self.print_epilog(target_count)
+        return None
 
 if __name__ == '__main__':
     if len(sys.argv) == 1:
         print (sys.argv[0] + ' docstring:')
         print(__doc__)
-        sys.exit(0)
     else:
         fd = Filter()     # Create an instance of Filter class
         fd.process_data() # Process data and filter out target sequences
-        sys.exit(0)
+    sys.exit(0)
