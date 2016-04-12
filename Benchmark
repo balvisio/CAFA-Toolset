@@ -360,8 +360,7 @@ if __name__ == '__main__':
     if len(sys.argv) == 1:
         print (sys.argv[0] + ' docstring:')
         print(__doc__)
-        sys.exit(0)
     else:
         bm = Benchmark()  # Create an instance of Benchmark class
         bm.process_data() # Process data and create benchmark sets
-        sys.exit(0)
+    sys.exit(0)
