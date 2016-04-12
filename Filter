@@ -53,7 +53,8 @@ class bcolors:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
-config_filename = '.cafarc' # Default configuration file name
+# Default configuration file name:
+config_filename = '.cafarc' 
 
 class Filter: 
     def __init__(self):
@@ -110,7 +111,7 @@ class Filter:
         else:
             ob = basename(self.parsed_dict['t1']) + '.%s.tfa' \
                           % basename(self.parsed_dict['g'])
-            # output file name is constructed by appending '.taxon id.tfa' 
+            # output file name is constructed by appending '.taxon id.tfa'
             # as extension
         index = 1
         while os.path.exists(self.work_dir + '/' + ob + '.' + str(index)):
@@ -118,7 +119,7 @@ class Filter:
         output_filename = self.work_dir + '/' + ob + '.' + str(index)
         return output_filename
 
-    def print_prolog(self): 
+    def print_prolog(self):
         print ("*************************************************")
         print ("Welcome to Target Generatin Tool !!!!!")
         print ("*************************************************\n")
@@ -128,8 +129,8 @@ class Filter:
         print ('*********************************************\n')
         return None
 
-    def print_epilog(self, target_count): 
-        if(os.path.exists(self.output_filename) or 
+    def print_epilog(self, target_count):
+        if(os.path.exists(self.output_filename) or
            os.path.exists(self.output_map_filename)):
            print(bcolors.OKGREEN + 'The following output files are created: ' +
                  bcolors.ENDC)
@@ -166,9 +167,9 @@ class Filter:
                                          open(self.output_filename, 'w'),
                                          open(self.output_map_filename, 'w'),
                                               self.ConfigParam['exp_eec'])
-        #seqCount, seqCount_exp = ft.species_filter_count(open(self.t1_input_file, 'r'),
-        #                       self.parsed_dict['g'],
-        #                       self.ConfigParam['exp_eec'])
+        #seqCount, seqCount_no_exp = ft.species_filter_count(open(self.t1_input_file, 'r'),
+        #                               self.parsed_dict['g'],
+        #                               self.ConfigParam['exp_eec'])
 
         # Print the summary of running this program:
         self.print_epilog(target_count)
