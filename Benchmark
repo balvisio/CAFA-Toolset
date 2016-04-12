@@ -157,7 +157,7 @@ class Benchmark:
         """
         This method creates an iterator object for the input UniProt-GOA file
         and returns it along with a list of all field names contained in the
-        UniProt-GOA file. The UniProt-GOA file can either be in GAF 1.0 or 
+        UniProt-GOA file. The UniProt-GOA file can either be in GAF 1.0 or
         GAF 2.0 file format.
         """
 
@@ -176,48 +176,48 @@ class Benchmark:
 
     def remove_redundant_benchmarks(self):
         if os.stat(self.bmfile_LK_bpo).st_size == 0:
-            print('Your limited-knowledge benchmark set for Biological ' + \
-                  'Process Ontology is empty.')
+            print('Your limited-knowledge benchmark set for ' + \
+                  'Biological Process Ontology is empty.')
             os.system('cp ' + self.bmfile_LK_bpo + ' ' + \
                               self.output_filename_LK_bpo)
         else:
             os.system('sort ' + self.bmfile_LK_bpo + ' | ' + \
                    'uniq >' + self.output_filename_LK_bpo)
         if os.stat(self.bmfile_LK_cco).st_size == 0:
-            print('Your limited-knowledge benchmark set for Cellular ' + \
-                  'Component Process Ontology is empty.')
+            print('Your limited-knowledge benchmark set for ' + \
+                  'Cellular Component Process Ontology is empty.')
             os.system('cp ' + self.bmfile_LK_cco + ' ' + \
                               self.output_filename_LK_cco)
         else:
             os.system('sort ' + self.bmfile_LK_cco + ' | ' + \
                    'uniq > ' + self.output_filename_LK_cco)
         if os.stat(self.bmfile_LK_mfo).st_size == 0:
-            print('Your limited-knowledge benchmark set for Molecular ' + \
-                  'Function Ontology is empty.')
+            print('Your limited-knowledge benchmark set for '+ \
+                  'Molecular Function Ontology is empty.')
             os.system('cp ' + self.bmfile_LK_mfo + ' ' + \
                               self.output_filename_LK_mfo)
         else:
             os.system('sort ' + self.bmfile_LK_mfo + ' | ' + \
                    'uniq > ' + self.output_filename_LK_mfo)
         if os.stat(self.bmfile_NK_bpo).st_size == 0:
-            print('Your no-knowledge benchmark set for Biological ' + \
-                  'Process Ontology is empty.')
+            print('Your no-knowledge benchmark set for ' + \
+                  'Biological Process Ontology is empty.')
             os.system('cp ' + self.bmfile_NK_bpo + ' ' + \
                               self.output_filename_NK_bpo)
         else:
             os.system('sort ' + self.bmfile_NK_bpo + ' | ' + \
                    'uniq > ' + self.output_filename_NK_bpo)
         if os.stat(self.bmfile_NK_cco).st_size == 0:
-            print('Your no-knowledge benchmark set for Cellular Component ' + \
-                  'Process Ontology is empty.')
+            print('Your no-knowledge benchmark set for ' + \
+                  'Cellular Component Process Ontology is empty.')
             os.system('cp ' + self.bmfile_NK_cco + ' ' + \
                               self.output_filename_NK_cco)
         else:
             os.system('sort ' + self.bmfile_NK_cco + ' | ' + \
                    'uniq > ' + self.output_filename_NK_cco)
         if os.stat(self.bmfile_NK_mfo).st_size == 0:
-            print('Your no-knowledge benchmark set for Molecular ' + \
-                  'Function Ontology is empty.')
+            print('Your no-knowledge benchmark set for ' + \
+                  'Molecular Function Ontology is empty.')
             os.system('cp ' + self.bmfile_NK_mfo + ' ' + \
                               self.output_filename_NK_mfo)
         else:
