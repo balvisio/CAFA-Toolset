@@ -128,10 +128,12 @@ class Mergedb:
         print '*********************************************\n'
         return None
 
-    def print_epilog(self):
+    def print_epilog(self, goCount):
         if os.path.exists(self.output_filename):
-            print(bcolors.OKGREEN + 'The following output file is created: ' + \
-                  basename(self.output_filename) + bcolors.ENDC)
+            print(bcolors.OKGREEN + 'The following output file is created:' + \
+                  bcolors.ENDC)
+            print('    ' + basename(self.output_filename))
+            print('    ' + str(goCount) + ' protein annotations added')
         else:
             print(bcolors.WARNING + 'No output file is created with the ' + \
                   'given input parameters' + bcolors.ENDC)
@@ -154,10 +156,10 @@ class Mergedb:
                 basename(self.t2_input_file) + ' to ' + \
                 basename(self.output_filename) + ' ...')
 
-        cmd = "cp " + self.t2_input_file + " " + self.output_filename 
+        cmd = "cp " + self.t2_input_file + " " + self.output_filename
         subprocess.call(cmd, shell=True)
 
-        # Step 2: 
+        # Step 2:
             # Fetch records from Uniprot-SwissProt file
             # Check for duplicacy in UniProt-GOA file 
             # Convert them to GOA records
@@ -167,16 +169,16 @@ class Mergedb:
                 basename(self.t1_input_file) + ' to ' + \
                 basename(self.output_filename) + ' ...')
 
-        as2g.appendSprot2goa(open(self.t1_input_file, 'r'),
-                             self.t2_input_file,
-                             self.parsed_dict['g'],
-                             open(self.output_filename, 'a'))
+        goCount = as2g.appendSprot2goa(open(self.t1_input_file, 'r'),
+                                            self.t2_input_file,
+                                            self.parsed_dict['g'],
+                                       open(self.output_filename, 'a'))
 
         # Print the summary of running this program:
-        self.print_epilog()
+        self.print_epilog(goCount)
         return None
 
-if __name__ == '__main__': 
+if __name__ == '__main__':
     if len(sys.argv) == 1:
         print (sys.argv[0] + ' docstring:')
         print(__doc__)
