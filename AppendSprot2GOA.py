@@ -227,19 +227,19 @@ def appendSprot2goa(fh_sprot, goa_file_name, taxon_id, fh_merged_go):
     for rec in sp.parse(fh_sprot):
         # SELECTS records that are related to a specific taxon_id
         # such as 559292 for yeast:
-        if taxon_id in rec.taxonomy_id: 
+        if taxon_id in rec.taxonomy_id:
             # Going over each of the entries of the accessions list:
-            for ac in range(len(rec.accessions)): 
-                # knownProt is an indicator to detect whether the 
+            for ac in range(len(rec.accessions)):
+                # knownProt is an indicator to detect whether the
                 # current sprot protein is already in GOA file:
-                knownProt = "" 
+                knownProt = ""
                 if rec.accessions[ac] in goa_dict.keys():
                     # If the current sprot protein is already in the GOA
                     # file, the sprot protein is assigned to knownProt:
                     knownProt = rec.accessions[ac]
                     break
             # Going over the list of GO information:
-            for crossRef in rec.cross_references: 
+            for crossRef in rec.cross_references:
                 # Consider the cross_reference entries that relate to GO DB:
                 if crossRef[0] == 'GO':
                     # goList is a list of GO ID, Aspect, and Evidence:
