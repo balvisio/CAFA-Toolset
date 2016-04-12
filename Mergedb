@@ -58,7 +58,8 @@ class bcolors:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
-config_filename = '.cafarc' # Default configuration file name
+# Default configuration file name:
+config_filename = '.cafarc' 
 
 class Mergedb:
     def __init__(self):
