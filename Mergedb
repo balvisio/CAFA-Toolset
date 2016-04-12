@@ -87,6 +87,7 @@ class Mergedb:
         self.output_filename = self.create_outfilename(self.parsed_dict,
                                                   outfile_basename,
                                                   self.work_dir)
+        return None
 
     def create_iterator(self, infile):
         # Returns an iterator object for an input uniprot-goa file along 
@@ -182,8 +183,7 @@ if __name__ == '__main__':
     if len(sys.argv) == 1:
         print (sys.argv[0] + ' docstring:')
         print(__doc__)
-        sys.exit(0)
     else: 
         md = Mergedb()    # Creates an instance of Mergedb class
         md.process_data() # Process data and create merged file
-        sys.exit(0)
+    sys.exit(0)
