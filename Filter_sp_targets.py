@@ -74,13 +74,14 @@ def species_filter(fh_sprot, taxon_id, fh_targets,
                     if (crossRef[3].split(':'))[0] in EXP_default:
                         exp_code = True
                         break
+
             # If the protein has no EXP evidence,
             # write the sequence to the output file:
             if not exp_code:
                 outseq = SeqRecord(Seq(rec.sequence),
-                       id="T"+str(target_id),
-                       description = "%s" %
-                       (rec.entry_name))
+                                   id="T"+str(target_id),
+                                   description = "%s" %
+                                   (rec.entry_name))
                 outseq_list = [outseq]
                 # Write out the sequence:
                 SeqIO.write(outseq_list,fh_targets, "fasta")
