@@ -119,13 +119,13 @@ class Mergedb:
         return output_filename
 
     def print_prolog(self):
-        print "*************************************************"
-        print "Welcome to Merge Database Tool !!!!!"
-        print "*************************************************\n"
-        print 'Following is a list of user supplied inputs:\n'
+        print("*************************************************")
+        print("Welcome to Merge Database Tool !!!!!")
+        print("*************************************************\n")
+        print('Following is a list of user supplied inputs:\n')
         for arg in self.parsed_dict:
-            print arg + ': ' + str(self.parsed_dict[arg])
-        print '*********************************************\n'
+            print(arg + ': ' + str(self.parsed_dict[arg]))
+        print('*********************************************\n')
         return None
 
     def print_epilog(self, goCount):
