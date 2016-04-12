@@ -158,7 +158,7 @@ class Filter:
         # Print the wellcome message:
         self.print_prolog()
 
-        # Filter out target sequences from the UniProt-SwissProt file:
+        # Filter out the target sequences from the UniProtKB/SwissProt file:
         print('Filtering sequences from ' + \
                basename(self.t1_input_file) + ' ...')
 
