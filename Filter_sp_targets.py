@@ -103,8 +103,12 @@ def species_filter_count(fh_sprot, taxon_id, EXP_default=set([])):
     # the sprot file related to the the taxonomy id taxon_id whose 
     # annotations have EXP evidence:
     seqCount_no_exp = 0
+    
+    # The rec_count counts the number of records
+    rec_count = 0
 
     for rec in sp.parse(fh_sprot):
+        rec_count += 1
         # SELECT records that are related to a specific
         # taxon_id such as 559292 for yeast:
         if taxon_id in rec.taxonomy_id:
@@ -125,7 +129,7 @@ def species_filter_count(fh_sprot, taxon_id, EXP_default=set([])):
             # increase seqCount_no_exp:
             if not exp_code:
                 seqCount_no_exp += 1
-    return (seqCount, seqCount_no_exp)
+    return (rec_count, seqCount, seqCount_no_exp)
 
 if __name__ == '__main__':
     print(__doc__)
