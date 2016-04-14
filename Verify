@@ -86,7 +86,8 @@ class Verify:
 
         self.t2_input_file = ld.locate_GOAfile(t2, self.work_dir)
 
-        # Names for SIX benchmark files: bpo, cco, and mfo for LK and NK benchmark types:
+        # Names for SIX benchmark files: bpo, cco, and mfo 
+        # for LK and NK benchmark types:
         self.get_benchmark_filenames()
 
         # Locate the benchmark files:
@@ -97,17 +98,21 @@ class Verify:
             sys.exit(1)
 
         # Names for THREE files to store non-EXP and EXP type entries:
-        # These files will be deleted once the calculation is done
+        # (These files will be deleted once the calculation is done)
+
+        # File name for entries in t1 file with non-EXP evidence codes:
         self.t1_iea_name = self.t1_input_file + '.iea'
-                # File name for entries in t1 file with non-EXP evidence codes
+
+        # File name for entries in t1 file with EXP evidence codes:
         self.t1_exp_name = self.t1_input_file + '.exp'
-                # File name for entries in t1 file with EXP evidence codes
+
+        # File name for entries in t2 file with EXP evidence codes:
         self.t2_exp_name = self.t2_input_file + '.exp'
-                # File name for entries in t2 file with EXP evidence codes
 
         # Name for GO ID frequency per pubmed id for t2 file:
-        # This file will be deleted once the calculations are completed 
-        self.t2_ptf_file =  self.t2_input_file + '_with_annotations_per_paper.txt'
+        # (This file will be deleted once the calculations are completed)
+        self.t2_ptf_file =  self.t2_input_file + \
+                            '_with_annotations_per_paper.txt'
     
     def get_benchmark_filenames(self): 
         """
@@ -116,7 +121,8 @@ class Verify:
         """
         t3_basename = basename(self.parsed_dict['t3']).strip()
         bmVersion = t3_basename.split('.')[-1]
-        fnPrefix = t3_basename[0:len(t3_basename)-(len(bmVersion) + len(bmSuffix_LK_bpo))]
+        fnPrefix = t3_basename[0:len(t3_basename)-(len(bmVersion) + \
+                                                  len(bmSuffix_LK_bpo))]
 
         self.benchmark_LK_bpo = fnPrefix + bmSuffix_LK_bpo + bmVersion
         self.benchmark_LK_cco = fnPrefix + bmSuffix_LK_cco + bmVersion
@@ -204,8 +210,10 @@ class Verify:
                 GOA.writerec(ingen, t2_exp_handle, GAFFIELDS) # Create t2.exp file
         t2_exp_handle.close()
 
-        if os.stat(self.t2_exp_name).st_size == 0: # If t2.exp is empty, program quits
-            print 'Your benchmark set will be empty with the parameters provided. Quiting ...'
+        # If t2.exp is empty, program quits:
+        if os.stat(self.t2_exp_name).st_size == 0: 
+            print('Your benchmark set will be empty with the ' + \
+                  'parameters provided. Quiting ...')
             sys.exit(1)
        
         # Create t1.iea_name and t1.exp_name files: 
@@ -218,7 +226,7 @@ class Verify:
 
     def delete_intermediate_files(self):
         """
-        This method deletes all the intermediate files created previously. 
+        This method deletes all the intermediate files created previously.
         It also deletes any empty files found in the workspace.
         """
         print 'Cleaning working directory ...'
@@ -320,7 +328,7 @@ class Verify:
 
     def process_data(self):
         """ 
-        This method is the entry point of Benchmark Verification Tool. 
+        This method is the entry point of Benchmark Verification Tool.
         It invokes other methods for 
             (1) file format checking
             (2) creating intermediate files
