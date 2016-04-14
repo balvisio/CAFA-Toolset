@@ -193,6 +193,7 @@ def t1_filter(t1_iter,
     exp_pid_dict.clear()
 
 if __name__ == '__main__': 
+    print (sys.argv[0] + ':')
     print(__doc__)
     sys.exit(0)
 
