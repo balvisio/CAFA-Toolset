@@ -1,20 +1,22 @@
 #!/usr/bin/python
+'''
+     count_freq(goa_handle, EEC=set([])):
+        This method calculates two things: 
+        (1) the number of annotations per paper for every paper listed in 
+            the input file, and 
+        (2) how many papers are associated with every protein annotation 
+            pair.
+        It returns these two values as tuple.
 
+     paper_term_freq(goa_handle, ptf_handle, params):
+        It populates the paper term frequency file. Then, it returns the
+        dictionary containing the pair of the protein annotation
+        (protein name, GO ID) and number of papers supporting it.
+'''
 import os
 import sys
 from collections import defaultdict
 import re
-
-'''
-    count_freq: This method calculates two things: (1) the number of 
-    annotations per paper for every paper listed in the input file, and 
-    (2) how many papers are associated with every protein annotation pair.
-    It returns these two values as tuple of two dictionaries.
-
-    paper_term_freq: It populates the paper term frequency file. Then, it 
-    returns the dictionary containing the pair of the protein annotation 
-    (protein name, GO ID) and number of papers supporting it.
-'''
 
 def count_freq(goa_handle, EEC=set([])):
 #    print 'EEC: ' + str(EEC)
@@ -61,8 +63,12 @@ def paper_term_freq(goa_handle, ptf_handle, params):
     return ann_conf
 
 if __name__ == '__main__':
-    goa_file = sys.argv[1] # input file in GOA format 
-    ptf_file = sys.argv[2] # output file for paper term frequency
-    paper_term_freq(open(sys.argv[1], 'r'), 
-                    open(sys.argv[2], 'w'), set())
+    if len(sys.argv) ==1:
+        print(sys.argv[0] + ':') 
+        print(__doc__) 
+    else: 
+        goa_file = sys.argv[1] # input file in GOA format 
+        ptf_file = sys.argv[2] # output file for paper term frequency
+        paper_term_freq(open(sys.argv[1], 'r'), 
+                        open(sys.argv[2], 'w'), set())
         # Create a paper term frequency file from the input goa file
