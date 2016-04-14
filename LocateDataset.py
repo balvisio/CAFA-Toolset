@@ -72,5 +72,6 @@ def locate_benchmark_file(infile, work_dir):
       return False
 
 if __name__ == '__main__':
+    print (sys.argv[0] + ':')
     print (__doc__)
     sys.exit(0) 
