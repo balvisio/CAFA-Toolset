@@ -168,6 +168,6 @@ def create_benchmarks(t1_iea_handle,
     return None
 
 if __name__ == '__main__':
-    print (sys.argv[0] + ' docstring:')
+    print (sys.argv[0] + ':')
     print (__doc__)
     sys.exit(0)
