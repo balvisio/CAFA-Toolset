@@ -1,16 +1,45 @@
 #!/usr/bin/env python
 
+'''
+    This module is an extension to the GOAParser module.
+    It has the following methods to facilitate the file handling
+    needs specific to Benchmark program.
+
+    parse_tax_file(tax_filename):
+        This method acepts a taxonomy file, downloaded from NCBI
+        and produces a mapping between taxonomy ids and taxonomy 
+        names. At the end, it returns this mapping. 
+
+    record_has_forBenchmark(inupgrec, 
+                            ann_freq,
+                            allowed,
+                            tax_name_id_mapping,
+                            EEC_default,
+                            GAFFIELDS):
+        This method accepts a gaf record, a dictionary of allowed field
+        values and other user specified parameters.
+
+        If any field in the record does not have an allowed value, the
+        function stops search and returns false. Otherwise, the function
+        returns true.
+
+    t1_filter(t1_iter, 
+              t1_iea_name, 
+              t1_exp_name, 
+              t2_exp_name, 
+              GAFFIELDS,
+              EXP_default=set([])):
+        This method accepts 2 uniprot-goa files and checks to see for all
+        proteins present in t2 files, if the evidence code of the proteins
+        in t1 file is electronic or experimental. Accordingly, splits them
+        into 2 different files and writes out the files
+'''
+
 import os
 import sys
 import GOAParser
 from os.path import basename
 from collections import defaultdict
-
-'''
-   This module is an extension to the GOAParser module.
-   It has been modified to suit the exact needs of the Benchmark program.
-
-'''
 
 def parse_tax_file(tax_filename):
 
@@ -125,8 +154,12 @@ def record_has_forBenchmark(inupgrec,
                 break        
     return retval  
 
-def t1_filter(t1_iter, t1_iea_name, t1_exp_name, t2_exp_name, GAFFIELDS,EXP_default=set([])):
-
+def t1_filter(t1_iter, 
+              t1_iea_name, 
+              t1_exp_name, 
+              t2_exp_name, 
+              GAFFIELDS,
+              EXP_default=set([])):
     '''
        This method accepts 2 uniprot-goa files and checks to see for all
        proteins present in t2 files, if the evidence code of the proteins
@@ -158,3 +191,8 @@ def t1_filter(t1_iter, t1_iea_name, t1_exp_name, t2_exp_name, GAFFIELDS,EXP_defa
     t1_iea_handle.close()
     t1_exp_handle.close()
     exp_pid_dict.clear()
+
+if __name__ == '__main__': 
+    print(__doc__)
+    sys.exit(0)
+
