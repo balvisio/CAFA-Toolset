@@ -206,8 +206,9 @@ class Verify:
                                                 tax_id_name_mapping,
                                                 self.ConfigParam['exp_eec'],
                                                 GAFFIELDS)
-            if retval: # If retval is TRUE, write out the record to t2.exp file
-                GOA.writerec(ingen, t2_exp_handle, GAFFIELDS) # Create t2.exp file
+            # If retval is TRUE, write out the record to t2.exp file:
+            if retval: 
+                GOA.writerec(ingen, t2_exp_handle, GAFFIELDS) 
         t2_exp_handle.close()
 
         # If t2.exp is empty, program quits:
