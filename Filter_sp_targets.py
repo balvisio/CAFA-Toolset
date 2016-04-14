@@ -78,15 +78,29 @@ def species_filter(fh_sprot, taxon_id, fh_targets,
             # If the protein has no EXP evidence,
             # write the sequence to the output file:
             if not exp_code:
+#                outseq = SeqRecord(Seq(rec.sequence),
+#                                   id="T"+str(target_id),
+#                                   description = "%s" %
+#                                   (rec.entry_name))
+
                 outseq = SeqRecord(Seq(rec.sequence),
                                    id="T"+str(target_id),
                                    description = "%s" %
-                                   (rec.entry_name))
+                                   (rec.accessions[0]))
+
                 outseq_list = [outseq]
                 # Write out the sequence:
                 SeqIO.write(outseq_list,fh_targets, "fasta")
+#                mapStr = "T" + str(target_id) + '\t' + \
+#                               str(rec.entry_name) + '\n'
+
+#                mapStr = "T" + str(target_id) + '\t' + \
+#                               str(rec.entry_name) + '\t' + \
+#                               str(rec.accessions[0]) + '\n'
+
                 mapStr = "T" + str(target_id) + '\t' + \
-                               str(rec.entry_name) + '\n'
+                               str(rec.accessions[0]) + '\n'
+
                 # Write out the mapping (target id -> protein name):
                 fh_map.write("%s" % mapStr)
                 target_id += 1
