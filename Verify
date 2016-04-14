@@ -360,10 +360,9 @@ class Verify:
 
 if __name__ == '__main__':
     if len(sys.argv) == 1:
-        print(sys.argv[0] + ' docstring:')
+        print(sys.argv[0] + ':')
         print(__doc__)
-        sys.exit(0)
     else:
         vm = Verify()     # Create an instance of Verify class
         vm.process_data() # Process data and verify the benchmark sets
-        sys.exit(0)
+    sys.exit(0)
