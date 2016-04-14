@@ -1,30 +1,113 @@
 #!/usr/bin/env python
-import copy
-import sys
 
-"""Parsers for the GAF, GPA and GPI formats from UniProt-GOA.
+"""
+    This method defines the following dictionaries and methods
+    related to UniProt-GOA files: 
 
-Uniprot-GOA README + GAF format description:
-ftp://ftp.ebi.ac.uk/pub/databases/GO/goa/UNIPROT/README
+    GAF20FIELDS 
+        List of the fields of Gene Association File (GAF) Format version 2.0
+        Details: http://geneontology.org/page/go-annotation-file-format-20
 
-GAF formats:
-http://www.geneontology.org/GO.format.annotation.shtml
-gp_association (GPA format) README:
-ftp://ftp.ebi.ac.uk/pub/databases/GO/goa/UNIPROT/gp_association_readme
+    GAF10FIELDS 
+        List of the fields of Gene Association File (GAF) Format version 1.0
+        Details: http://geneontology.org/page/go-annotation-file-gaf-format-10
 
-gp_information (GPI format) README:
-ftp://ftp.ebi.ac.uk/pub/databases/GO/goa/UNIPROT/gp_information_readme
+    GPA10FIELDS
+        List of the fields of Gene Product Association Data (GPAD) 
+            Format version 1.0
+        Details: 
+        http://geneontology.org/page/gene-product-association-data-gpad-format
 
-(c) 2013 Iddo Friedberg idoerg@gmail.com
-http://iddo-friedberg.net
-Distributed under Biopython license.
+    GPA11FIELDS
+        List of the fields of Gene Product Association Data (GPAD) Format version 1.1
+        Details: 
+        http://geneontology.org/page/gene-product-association-data-gpad-format
+
+    GPI10FIELDS
+        List of the fields of Gene Product Information (GPI) Format version 1.0
+        Details: http://geneontology.org/page/gene-product-information-gpi-format
+
+    GPI11FIELDS
+        List of the fields of Gene Product Information (GPI) Format version 1.1
+        Details: http://geneontology.org/page/gene-product-information-gpi-format
+      
+    _gpi10iterator(handle)
+        This method returns an iterator to read a file in GPI format version 1.0 
+       
+    _gpi11iterator(handle)
+        This method returns an iterator to read a file in GPI format version 1.1 
+
+    gpi_iterator(handle):
+        This method invokes _gpi10iterator or _gpi11iterator private methods
+        based on GPI file format version and retuns an iterator to read a file
+        either in GPI format version 1.0 or 1.1
+
+    _gpa10iterator(handle):
+        This method returns an iterator to read a file in GPA format 
+        version 1.0
+
+    _gpa11iterator(handle):
+        This method returns an iterator to read a file in GPA format 
+        version 1.1
+
+    gpa_iterator(handle):
+        This method invokes _gpa10iterator or _gpa11iterator private methods
+        based on GPA file format version and retuns an iterator to read a file
+        either in GPA format version 1.0 or 1.1
+
+    _gaf20iterator(handle):
+        This method returns an iterator to read a file in GAF format 
+        version 2.0
+
+    _gaf10iterator(handle):
+        This method returns an iterator to read a file in GAF format 
+        version 1.0
+
+    gafiterator(handle):
+        This method invokes _gaf10iterator or _gaf20iterator private methods
+        based on GAF file format version and retuns an iterator to read a file
+        either in GAF format version 1.0 or 2.0
+
+    _gaf10byproteiniterator(handle):
+
+
+    _gaf20byproteiniterator(handle):
+
+    gafbyproteiniterator(handle):
+        This method invokes _gaf10byproteiniterator or _gaf20byproteiniterator
+        private methods based on GAF file format version and retuns an 
+        iterator to read a file either in GAF format version 1.0 or 2.0.
+        The iterator goes over the consecutive records with the same 
+        DB_OBJECT_ID. 
+
+    writerec(outrec,handle,fields=GAF20FIELDS)
+        This method writes a single UniProt-GOA reacord to an output file
+        stream.    
+
+    writebyproteinrec(outprotrec,handle,fields=GAF20FIELDS)
+        This method writes a list of UniProt-GOA records to an output file 
+        stream. 
+
+    record_has(inrec, fieldvals)
+        This method accepts a record and a dictionary of filed values. 
+        The function returns: 
+            True, if any filed of the record has a matching
+            False, otherwise 
+
+    Some useful websites: 
+
+    Uniprot-GOA README with  GAF format description:
+    ftp://ftp.ebi.ac.uk/pub/databases/GO/goa/UNIPROT/README
+
+    List of all GOA file formats:
+    http://www.geneontology.org/GO.format.annotation.shtml
 
 """
 
-# GAF: GO Annotation Format
-#
-# GAF version 2.0
+import copy
+import sys
 
+# GAF version 2.0
 GAF20FIELDS = ['DB' , 
         'DB_Object_ID' , 
         'DB_Object_Symbol' , 
@@ -250,7 +333,6 @@ def _gaf10iterator(handle):
         inrec[12] = inrec[12].split('|') # Taxon
         yield dict(zip(GAF10FIELDS, inrec))
 
-
 def _gaf10byproteiniterator(handle):
     cur_id = None
     id_rec_list = []
@@ -274,7 +356,6 @@ def _gaf10byproteiniterator(handle):
             cur_id = cur_rec['DB_Object_ID']
             id_rec_list.append(cur_rec)
 
-            
 def _gaf20byproteiniterator(handle):
     cur_id = None
     id_rec_list = []
@@ -298,7 +379,6 @@ def _gaf20byproteiniterator(handle):
             cur_id = cur_rec['DB_Object_ID']
             id_rec_list.append(cur_rec)
 
-                
 def gafbyproteiniterator(handle):
     """Iterates over records in a gene association file. 
     
@@ -315,7 +395,6 @@ def gafbyproteiniterator(handle):
         sys.stderr.write("gaf 1.0\n")
         return _gaf10byproteiniterator(handle)
 
-
 def gafiterator(handle):
     """Iterate pver a GAF 1.0 or 2.0 file.
 
@@ -331,7 +410,6 @@ def gafiterator(handle):
         sys.stderr.write("gaf 1.0\n")
         return _gaf10iterator(handle)
 
-    
 def writerec(outrec,handle,fields=GAF20FIELDS):
     """Write a single UniProt-GOA record to an output stream. 
 
@@ -350,7 +428,6 @@ def writerec(outrec,handle,fields=GAF20FIELDS):
     outstr += outrec[fields[-1]] + '\n'
     handle.write("%s" % outstr)
 
-
 def writebyproteinrec(outprotrec,handle,fields=GAF20FIELDS):
     """Write a list of GAF records to an output stream. 
 
@@ -362,7 +439,6 @@ def writebyproteinrec(outprotrec,handle,fields=GAF20FIELDS):
     for outrec in outprotrec:
         writerec(outrec, handle, fields=fields)
 
-    
 def record_has(inrec, fieldvals):
     """Accepts a record, and a dictionary of field values. 
     
@@ -381,16 +457,17 @@ def record_has(inrec, fieldvals):
             break
     return retval
 
-
 if __name__ == '__main__':
-    """Example: read and filter a GAF file. 
-    
-    Write only S. cerevisiae records, but remove all
-    records with IEA evidence
-    """
-    banned = {'Evidence': set(['IEA','EXP'])}
-    allowed = {'Taxon_ID': set(['taxon:4932'])}
-    for inrec in gafiterator(open(sys.argv[1])):
-        if record_has(inrec, allowed) and \
-               not record_has(inrec, banned):
-            writerec(inrec, sys.stdout, GAF10FIELDS)
+    print(__doc__)
+    sys.exit(0)
+#    """Example: read and filter a GAF file. 
+#    Write only S. cerevisiae records, but remove all
+#    records with IEA evidence
+#    """
+#    banned = {'Evidence': set(['IEA','EXP'])}
+#    allowed = {'Taxon_ID': set(['taxon:4932'])}
+#    for inrec in gafiterator(open(sys.argv[1])):
+#        if record_has(inrec, allowed) and \
+#               not record_has(inrec, banned):
+#            writerec(inrec, sys.stdout, GAF10FIELDS)
+
