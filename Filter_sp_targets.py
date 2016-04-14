@@ -146,5 +146,6 @@ def species_filter_count(fh_sprot, taxon_id, EXP_default=set([])):
     return (rec_count, seqCount, seqCount_no_exp)
 
 if __name__ == '__main__':
+    print (sys.argv[0] + ':')
     print(__doc__)
     sys.exit(0)
