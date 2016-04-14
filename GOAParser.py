@@ -460,14 +460,3 @@ def record_has(inrec, fieldvals):
 if __name__ == '__main__':
     print(__doc__)
     sys.exit(0)
-#    """Example: read and filter a GAF file. 
-#    Write only S. cerevisiae records, but remove all
-#    records with IEA evidence
-#    """
-#    banned = {'Evidence': set(['IEA','EXP'])}
-#    allowed = {'Taxon_ID': set(['taxon:4932'])}
-#    for inrec in gafiterator(open(sys.argv[1])):
-#        if record_has(inrec, allowed) and \
-#               not record_has(inrec, banned):
-#            writerec(inrec, sys.stdout, GAF10FIELDS)
-
