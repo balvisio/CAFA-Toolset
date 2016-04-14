@@ -1,9 +1,7 @@
 #!/usr/bin/env python
 
 '''
-    This module has two methods: read_config and create_config.
-    The entry point of this module is read_config which invokes
-    create_config when it does not find the configuration file.
+    This module has two methods the following two methods:
 
     read_config: 
         This method tries to locate the configuration file in 
@@ -108,4 +106,6 @@ def read_config(config_filename):
     return ConfigParam
 
 if __name__ == '__main__':
+    print (sys.argv[0] + ':')
     print (__doc__)
+    sys.exit(0)
