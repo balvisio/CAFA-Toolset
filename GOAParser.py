@@ -458,5 +458,6 @@ def record_has(inrec, fieldvals):
     return retval
 
 if __name__ == '__main__':
+    print (sys.argv[0] + ' docstring:')
     print(__doc__)
     sys.exit(0)
