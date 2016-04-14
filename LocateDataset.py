@@ -38,8 +38,6 @@
 import os
 import sys
 import re
-import FtpDownload
-import Zipper
 from collections import defaultdict
 from os.path import basename
 import shutil
