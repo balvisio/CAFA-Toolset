@@ -58,6 +58,8 @@ dynamically controlled vocabulary.
 *  GAF 2.0 format: http://geneontology.org/page/go-annotation-file-format-20
 *  UniProt-GOA README: 
    http://www.geneontology.org/gene-associations/readme/goa.README
+*  List of all GOA file formats: 
+   http://geneontology.org/page/go-annotation-file-formats
 
 #### UniProtKB/SwissProt 
 This is a non-redundant protein sequence database. Each entry in this database
