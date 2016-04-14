@@ -72,3 +72,4 @@ if __name__ == '__main__':
         paper_term_freq(open(sys.argv[1], 'r'), 
                         open(sys.argv[2], 'w'), set())
         # Create a paper term frequency file from the input goa file
+    sys.exit(0)
