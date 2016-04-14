@@ -271,7 +271,7 @@ def verify_NK_benchmark(t1_iea_handle,
     return err_msg
 
 if __name__ == "__main__":
-    print (sys.argv[0] + ' docstring:')
+    print (sys.argv[0] + ':')
     print (__doc__)
     sys.exit(0)
 
