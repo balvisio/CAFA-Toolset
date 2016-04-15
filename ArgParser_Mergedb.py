@@ -1,12 +1,16 @@
 #!/usr/bin/env python
 
 '''
-    The entry point of this script is parse_args() method which calls other
+    The entry point of this module is parse_args() method which calls other
     methods to collect user supplied arguments, parses and verifies them 
     and at the end returns those arguments as a dictionary. Description of 
     these methods are following:   
    
-    collect_args: 
+    parse_args:
+       This method calls the methods below and returns the final dictionary
+       containing the user supplied arguments.
+
+    collect_args:
         This method collects the user supplied arguments and returns them 
         as an argparse.ArgumentParser object.
 
@@ -18,10 +22,6 @@
         This method verifies the correctness of the user supplied arguments 
         and puts them into an ordered dictionary which it returns at the 
         end. 
-
-    parse_args: 
-       This method calls the above methods and returns the final dictionary 
-       containing the user supplied arguments.
 '''
 
 import os
@@ -33,8 +33,8 @@ from collections import OrderedDict
 
 def collect_args():
     """
-    This method collects the user supplied arguments 
-    and returns them at the end.
+    This method collects the user supplied arguments and returns them 
+    at the end.
     """
 
     parser = argparse.ArgumentParser(description='Merges UniProtKB/' + \
@@ -68,9 +68,9 @@ def extract_args(args):
     
 def check_args(args_dict, parser):
     """
-    This method checks the user arguments for consistency.
-    It builds a new dictionary from these arguments and 
-    finally returns this newly created dictionary 
+    This method checks the user arguments for consistency. It builds a new
+    dictionary from these arguments and finally returns this newly created 
+    dictionary.
     """
 
     user_dict = OrderedDict() 
@@ -105,15 +105,16 @@ def check_args(args_dict, parser):
 
 def parse_args():
     """
-    This is the entry point for the other methods in this module:
-      1. It invokes collect_args to collect user arguments.
-      2. It invokes extract_args() method to put those arguments into 
+    This is the entry point for the other methods in this module. It
+      1. invokes collect_args to collect user arguments.
+      2. invokes extract_args() method to put those arguments into 
          an ordered dictionary which it returns at the end.
-      3. It invokeds check_args to check the consistency of those 
+      3. invokeds check_args to check the consistency of those 
          arguments and returns the dictionary of the correct arguments.
-      4. It returns the dictionary at the end to the calling point.
+      4. returns the dictionary at the end.
     """
-    parser = collect_args() # Collect user arguments
+    # Collect user arguments:
+    parser = collect_args() 
     args_dict = {}
     args, unknown = parser.parse_known_args()
     if len(unknown) > 0:
@@ -121,11 +122,13 @@ def parse_args():
         print ("Invalid Arguments")
         print ('*********************************\n')
         print (parser.parse_args(['--help']))
-    args_dict = extract_args(args) # Places the user arguments into a dictionary
-    user_dict = check_args(args_dict,parser) # Checks the consistency of the user args
+    # Places the user arguments into a dictionary:
+    args_dict = extract_args(args) 
+    # Checks the consistency of the user args:
+    user_dict = check_args(args_dict,parser) 
     return user_dict
 
 if __name__ == '__main__':
     print (sys.argv[0] + ':')
     print (__doc__)
-    sys.exit(0) 
+    sys.exit(0)
