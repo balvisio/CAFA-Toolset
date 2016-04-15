@@ -1,55 +1,54 @@
 #!/usr/bin/env python
 
 '''
-    This module has a set of methods to facilitate appending records 
-    from a UniprotKB/SwissProt file at the end of a UniProt-GOA file. 
-    The main method (entry point) of this module is appendSprot2goa() 
-    method which calls other the methods defined in this module:
+    This module has a set of methods to facilitate fetching records 
+    from a UniprotKB/SwissProt file and appending them at the end of 
+    a UniProt-GOA file. The main method (entry point) of this module 
+    is appendSprot2goa() method which invokes other the methods 
+    that are also defined in this module:
 
     appendSprot2goa(fh_sprot, goa_file_name, taxon_id, fh_merged_go):
-
-        fh_sport: It is a file handle to a UniProtKB/SwissProt file.
-
-        goa_file_name: It is a file name of a UniProt-GOA file.
-
-        taxon_id: It is a Taxonomy Id for an organism.
-
-        fh_merged_go: It is file handle to the output file which
-            already has all records copied into from the
-            UniProt-GOA file named goa_file_name.
-
-        This method goes over the records in fh_sprot file, checks
-        whether that records are already in UniProt-GOA file
-        goa_file_name, and if it is not found there, the method
+        fh_sport: file handle to a UniProtKB/SwissProt file.
+        goa_file_name: file name of a UniProt-GOA file.
+        taxon_id: a taxonomy id for an organism.
+        fh_merged_go: file handle to the output file which already has 
+            all the records copied into from the UniProt-GOA file named 
+            goa_file_name.
+        This method goes over each record in fh_sprot file, checks
+        whether that record is already in the UniProt-GOA file
+        goa_file_name, and if it is NOT found there, the method
         coverts the UniProtKB/SwissProt record to a UniProt-GOA record
-        by invoking swissProt2GOA and appends it to the end of the output 
-        file.
+        by invoking swissProt2GOA and then appends the newly formed 
+        UniProt-GOA record at the end of the output file.
 
     create_iterator: 
         It returns an iterator object for an input UniProt-GOA file along
         with a list of all fieldnames of the UniProt-GOA file. 
 
     swissProt2GOA(sprotRec, crossRef, fields=GOAParser.GAF20FIELDS):
-        This method converts a UniProtKB/SwissProt record to a UniProt-GOA 
-        record by calling other methods defined in this module. And, at 
-        the end, it returns the newly formed method.
+        This method extracts the required information from a 
+        UniProtKB/SwissProt record and construct a UniProt-GOA record. 
+        It invokes other methods defined in this module to extract 
+        the different fields from the SwissProt record. At the end,
+        it returns the newly constructed UniProt-GOA record.
 
-    The following methods facilitate swissProt2GOA method to convert a 
-    UniProtKB/SwissProt record to a UniProt-GOA record: 
+    The following methods facilitate swissProt2GOA method to construct the
+    UniProt-GOA record by extracting information from a UniProtKB/SwissProt
+    record: 
 
     assignSymbol(sprotRec)
-        This method extracts the information from UniProtKB/SwissProt record 
-        that is equivalent to 'DB_Object_Symbol' field of UniProt-GOA file 
-        and then return it. 
+        This method extracts the information from the UniProtKB/SwissProt 
+        record that is equivalent to 'DB_Object_Symbol' field of 
+        UniProt-GOA file and then returns it.
     
     assignDB_REF(sprotRec, crossRef)
         This method extracts information from the SwissProt record that is
         equivalent to 'DB:Reference' field of UniProt-GOA file. It follows
         the rules from ftp://ftp.ebi.ac.uk/pub/databases/GO/goa/UNIPROT/README
-        to construct this field. It invokes the following methods:
+        to construct this field. It invokes the following other methods:
 
         find_pubmed(sprotRec)
-            This method returns the pubmed id from SwissProt record.
+            This method returns the pubmed id from the SwissProt record.
 
         find_doi(sprotRec)
             This method returns the DOI from the SwissProt record.
@@ -58,21 +57,22 @@
             This method returns REACTOM id from the SwissProt record.
 
         assignGO_REF(sprotRec, crossRef)
-            This method returns empty strings at this point.
+            This method returns an empty string at this point.
 
     assignSynonym(sprotRec)
         This method extracts information from the SwissProt record that is
         equivalent to 'DB_Object_Synonym' field of UniProt-GOA file. It
-        follows the rules from ftp://ftp.ebi.ac.uk/pub/databases/GO/goa/UNIPROT/README
-        to construct this field.
+        follows the rules from 
+        ftp://ftp.ebi.ac.uk/pub/databases/GO/goa/UNIPROT/README to construct 
+        this field.
 
     assignTaxoId(sprotRec)
         This method extracts information from the SwissProt record that is
-        equivalent to 'Taxon_ID' field of UniProt-GOA file and it returns it.
+        equivalent to 'Taxon_ID' field of UniProt-GOA file and the returns it.
 
     assignDate(sprotRec)
         This method extracts information from the SwissProt record that is
-        equivalent to 'Date' field of UniProt-GOA file and it returns it.
+        equivalent to 'Date' field of UniProt-GOA file and then returns it.
 '''
 
 import os
@@ -91,16 +91,16 @@ Months = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', \
               'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
 def assignSymbol(sprotRec): 
-    symbol = '' 
+    symbol = ''
 # scenario 1: gene_name=> Name=DBP5; Synonyms=RAT8; OrderedLocusNames=YOR046C;
-# scenario 2: gene_name=> Name=DCS2 {ECO:0000312|SGD:S000005699}; 
+# scenario 2: gene_name=> Name=DCS2 {ECO:0000312|SGD:S000005699};
 #                         OrderedLocusNames=YOR173W; ORFNames=O3625;
 # scenario 3: gene_name=> Name=DDI2; OrderedLocusNames=YFL061W;
     for g in sprotRec.gene_name.strip(';').split(';'):
         if not g or g.find('=') == -1:
-            continue 
+            continue
         # Split each memmber of the group g to a list:
-        for f in g.split('=')[1].split(','):  
+        for f in g.split('=')[1].split(','):
             symbol = ((f.split(' '))[0]).strip()
             break
         # the symbol happens to be not found in the above group g:
@@ -108,7 +108,7 @@ def assignSymbol(sprotRec):
             continue
         else:
             break
-    return symbol 
+    return symbol
 
 def assignGO_REF(sprotRec, crossRef):
     go_ref = ''
@@ -191,10 +191,11 @@ def assignDate(sprotRec):
 def swissProt2GOA(sprotRec, crossRef, fields=GOAParser.GAF20FIELDS):
     """
      This method takes a SwissProt record and GO term information
-     as input arguments. It then constructs a GOA dictionary using
-     the 'fields' as keys and values taken from sprotReci, and then
-     returns the constructed GOA record.
+     (crossRef) as input arguments. It then constructs a GOA
+     dictionary using the 'fields' as keys and values taken from
+     sprotRec, and then returns the constructed GOA record.
     """
+
     # 15 fields are defined for GAF10FIELDS (GAF 1.0):
     goaRec = {'DB':'SwissProt', # 'SwissProt' is assigned to DB
               'DB_Object_ID': sprotRec.accessions[0],
@@ -214,7 +215,7 @@ def swissProt2GOA(sprotRec, crossRef, fields=GOAParser.GAF20FIELDS):
               }
 #    print goaRec['DB:Reference']
     # Two extra fields are defined for GAF20FIELDS (GAF 2.0):
-    if len(fields) == 17: 
+    if len(fields) == 17:
         goaRec['Annotation_Extension'] = ''
         goaRec['Gene_Product_Form_ID'] = ''
     return goaRec
@@ -241,9 +242,13 @@ def create_iterator(infile):
 
 def appendSprot2goa(fh_sprot, goa_file_name, taxon_id, fh_merged_go):
     """
-     Append new GO terms from a uniPort-swisprot file 
-     (file handle: fh_sprot) to SwissProt-GOA file (goa_file_name), 
-     writing the merged file to a merged file (file handle: fh_merged_go)
+     This method reads each reacord from the UniProtKB/SwissProt file
+     and checks wither it's for taxon_id. If it is, this method
+     then checks whether the GO term exists in the UniProt-GOA file
+     passed as the file name goa_file_name. If it is a new GO term, 
+     this method invokes swissProt2GOA method for each such GO term 
+     to construct a UniProt-GOA record which it appends at the end of 
+     the merged UniProt-GOA file passed as file handle fh_merged_go. 
     """
     # Creates an iterator object for t1 file:
     iter_handle, GAFFIELDS = create_iterator(goa_file_name) 
