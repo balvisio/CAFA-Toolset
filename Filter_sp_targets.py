@@ -35,7 +35,6 @@
             Total number of sequences in the sprot file related to the the 
                 taxonomy id whose annotations have EXP evidence
 '''
-
 import sys
 from Bio import SeqIO
 from Bio.Seq import Seq
