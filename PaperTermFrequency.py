@@ -38,16 +38,17 @@ def count_freq(goa_handle, EEC=set([])):
 
 def paper_term_freq(goa_handle, ptf_handle, params):
     """
-     Given an input uniprot-goa file, this method populates file 
-     pointed by ptf_handle with a pair of pubmed id and the number 
-     of proteins annotated by that pubmed id.
+    Given an input uniprot-goa file, this method populates file 
+    pointed by ptf_handle with a pair of pubmed id and the number 
+    of proteins annotated by that pubmed id.
     """
     ann_conf, paper_conf = count_freq(goa_handle,
                             params['Evidence'])
     print 'Populating paper-term frequency file ...'
     if len(paper_conf) > 0:
         for pubmed_id in paper_conf:
-            print >> ptf_handle, pubmed_id + '\t' + str(len(paper_conf[pubmed_id]))
+            print >> ptf_handle, pubmed_id + '\t' + \
+                     str(len(paper_conf[pubmed_id]))
     paper_conf.clear()
     return ann_conf
 
@@ -58,7 +59,9 @@ if __name__ == '__main__':
     else:
         goa_file = sys.argv[1] # input file in GOA format
         ptf_file = sys.argv[2] # output file for paper term frequency
+
+        # Create a paper term frequency file from the input goa file:
         paper_term_freq(open(sys.argv[1], 'r'), 
                         open(sys.argv[2], 'w'), set())
-        # Create a paper term frequency file from the input goa file
+
     sys.exit(0)
