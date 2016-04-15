@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 """
     This method defines the following dictionaries and methods
     related to UniProt-GOA files: 
@@ -103,7 +102,6 @@
     http://www.geneontology.org/GO.format.annotation.shtml
 
 """
-
 import copy
 import sys
 
@@ -203,8 +201,8 @@ GPI11FIELDS = [
       'GO_Annotation_Complete']
 
 def _gpi10iterator(handle):
-    """Read GPI 1.0 format files (PRIVATE).
-
+    """
+    Read GPI 1.0 format files (PRIVATE).
     This iterator is used to read a gp_information.goa_uniprot
     file which is in the GPI 1.0 format.
     """
@@ -218,8 +216,8 @@ def _gpi10iterator(handle):
         yield dict(zip(GPI10FIELDS, inrec))
 
 def _gpi11iterator(handle):
-    """Read GPI 1.0 format files (PRIVATE).
-
+    """
+    Read GPI 1.0 format files (PRIVATE).
     This iterator is used to read a gp_information.goa_uniprot
     file which is in the GPI 1.0 format.
     """
@@ -235,12 +233,11 @@ def _gpi11iterator(handle):
         yield dict(zip(GPI11FIELDS, inrec))
 
 def gpi_iterator(handle):
-    """Read GPI format files.
-
-    This function should be called to read a
-    gp_information.goa_uniprot file. At the moment, there is
-    only one format, but this may change, so 
-    this function is a placeholder a future wrapper.
+    """
+    This method reads a GPI format file. This function should be called 
+    to read a gp_information.goa_uniprot file. At the moment, there is
+    only one format, but this may change, so this function is a placeholder 
+    a future wrapper.
     """
     inline = handle.readline()
     if inline.strip() == '!gpi-version: 1.1':
@@ -252,11 +249,11 @@ def gpi_iterator(handle):
 
 
 def _gpa10iterator(handle):
-    """Read GPA 1.0 format files (PRIVATE).
-
+    """
+    Read GPA 1.0 format files (PRIVATE).
     This iterator is used to read a gp_association.*
-    file which is in the GPA 1.0 format. Do not call directly. Rather,
-    use the gpaiterator function.
+    file which is in the GPA 1.0 format. Do not call directly. 
+    Rather, use the gpaiterator function.
     """
 
     for inline in handle:
@@ -272,8 +269,8 @@ def _gpa10iterator(handle):
 
 
 def _gpa11iterator(handle):
-    """Read GPA 1.1 format files (PRIVATE).
-
+    """
+    Read GPA 1.1 format files (PRIVATE).
     This iterator is used to read a gp_association.goa_uniprot
     file which is in the GPA 1.1 format. Do not call directly. Rather
     use the gpa_iterator function
@@ -291,8 +288,8 @@ def _gpa11iterator(handle):
 
 
 def gpa_iterator(handle):
-    """Wrapper function: read GPA format files.
-
+    """
+    Wrapper function: read GPA format files.
     This function should be called to read a
     gene_association.goa_uniprot file. Reads the first record and
     returns a gpa 1.1 or a gpa 1.0 iterator as needed
@@ -380,8 +377,8 @@ def _gaf20byproteiniterator(handle):
             id_rec_list.append(cur_rec)
 
 def gafbyproteiniterator(handle):
-    """Iterates over records in a gene association file. 
-    
+    """
+    Iterates over records in a gene association file. 
     Returns a list of all consecutive records with the same DB_Object_ID
     This function should be called to read a
     gene_association.goa_uniprot file. Reads the first record and
@@ -396,8 +393,8 @@ def gafbyproteiniterator(handle):
         return _gaf10byproteiniterator(handle)
 
 def gafiterator(handle):
-    """Iterate pver a GAF 1.0 or 2.0 file.
-
+    """
+    Iterate pver a GAF 1.0 or 2.0 file.
     This function should be called to read a
     gene_association.goa_uniprot file. Reads the first record and
     returns a gaf 2.0 or a gaf 1.0 iterator as needed
@@ -429,21 +426,22 @@ def writerec(outrec,handle,fields=GAF20FIELDS):
     handle.write("%s" % outstr)
 
 def writebyproteinrec(outprotrec,handle,fields=GAF20FIELDS):
-    """Write a list of GAF records to an output stream. 
-
+    """
+    Write a list of GAF records to an output stream. 
     Caller should know the  format version. Default: gaf-2.0
     If header has a value, then it is assumed this is the first record,
-    a header is written. Typically the list is the one read by fafbyproteinrec, which
-    contains all consecutive lines with the same DB_Object_ID
+    a header is written. Typically the list is the one read by 
+    fafbyproteinrec, which contains all consecutive lines with the 
+    same DB_Object_ID
     """
     for outrec in outprotrec:
         writerec(outrec, handle, fields=fields)
 
 def record_has(inrec, fieldvals):
-    """Accepts a record, and a dictionary of field values. 
-    
+    """
+    This method accepts a record, and a dictionary of field values. 
     The format is {'field_name': set([val1, val2])}.
-    If any field in the record has  a matching value, the function returns
+    If any field in the record has a matching value, the function returns
     True. Otherwise, returns False.
     """
     retval = False
