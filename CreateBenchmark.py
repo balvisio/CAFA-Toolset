@@ -36,8 +36,7 @@
        files - one file for each ontology - for both LK and NK types. Thus,
        create_benchmark() populates total SIX files.
 
-   The module also has the following two methods to aid the benchmark creation
-   by the above method:
+   The module also has the following two methods to aid the benchmark creation.
 
    create_exp_ann_dict:
        This method takes a GOA file with no header section. It creates
