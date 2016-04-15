@@ -1,8 +1,8 @@
 #!/usr/bin/python
 
 '''
-    The methods in this module are written to locate a file. The full 
-    description of each method is shown bellow:
+    This module has the definitions of the following methods that can be 
+    invoked to locate a file:
 
     locate_GOAfile:
         This method takes a UniProt-GOA file as input.
@@ -16,23 +16,23 @@
             includes the name of program that invoked this method.
 
     locate_SwissProtfile:
-        If the file is found in the source directory: 
+        If the file is found in the source directory:
             it returns the file path to the source directory
         else if the file is found in the workspace:
-            it returns the file path to the workspace 
+            it returns the file path to the workspace
         otherwise:
-            it print error message and exit the program.  
+            it prints and error message and then exits the program.
 
-    Note: The main difference between locate_GOAfile and locate_SwissProtfile 
-        methods is that locate_GOAfile copies the file to the workspace and 
-        returns the file path to this workspace, whereas locate_SwissProtfile 
-        method does not copy the file to the workspace and returns the file 
-        path to the source of the file. 
+    Note: The main difference between locate_GOAfile and locate_SwissProtfile
+        methods is that locate_GOAfile copies the file to the workspace and
+        returns the file path to this workspace, whereas locate_SwissProtfile
+        method does not copy the file to the workspace and returns the file
+        path to the source of the file.
             
-    locate_benchmark_file: 
+    locate_benchmark_file:
         This method takes a benchmark file as input.
         If the benchmark file exists in the workspace, it returns True.
-        Otherwise, it returns False.  
+        Otherwise, it returns False.
 '''
 
 import os
