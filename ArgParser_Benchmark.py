@@ -6,7 +6,13 @@
    verifies them, and at the end returns those arguments as a dictionary.
    Description of these methods are the following:
    
-   collect_args: 
+
+   parse_args:
+      This method calls the methods described below and returns the final 
+      dictionary containing the user supplied arguments to the Benchmark 
+      or Verify program at the calling point.
+
+   collect_args:
        This method collects the user supplied arguments. The method takes
        a string argument which can take two string values 'benchmark' or
        'verify'. The string value 'benchmark' indicates that the method is
@@ -23,13 +29,8 @@
 
    check_args:
        This method verifies the correctness of the user supplied
-       arguments and puts them into an ordered dictionary and returns at 
-       the end. 
-
-   parse_args:
-      This method calls the above methods and returns the final dictionary
-      containing the user supplied arguments to the Benchmark or Verify 
-      program at the calling point.
+       arguments and puts them into an ordered dictionary which the method 
+       returns at the end. 
 '''
 
 import os
@@ -100,10 +101,9 @@ def collect_args(prog='benchmark'):
 
 def extract_args(args, prog):
     """
-    This method builds a dicitonary from the user supplied arguments
+    This method builds a dictionary from the user supplied arguments
     and returns the constructed dictionary at the end.
     """
-    
     args_dict = OrderedDict() 
     args_dict['t1'] = args.input1
     args_dict['t2'] = args.input2
@@ -123,9 +123,9 @@ def extract_args(args, prog):
     
 def check_args(args_dict, parser):
     """ 
-    This method checks the consistency of user arguments. It builds a new
-    dictionary of the input arguments and returns the created dictionary
-    at the end.
+    This method checks the consistency of the user arguments. It builds 
+    a new ordered dictionary of the input arguments and returns the 
+    created dictionary at the end.
     """
     user_dict = OrderedDict() 
     for arg in args_dict:
@@ -171,22 +171,23 @@ def check_args(args_dict, parser):
 
 def parse_args(prog='benchmark'):
     """ 
-    This is the entry point for the other methods in this module:
-       1. it invokes collect_args to collect user arguments
-       2. it puts those arguments into a dictionary by calling extract_args method
-       3. it checks the consistency of those arguments by invoking check_args which
-          returns an dictionary of correct arguments
-       4. Finally, it returns the dictionary at the end.
+    This is the entry point for the other methods in this module. It
+       1. invokes collect_args to collect user arguments
+       2. puts those arguments into a dictionary by calling extract_args method
+       3. checks the consistency of those arguments by invoking check_args which
+          returns a dictionary of correct arguments
+       4. returns the dictionary at the end.
     """
-
-    parser = collect_args(prog) # Collect user supplied argument values
+    # Collect user supplied argument values:
+    parser = collect_args(prog) 
     args_dict = {}
     args, unknown = parser.parse_known_args()
     if len(unknown) > 0:
         print '\n*********************************'
         print "Invalid Arguments"
         print '*********************************\n'
-        print parser.parse_args(['--help']) # Shows help messages and quits
+        # Shows help messages and quits:
+        print parser.parse_args(['--help']) 
     args_dict = extract_args(args, prog)
     user_dict = check_args(args_dict, parser)
     return user_dict
