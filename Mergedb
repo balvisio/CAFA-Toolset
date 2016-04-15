@@ -185,6 +185,8 @@ if __name__ == '__main__':
         print (sys.argv[0] + ':')
         print(__doc__)
     else: 
-        md = Mergedb()    # Creates an instance of Mergedb class
-        md.process_data() # Process data and create merged file
+        # Creates an instance of Mergedb class:
+        md = Mergedb()    
+        # Process data and create merged file:
+        md.process_data() 
     sys.exit(0)
