@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 '''
-    This module has two methods the following two methods:
+    This module has the following two methods:
 
     read_config: 
         This method tries to locate the configuration file in 
