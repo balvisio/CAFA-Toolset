@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 """
     This script verifies the Limited-Knowledge(LK) and No-Knowledge(NK)
     benchmark sets. The entry points for such verification are the
