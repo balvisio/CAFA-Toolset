@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 '''
     This module is an extension to the GOAParser module.
     It has the following methods to facilitate the file handling
@@ -34,7 +33,6 @@
         in t1 file is electronic or experimental. Accordingly, splits them
         into 2 different files and writes out the files
 '''
-
 import os
 import sys
 import GOAParser
@@ -42,10 +40,9 @@ from os.path import basename
 from collections import defaultdict
 
 def parse_tax_file(tax_filename):
-
     '''
-       This method acepts a taxonomy file, downloaded from NCBI
-       and produces a mapping between tax ids and tax names.
+    This method acepts a taxonomy file, downloaded from NCBI
+    and produces a mapping between tax ids and tax names.
     '''
 
     tax_id_name_mapping = {}
@@ -67,10 +64,10 @@ def record_has_forBenchmark(inupgrec,
                             EEC_default,
                             GAFFIELDS):
     """
-       Accepts a gaf record, a dictionary of allowed field values and other
-       user specified parameters.                                                                                         
-       If any field in the record does not have an allowed value, the function
-       stops search and returns false. Otherwise, the function returns true.
+    Accepts a gaf record, a dictionary of allowed field values and other
+    user specified parameters.                                                                                         
+    If any field in the record does not have an allowed value, the function
+    stops search and returns false. Otherwise, the function returns true.
     """
 
 #    print allowed
@@ -161,10 +158,10 @@ def t1_filter(t1_iter,
               GAFFIELDS,
               EXP_default=set([])):
     '''
-       This method accepts 2 uniprot-goa files and checks to see for all
-       proteins present in t2 files, if the evidence code of the proteins
-       in t1 file is electronic or experimental. Accordingly, splits them
-       into 2 different files and writes out the files
+    This method accepts 2 uniprot-goa files and checks to see for all
+    proteins present in t2 files, if the evidence code of the proteins
+    in t1 file is electronic or experimental. Accordingly, splits them
+    into 2 different files and writes out the files
     '''
 
     t2_exp_handle = open(t2_exp_name, 'r')
