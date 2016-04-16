@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 '''
     This module has a set of methods to facilitate fetching records 
     from a UniprotKB/SwissProt file and appending them at the end of 
@@ -74,7 +73,6 @@
         This method extracts information from the SwissProt record that is
         equivalent to 'Date' field of UniProt-GOA file and then returns it.
 '''
-
 import os
 import sys
 import subprocess
@@ -135,6 +133,12 @@ def find_reactome_id(sprotRec):
     return None 
 
 def assignDB_REF(sprotRec, crossRef):
+    """
+    This method extracts information from SwissProt record to construct
+    DB_REF (DB:Reference) field of UniProt-GOA file format. It follows 
+    the rules described in: 
+        ftp://ftp.ebi.ac.uk/pub/databases/GO/goa/UNIPROT/README
+    """
     if (find_pubmed(sprotRec) is not None):
         return 'PMID' + ':' + find_pubmed(sprotRec)
     elif (find_doi(sprotRec) is not None):
