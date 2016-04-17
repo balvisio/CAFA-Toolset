@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 '''
     Benchmark program accepts two input files in UniProt-GOA GAF format at
     two distinct time points t1 and t2. The input files can be downloaded
@@ -18,7 +17,6 @@
 
     python Benchmark --help
 '''
-
 import os
 import sys
 import argparse
@@ -231,7 +229,6 @@ class Benchmark:
         This method creates all the necessary intermediate files 
         that are needed to create the desired benchmark sets.
         """
-
         # Create paper-term freq file for t2 file:
         ann_conf = ptf.paper_term_freq( open(self.t2_input_file,'r'),
                                         open(self.t2_ptf_file,'w'),
@@ -246,14 +243,15 @@ class Benchmark:
         # Filter t2 file for all proteins with EXP evidence:
         print 'Parsing t2 file: ' + basename(self.t2_input_file) + ' ...'
         t2_exp_handle = open(self.t2_exp_name, 'w')
-        for ingen in iter_handle: # Iterate through t2 file entries
+        # Iterate through entries of the input file at time t2:
+        for ingen in iter_handle: 
             retval = gc.record_has_forBenchmark(ingen,
                                                 ann_conf,
                                                 self.parsed_dict,
                                                 tax_id_name_mapping,
                                                 self.ConfigParam['exp_eec'],
                                                 GAFFIELDS)
-            # If retval is TRUE, write out the record to t2.exp file:
+            # If retval is TRUE, write out the record to the file t2_exp_name:
             if retval:
                 GOA.writerec(ingen, t2_exp_handle, GAFFIELDS)
         t2_exp_handle.close()
