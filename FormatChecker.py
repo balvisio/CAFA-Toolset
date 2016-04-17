@@ -1,5 +1,4 @@
 #!/usr/bin/python
-
 '''
     This methods in this script check the format of an input file. 
     It has the following methods to check the file format: 
@@ -16,7 +15,6 @@
             if the file is in correct format
         Otherwise, it returns True
 '''
-
 import os
 import sys
 import re
@@ -73,7 +71,6 @@ def check_benchmark_format_old(benchmarkFile, work_dir):
     """
     This method checks the format of a benchmark file. 
     It returns False:
-        if file name is an empty strings or 
         the file does not exist or 
         the file size is zero or 
         the the file is NOT in correct format
