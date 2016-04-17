@@ -11,7 +11,7 @@
         This method returns False:
             if the input file name is an empty string or
             if the file does not exist or
-            if the file size is zero or 
+            if the file size is zero or
             if the file is in correct format
         Otherwise, it returns True
 '''
@@ -34,6 +34,11 @@ class bcolors:
     UNDERLINE = '\033[4m'
 
 def check_gaf_format(fname):
+    """
+    This method checks whether the format of the file given by fname 
+    is in GAF 1.0 or GAF 2.0.
+
+    """
     if os.stat(fname).st_size == 0:
         print bcolors.WARNING + 'You submitted an empty file: ' + fname + \
             bcolors.ENDC
@@ -58,7 +63,7 @@ def check_benchmark_format(benchmark_fh):
     """
     This method checks the format of a benchmark file. 
     It returns False:
-        if the the file is NOT in correct  2-column format
+        if the the file is NOT in correct 2-column format
     Otherwise, it returns True
     """
     for lines in benchmark_fh:
