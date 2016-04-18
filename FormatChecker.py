@@ -4,8 +4,9 @@
     It has the following methods to check the file format:
 
     check_gaf_format():
-        It checks wheter the format of the file is in GAF. If an error 
-        is encountered with the format, the program breaks with a message.
+        It checks wheter the format of the file is in GAF. 
+        If the file is in GAF format, it returns True
+        Otherwise, it returns False
 
     check_benchmark_format:
         This method returns False:
@@ -31,7 +32,23 @@ class bcolors:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
-def check_gaf_format(fname):
+def check_gaf_format(goa_fh):
+    """
+    This method checks whether the format of the file given by fname 
+    is in GAF 1.0 or GAF 2.0.
+    If the file is in GAF format, it returns True
+    Otherwise, it returns False.  
+    """
+    firstline = goa_fh.readline()
+    fields = firstline.strip().split('\t')
+    if re.search('^\!gaf', firstline):
+        return True 
+    elif len(fields) == 15:
+        return True 
+    else:
+        return False 
+
+def check_gaf_format_old(fname):
     """
     This method checks whether the format of the file given by fname 
     is in GAF 1.0 or GAF 2.0.
