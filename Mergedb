@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 '''
     The Mergedb program Merges UniProtKB/SwissProt and Uniprot-GOA
     annotation datasets.
@@ -30,7 +29,6 @@
     with all the new annotations for yeast (taxon id 559292) from the first 
     input file.
 '''
-
 import os
 import sys
 from os.path import basename
