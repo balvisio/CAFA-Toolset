@@ -295,6 +295,26 @@ class Benchmark:
             break
         return None
 
+    def check_gaf_format(self, goa_fname):
+        """
+        This method exits the Benchmark program on any of the
+        following conditions:
+            Case 1: if the file is empty
+            Case 2: if the file is NOT in GAF format. To check this
+                    it invokes check_gaf_format method of
+                    FormatChecker module.
+        """
+        if os.stat(goa_fname).st_size == 0:
+            print bcolors.WARNING + 'You submitted an empty file: ' + goa_fname + \
+                  bcolors.ENDC
+            sys.exit(1)
+        elif not fc.check_gaf_format(open(goa_fname, 'r')):
+            print bcolors.WARNING + "File format error: " + \
+                  fname + bcolors.ENDC
+            print bcolors.WARNING + "File must be in GAF 1.0 or GAF 2.0 \
+                format" + bcolors.ENDC
+            sys.exit(1)
+
     def print_prolog(self):
         print "*************************************************"
         print "Welcome to Benchmark Creation Tool !!!!!"
@@ -323,6 +343,7 @@ class Benchmark:
         print(bcolors.OKGREEN + 'Thank you for using Benchmark ' + \
                                 'Creation Tool' + bcolors.ENDC)
         return None
+    
 
     def process_data(self): 
         """ 
@@ -332,11 +353,12 @@ class Benchmark:
         # Print the wellcome message and argument list:
         self.print_prolog() 
         # File format check for t1 file:
-        fc.check_gaf_format(self.t1_input_file) 
+        self.check_gaf_format(self.t1_input_file)
         # File format check for t2 file:
-        fc.check_gaf_format(self.t2_input_file) 
+        self.check_gaf_format(self.t2_input_file)
+
         # Create necessary intermediate files:
-        self.create_intermediate_files() 
+        self.create_intermediate_files()
         # Populate benchmark files:
         cb.create_benchmarks(open(self.t1_iea_name, 'r'),
                              open(self.t1_exp_name, 'r'),
