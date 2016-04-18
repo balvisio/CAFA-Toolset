@@ -1,7 +1,7 @@
 #!/usr/bin/python
 '''
     This methods in this script check the format of an input file. 
-    It has the following methods to check the file format: 
+    It has the following methods to check the file format:
 
     check_gaf_format():
         It checks wheter the format of the file is in GAF. If an error 
@@ -18,9 +18,7 @@
 import os
 import sys
 import re
-from collections import defaultdict
 from os.path import basename
-import subprocess
 import stat
 
 class bcolors:
