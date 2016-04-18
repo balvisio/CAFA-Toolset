@@ -105,8 +105,11 @@ class Mergedb:
         return iter_handle, GAFFIELDS
 
     def create_outfilename(self, params, outfile, work_dir):
-         # Creates an output filename based on the output file prefix 
-         # provided by the user:
+        """
+         This method creates an output filename based on the output 
+         file prefix provided by the user and returns the created 
+         file name. 
+        """
         if not outfile == '':
             ob = basename(self.parsed_dict['outfile'])
         else:
