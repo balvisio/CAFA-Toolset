@@ -50,7 +50,7 @@ def check_gaf_format(goa_fh):
 
 def check_sprot_format(sprot_fh): 
     """
-    Yest to be defined.
+    Yet to be defined.
     """
     return False 
 
