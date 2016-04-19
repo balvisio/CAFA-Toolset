@@ -48,31 +48,11 @@ def check_gaf_format(goa_fh):
     else:
         return False 
 
-def check_gaf_format_old(fname):
+def check_sprot_format(sprot_fh): 
     """
-    This method checks whether the format of the file given by fname 
-    is in GAF 1.0 or GAF 2.0.
-
+    Yest to be defined.
     """
-    if os.stat(fname).st_size == 0:
-        print bcolors.WARNING + 'You submitted an empty file: ' + fname + \
-            bcolors.ENDC
-        sys.exit(1)
-    else:
-        fhandle = open(fname, 'r')
-        firstline = fhandle.readline()
-        fields = firstline.strip().split('\t')
-        if re.search('^\!gaf', firstline):
-            pass
-        elif len(fields) == 15:
-            pass
-        else:
-            print bcolors.WARNING + "File format error: " + \
-                fname + bcolors.ENDC
-            print bcolors.WARNING + "File must be in GAF 1.0 or GAF 2.0 \
-                format" + bcolors.ENDC
-            fhandle.close()
-            sys.exit(1)
+    return False 
 
 def check_benchmark_format(benchmark_fh):
     """
