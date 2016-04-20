@@ -121,6 +121,26 @@ class Mergedb:
         output_filename = self.work_dir + '/' + ob + '.' + str(index)
         return output_filename
 
+    def check_sprot_format(self, sprot_fname):
+        """
+        This method exits the Mergedb program on any of the
+        following conditions:
+            Case 1: if the file is empty
+            Case 2: if the file is NOT in UniProtKB/SwissProt format.
+                    To check this it invokes check_sprot_format method
+                    of FormatChecker module.
+        """
+        if os.stat(sprot_fname).st_size == 0:
+            print bcolors.WARNING + 'You submitted an empty file: ' + sprot_fname + \
+                  bcolors.ENDC
+            sys.exit(1)
+        elif not fc.check_sprot_format(open(sprot_fname, 'r')):
+            print bcolors.WARNING + 'File format error: ' + \
+                  basename(sprot_fname) + bcolors.ENDC
+            print bcolors.WARNING + 'File must be in UniProtKB/SwissProt ' + \
+                'format' + bcolors.ENDC
+            sys.exit(1)
+
     def check_gaf_format(self, goa_fname):
         """
         This method exits the Benchmark program on any of the
@@ -136,9 +156,9 @@ class Mergedb:
             sys.exit(1)
         elif not fc.check_gaf_format(open(goa_fname, 'r')):
             print bcolors.WARNING + "File format error: " + \
-                  fname + bcolors.ENDC
-            print bcolors.WARNING + "File must be in GAF 1.0 or GAF 2.0 \
-                format" + bcolors.ENDC
+                  basename(goa_fname) + bcolors.ENDC
+            print bcolors.WARNING + 'File must be in GAF 1.0 or GAF 2.0 ' + \
+                'format' + bcolors.ENDC
             sys.exit(1)
 
     def print_prolog(self):
@@ -167,6 +187,10 @@ class Mergedb:
     def process_data(self): 
         # Print wellcome message:
         self.print_prolog()
+
+        # Check UniProtKB/SwissProt file format: 
+        self.check_sprot_format(self.t1_input_file)
+
         # Check UniProt-GOA file format:
         self.check_gaf_format(self.t2_input_file) 
 
