@@ -159,7 +159,6 @@ class Benchmark:
         UniProt-GOA file. The UniProt-GOA file can either be in GAF 1.0 or
         GAF 2.0 file format.
         """
-
         infile_handle = open(infile, 'r')
         iter_handle = GOA.gafiterator(infile_handle)
         for ingen in iter_handle:
@@ -309,10 +308,10 @@ class Benchmark:
                   bcolors.ENDC
             sys.exit(1)
         elif not fc.check_gaf_format(open(goa_fname, 'r')):
-            print bcolors.WARNING + "File format error: " + \
-                  fname + bcolors.ENDC
-            print bcolors.WARNING + "File must be in GAF 1.0 or GAF 2.0 \
-                format" + bcolors.ENDC
+            print bcolors.WARNING + 'File format error: ' + \
+                  basename(goa_fname) + bcolors.ENDC
+            print bcolors.WARNING + 'File must be in GAF 1.0 or GAF 2.0 ' + \
+                'format' + bcolors.ENDC
             sys.exit(1)
 
     def print_prolog(self):
