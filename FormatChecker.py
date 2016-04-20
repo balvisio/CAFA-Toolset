@@ -8,6 +8,15 @@
         If the file is in GAF format, it returns True
         Otherwise, it returns False
 
+    check_sprot_format(fh_sprot):
+        This method checks whether the format of the file
+        (with file handle fh_sprot) is in UniProtKB/Swissprot 
+        format.
+        If the file is in UniProtKB/Swissprot format format,
+            it returns True
+        Otherwise,
+            it returns False.
+
     check_benchmark_format:
         This method returns False:
             if the input file name is an empty string or
@@ -20,75 +29,56 @@ import os
 import sys
 import re
 from os.path import basename
+
+from Bio import SwissProt as sp
 import stat
 
-class bcolors:
-    HEADER = '\033[95m'
-    OKBLUE = '\033[94m'
-    OKGREEN = '\033[92m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
-
-def check_gaf_format(goa_fh):
+def check_gaf_format(fh_goa):
     """
-    This method checks whether the format of the file given by fname 
-    is in GAF 1.0 or GAF 2.0.
+    This method checks whether the format of the file
+    (with file handle fh_goa) is in GAF 1.0 or GAF 2.0.
     If the file is in GAF format, it returns True
-    Otherwise, it returns False.  
+    Otherwise, it returns False.
     """
-    firstline = goa_fh.readline()
+    firstline = fh_goa.readline()
     fields = firstline.strip().split('\t')
     if re.search('^\!gaf', firstline):
-        return True 
+        return True
     elif len(fields) == 15:
-        return True 
+        return True
     else:
-        return False 
+        return False
 
-def check_sprot_format(sprot_fh): 
+def check_sprot_format(fh_sprot):
     """
-    Yet to be defined.
+    This method checks whether the format of the file
+    (with file handle fh_sprot) is in UniProtKB/Swissprot format.
+    If the file is in UniProtKB/Swissprot format format,
+        it returns True
+    Otherwise,
+       it returns False.
     """
-    return False 
+    iter_handle = sp.parse(fh_sprot) # sp.parse returns a generator
+    try:
+        for rec in iter_handle:
+            break
+    except:
+        return False
+    else:
+        return True
 
-def check_benchmark_format(benchmark_fh):
+def check_benchmark_format(fh_benchmark):
     """
     This method checks the format of a benchmark file. 
     It returns False:
         if the the file is NOT in correct 2-column format
     Otherwise, it returns True
     """
-    for lines in benchmark_fh:
+    for lines in fh_benchmark:
         cols = lines.strip().split('\t')
         if len(cols) != 2:
             return False
     return True
-
-def check_benchmark_format_old(benchmarkFile, work_dir):
-    """
-    This method checks the format of a benchmark file. 
-    It returns False:
-        the file does not exist or 
-        the file size is zero or 
-        the the file is NOT in correct format
-    Otherwise, it returns True
-    """
-    if not os.path.exists(work_dir + '/' + benchmarkFile):
-        return False 
-    elif os.stat(work_dir + '/' + benchmarkFile).st_size == 0:
-        return False
-    else:
-        fh = open(work_dir + '/' + benchmarkFile, 'r')
-        for lines in fh:
-            cols = lines.strip().split('\t')
-            if len(cols) != 2:
-                fh.close()
-                return False
-        fh.close()
-        return True
 
 if __name__ == '__main__':
     print (sys.argv[0] + ':')
