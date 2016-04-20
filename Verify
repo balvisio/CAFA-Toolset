@@ -258,16 +258,16 @@ class Verify:
                   bcolors.ENDC
             sys.exit(1)
         elif not fc.check_gaf_format(open(goa_fname, 'r')):
-            print bcolors.WARNING + "File format error: " + \
-                  fname + bcolors.ENDC
-            print bcolors.WARNING + "File must be in GAF 1.0 or GAF 2.0 \
-                format" + bcolors.ENDC
+            print bcolors.WARNING + 'File format error: ' + \
+                  basename(goa_fname) + bcolors.ENDC
+            print bcolors.WARNING + 'File must be in GAF 1.0 or GAF 2.0 ' + \
+                'format' + bcolors.ENDC
             sys.exit(1)
 
     def print_prolog(self):
-        print "*************************************************"
-        print "Welcome to Benchmark Verification Tool !!!!!"
-        print "*************************************************\n"
+        print '*************************************************'
+        print 'Welcome to Benchmark Verification Tool !!!!!'
+        print '*************************************************\n'
         print 'Following is a list of user supplied inputs:\n'
         for arg in self.parsed_dict:
             print arg + ': ' + str(self.parsed_dict[arg])
