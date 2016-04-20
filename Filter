@@ -148,14 +148,36 @@ class Filter:
                bcolors.ENDC)
         return None
 
+    def check_sprot_format(self, sprot_fname):
+        """
+        This method exits the Filter program on any of the
+        following conditions:
+            Case 1: if the file is empty
+            Case 2: if the file is NOT in UniProtKB/SwissProt format.
+                    To check this it invokes check_sprot_format method
+                    of FormatChecker module.
+        """
+        if os.stat(sprot_fname).st_size == 0:
+            print bcolors.WARNING + 'You submitted an empty file: ' + sprot_fname + \
+                  bcolors.ENDC
+            sys.exit(1)
+        elif not fc.check_sprot_format(open(sprot_fname, 'r')):
+            print bcolors.WARNING + 'File format error: ' + \
+                  basename(sprot_fname) + bcolors.ENDC
+            print bcolors.WARNING + 'File must be in UniProtKB/SwissProt ' + \
+                'format' + bcolors.ENDC
+            sys.exit(1)
+
     def process_data(self):
         """
         This method invokes other methods to perform all tasks related
         to target generation.
         """
-
         # Print the wellcome message:
         self.print_prolog()
+
+        # Check UniProtKB/SwissProt file format: 
+        self.check_sprot_format(self.t1_input_file)
 
         # Filter out the target sequences from the UniProtKB/SwissProt file:
         print('Filtering sequences from ' + \
