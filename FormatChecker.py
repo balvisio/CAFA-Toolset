@@ -58,7 +58,7 @@ def check_sprot_format(fh_sprot):
     Otherwise,
        it returns False.
     """
-    iter_handle = sp.parse(fh_sprot) # sp.parse returns a generator
+    iter_handle = sp.parse(fh_sprot) # sp.parse method returns a generator
     try:
         for rec in iter_handle:
             break
