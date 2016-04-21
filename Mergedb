@@ -38,7 +38,6 @@ import argparse
 import ConfigParser as cp
 import shutil
 import subprocess
-from collections import defaultdict
 
 import AppendSprot2GOA as as2g
 import ArgParser_Mergedb as ap
