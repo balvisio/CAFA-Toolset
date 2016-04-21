@@ -191,7 +191,7 @@ This tool will create a file for the target set, containing the protein
 sequences in the fasta file format. The simplest way to run the program 
 for target generation:
 
-python Filter  --input1 UniProtKB/SwissProt-annotation-at-t0  -G taxon_id
+python Filter  --input1 UniProtKB/SwissProt-annotation-at-t0 -G taxon_id
 
 input1 is a UniProtKB/SwissProt annotation file at a certain time point (on
 CAFA time-line, this is time t0, the sequence release date for the CAFA 
@@ -201,7 +201,7 @@ uniprot_sprot.dat.38 as the UniProtKB/SwissProt annotation file and
 559292 as taxon id for Saccharomyces cerevisiae.
 
 ```
-python Filter -I1=uniprot_sprot.dat.2014_09  -G=559292
+python Filter -I1=uniprot_sprot.dat.2014_09 -G=559292
 ```
 
 It will create the following two output files - one for the target sequences
