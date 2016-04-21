@@ -23,7 +23,6 @@ import argparse
 import shutil
 import subprocess
 from os.path import basename 
-from collections import defaultdict
 from Bio.UniProt import GOA
 
 import ArgParser_Benchmark as ap
@@ -343,7 +342,6 @@ class Benchmark:
                                 'Creation Tool' + bcolors.ENDC)
         return None
     
-
     def process_data(self): 
         """ 
         This method processes user data, creates necessary intermediate files, 
