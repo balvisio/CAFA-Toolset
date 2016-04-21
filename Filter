@@ -34,7 +34,6 @@ import argparse
 import ConfigParser as cp
 import shutil
 import subprocess
-from collections import defaultdict
 
 import ArgParser_Filter as ap
 import Config
