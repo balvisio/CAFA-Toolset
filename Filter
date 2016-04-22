@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 '''
     Filter program accepts the following three inputs:
            (1) a UniProtKB/swissProt file 
@@ -25,12 +24,10 @@
             This will contain the mapping of target sequence ids and protein
             names.
 '''
-
 import os
 import sys
 from os.path import basename 
 
-import argparse
 import ConfigParser as cp
 import shutil
 import subprocess
