@@ -33,7 +33,6 @@ import os
 import sys
 from os.path import basename
 
-import argparse
 #import configparser as cp
 import ConfigParser as cp
 import shutil
