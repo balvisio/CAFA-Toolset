@@ -24,10 +24,8 @@
 
     python Verify --help
 '''
-
 import os
 import sys
-import argparse
 import shutil
 import subprocess
 from os.path import basename 
