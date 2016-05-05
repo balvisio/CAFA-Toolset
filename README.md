@@ -46,7 +46,7 @@ are submitted for publication.
 
 The definitions of some of the terms used in this document are as follows.
 
-##### UniProt-GOA 
+#### UniProt-GOA 
 This is a database for protein assignments to GO resources which maintains a 
 dynamically controlled vocabulary. 
 *  UniProt-GOA dataset current release: 
@@ -63,7 +63,7 @@ dynamically controlled vocabulary.
 *  Specifications of the fields of GOA file formats:
    ftp://ftp.ebi.ac.uk/pub/databases/GO/goa/UNIPROT/README
 
-##### UniProtKB/SwissProt 
+#### UniProtKB/SwissProt 
 This is a non-redundant protein sequence database. Each entry in this database
 is manually annotated involving detailed analysis of the protein sequence and
 of the scientific literature. The database is recognized as the central access
