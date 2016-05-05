@@ -47,8 +47,8 @@ class testFilter:
     def download_testDataset(self, testDataset_fh):
         '''
         This method iterates through the list of the testdata file names. 
-        If it does not find any of the testdata files on workspace, it 
-        downloads it from the UniProtKB/SwissProt archive.
+        If it does not find any of the testdata files in workspace, it 
+        downloads the data file from the UniProtKB/SwissProt archive.
         '''
 
         for line in testDataset_fh:
