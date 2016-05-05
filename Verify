@@ -62,7 +62,6 @@ bmSuffix_NK_mfo = '.benchmark_NK_mfo.'
 
 class Verify:
     def __init__(self):
-
         # Obtain user supplied argument values in a dictionary: 
         self.parsed_dict = ap.parse_args('verify')
         # Collect config file entries:
@@ -70,7 +69,7 @@ class Verify:
 
         t1 = self.parsed_dict['t1'] # Retreive file name at time t1
         t2 = self.parsed_dict['t2'] # Retreive file name at time t2
-        t3 = self.parsed_dict['t3'] # Retreive file name at time t2
+        t3 = self.parsed_dict['t3'] # Retreive a benchmark file name
 
         # Retreive work directory name:
         self.work_dir = (self.ConfigParam['workdir']).rstrip('/')
