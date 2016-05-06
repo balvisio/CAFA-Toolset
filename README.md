@@ -70,6 +70,8 @@ of the scientific literature. The database is recognized as the central access
 point of the extensive curated protein information, classification, and
 cross-reference.
 
+* Gene Counts with Experimental Annotations in UniProtKB/SwissProt: 
+  https://github.com/arkatebi/SwissProt-stats
 * UniProtKB/SwissProt dataset current release:
   ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/
 * UniProtKB/SwissProt dataset archive (release 46 and greater):
