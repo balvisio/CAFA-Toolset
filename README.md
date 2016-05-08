@@ -44,8 +44,6 @@ are submitted for publication.
 * CAFA rules and announcements: http://biofunctionprediction.org/node/8 
 
 
-The definitions of some of the terms used in this document are as follows.
-
 #### UniProt-GOA 
 This is a database for protein assignments to GO resources which maintains a 
 dynamically controlled vocabulary. 
@@ -82,6 +80,9 @@ cross-reference.
   http://web.expasy.org/docs/relnotes/relstat.html
 * UniProtKB/SwissProt file format:
   http://arep.med.harvard.edu/labgc/jong/Fetch/SwissProtAll.html
+
+
+The definitions of some of the terms used in this document are as follows.
 
 #### Time points t0, t1, t2, and t3
 t0 is the time point when a CAFA experiment is launched and targets are made
