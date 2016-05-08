@@ -38,13 +38,13 @@ This software is specifically designed for the participants in the upcoming
 CAFA 3 experiment. The CAFA 1 results are published [1] and CAFA 2 results 
 are submitted for publication. 
 
-#### Some informative sites 
+##### Some informative sites 
 * Automated Protein Function Prediction: http://biofunctionprediction.org/
 * Function-SIG (formerly AFP-SIG) at ISMB 2016: https://www.iscb.org/ismb2016program/ismb2016-sigs#afp-sig  
 * CAFA rules and announcements: http://biofunctionprediction.org/node/8 
 
 
-#### UniProt-GOA 
+##### UniProt-GOA 
 This is a database for protein assignments to GO resources which maintains a 
 dynamically controlled vocabulary. 
 *  UniProt-GOA dataset current release: 
@@ -61,7 +61,7 @@ dynamically controlled vocabulary.
 *  Specifications of the fields of GOA file formats:
    ftp://ftp.ebi.ac.uk/pub/databases/GO/goa/UNIPROT/README
 
-#### UniProtKB/SwissProt 
+##### UniProtKB/SwissProt 
 This is a non-redundant protein sequence database. Each entry in this database
 is manually annotated involving detailed analysis of the protein sequence and
 of the scientific literature. The database is recognized as the central access
