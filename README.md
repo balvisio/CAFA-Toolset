@@ -35,7 +35,7 @@ Ontology (CCO). The following figure shows the CAFA time-line.
 ![Alt CAFA time line] (/figures/cafa-timeLine.png?raw=true “CAFA Timeline”)
 
 This software is specifically designed for the participants in the upcoming 
-CAFA-3 experiment. The CAFA-1 results are published [1] and CAFA-2 results 
+CAFA-3 experiment. The CAFA-1 results are published in Nature Methods [1] and CAFA-2 results 
 are submitted for publication. 
 
 ##### Some informative sites 
