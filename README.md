@@ -39,9 +39,10 @@ CAFA-3 experiment. The CAFA-1 results are published in Nature Methods [1] and CA
 are submitted for publication. 
 
 ##### Some informative sites 
+* CAFA rules and announcements: http://biofunctionprediction.org/node/8 
 * Automated Protein Function Prediction: http://biofunctionprediction.org/
 * Function-SIG (formerly AFP-SIG) at ISMB 2016: https://www.iscb.org/ismb2016program/ismb2016-sigs#afp-sig  
-* CAFA rules and announcements: http://biofunctionprediction.org/node/8 
+* Selected Proceedings from AFP Meeting 2011: http://bmcbioinformatics.biomedcentral.com/articles/supplements/volume-14-supplement-3 
 * News Release about CAFA-1: http://miamioh.edu/news/article/view/18233.html
 
 
