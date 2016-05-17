@@ -60,7 +60,7 @@ dynamically controlled vocabulary.
    http://www.geneontology.org/gene-associations/readme/goa.README
 *  List of all GOA file formats: 
    http://geneontology.org/page/go-annotation-file-formats
-*  Specifications of the fields of GOA file formats:
+*  UniProt-GOA file formats:
    ftp://ftp.ebi.ac.uk/pub/databases/GO/goa/UNIPROT/README
 
 ##### UniProtKB/SwissProt 
