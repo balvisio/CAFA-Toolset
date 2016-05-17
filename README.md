@@ -81,8 +81,7 @@ cross-reference.
 * Detailed release statistics:
   http://web.expasy.org/docs/relnotes/relstat.html
 * UniProtKB/SwissProt file format:
-  http://arep.med.harvard.edu/labgc/jong/Fetch/SwissProtAll.html
-
+  http://web.expasy.org/docs/userman.html
 
 ### Some Definitions
 The definitions of some of the terms used in this document are as follows.
