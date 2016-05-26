@@ -206,7 +206,7 @@ Successful run of this program will create the following two output files -
 one for the target sequences and one for the target id and protein name 
 mapping used in the target sequence output file: 
 uniprot_sprot.dat.2014_09.559292.tfa.1 and 
-uniprot_sprot.dat.2014_09.559292.tfa.1.map
+uniprot_sprot.dat.2014_09.559292.tfa.1.map, respectively.
 
 * The target sequence output file name is created by adding an extension with
 the name of the input file where the extension is formed in the following way:
