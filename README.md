@@ -216,10 +216,13 @@ the name of the input file where the extension is formed in the following way:
 output file name: [taxon id].[tfa].[version #].map
 
 * Multiple run of this program with the same input file will create
-subsequent versions of the output file where the file name will end with
-subsequent version number, such as 2, 3, 4, etc.
+subsequent versions of the output files.
 
 The program can also take an output file name as a command line argument:
+
+```
+python Filter -I1=uniprot_sprot.dat.2014_09 -G=559292 -O=uniprot_sprot.dat.2014_09.559292.tfa
+```
 
 python Filter --input1 UniProtKB/SwissProt-annotation-at-t0 -G taxon_id -output output_filename
 
