@@ -161,7 +161,7 @@ python Mergedb -I1=uniprot_sprot.dat.2014_09 -I2=gene_association.goa_ref_yeast.
 
 The first input, uniprot_sprot.dat.2014_09, is a UniProtKB/SwissProt 
 filename. The second input, gene_association.goa_ref_yeast.38, is a
-UniProt-GOA file. The third input is the taxon id for which the 
+UniProt-GOA file. The third input is the taxonomy id for which the 
 records will be integrated together. 
 
 This command will extract the annotations for taxon id 559292 from the
