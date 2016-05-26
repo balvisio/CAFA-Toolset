@@ -199,7 +199,7 @@ for target generation:
 python Filter -I1=uniprot_sprot.dat.2014_09 -G=559292
 ```
 The first input is a UniProtKB/SwissProt annotation filename. The second 
-iput is the taxonomy id for the species (in this case Saccharomyces 
+input is the taxonomy id for the species (in this case Saccharomyces 
 cerevisiae) whose protein sequences are being filtered. 
 
 Successful run of this program will create the following two output files 
