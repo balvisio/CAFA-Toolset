@@ -218,8 +218,8 @@ output file name: [taxon id].[tfa].[version #].map
 * Multiple run of this program with the same input file will create
 subsequent versions of the output files.
 
-The program can also take an output file for the merged file name as a 
-command line argument:
+The program can also take an output filename to save the filtered sequences 
+as a command line argument:
 
 ```
 python Filter -I1=uniprot_sprot.dat.2014_09 -G=559292 -O=uniprot_sprot.dat.2014_09.559292.tfa
