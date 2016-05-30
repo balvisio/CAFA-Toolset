@@ -180,7 +180,7 @@ subsequent version number, such as 2, 3, 4, etc.
 ##### Note 
 The UniProtKB/SwissProt file uniprot_sprot.dat.38 is not uploaded to GitHub
 as one of the example input files because of its large size. To retreive 
-this specific file from the UniProt website, please perform the following
+this specific file from the UniProt repository, please perform the following
 commands:
 
 ```
