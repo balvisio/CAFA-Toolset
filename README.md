@@ -25,12 +25,13 @@
 
 This software is developed to facilitate the Critical Annotation of protein 
 Function Annotation (CAFA) experiment and can be useful to anyone engaged in 
-protein function prediction research. CAFA evaluates and ranks the prediction 
-algorithms based on their ability to predict Gene Ontology (GO) and Human 
-Phenotype Ontology (HPO) terms for a given set of protein sequences. The GO 
-terms can be in any of the following three categories: Molecular Function 
-Ontology (MFO), Biological Process Ontology (BPO), and Cellular Component 
-Ontology (CCO). The following figure shows the CAFA time-line.
+protein function prediction research. CAFA evaluates the strengths and 
+weaknesses of the prediction algorithms based on their ability to predict 
+Gene Ontology (GO) and Human Phenotype Ontology (HPO) terms for a given set 
+of protein sequences. The GO terms can be in any of the following three 
+categories: Molecular Function Ontology (MFO), Biological Process Ontology 
+(BPO), and Cellular Component Ontology (CCO). The following figure shows the 
+CAFA time-line.
 
 ![Alt CAFA time line] (/figures/cafa-timeLine.png?raw=true “CAFA Timeline”)
 
@@ -53,15 +54,14 @@ dynamically controlled vocabulary.
    ftp://ftp.ebi.ac.uk/pub/databases/GO/goa
 *  UniProt-GOA dataset archive: 
    ftp://ftp.ebi.ac.uk/pub/databases/GO/goa/old
-*  UniProt-GOA datasets can be either in GAF 1.0 or GAF 2.0 file format.
-*  GAF 1.0 format: http://geneontology.org/page/go-annotation-file-gaf-format-10
-*  GAF 2.0 format: http://geneontology.org/page/go-annotation-file-format-20
 *  UniProt-GOA README:
    http://www.geneontology.org/gene-associations/readme/goa.README
 *  List of all GOA file formats: 
    http://geneontology.org/page/go-annotation-file-formats
 *  UniProt-GOA file formats:
    ftp://ftp.ebi.ac.uk/pub/databases/GO/goa/UNIPROT/README
+*  GAF 1.0 format: http://geneontology.org/page/go-annotation-file-gaf-format-10
+*  GAF 2.0 format: http://geneontology.org/page/go-annotation-file-format-20
 
 ##### UniProtKB/SwissProt 
 This is a non-redundant protein sequence database. Each entry in this database
@@ -108,13 +108,13 @@ It is the large collection of protein sequences released at time point t0
 when the CAFA challenge is announced.
 
 #### Benchmark set
-It is a set of proteins whose functions were, until recently, unknown. 
-Protein annotations at two time points, t1 and t2, are collected from the 
-annotation databases such as UniProt-GOA or UniProt/SwissProt, and the 
-annotations that gained experimental evidence at time t2 are placed in the 
-benchmark set. Two types of benchmark sets, no-knowledge and 
-limited-knowledge, are used in each of the three ontological categories 
-(MFO, BPO, and CCO) to evaluate the protein function prediction models. 
+It is a set of proteins whose functions were, until recently, unknown.
+Protein annotations at two time points, t1 and t2, are collected from the
+annotation databases such as UniProt-GOA or UniProtKB/SwissProt, and the
+annotations that gained experimental evidence at time t2 are placed in the
+benchmark set. Two types of benchmark sets, no-knowledge and
+limited-knowledge, are used in each of the three ontological categories
+(MFO, BPO, and CCO) to evaluate the protein function prediction models.
 Thus, we can have total six types of benchmark sets.
 
 ##### No-knowledge (NK) benchmark sets
@@ -152,19 +152,20 @@ The details of the usage description of the CAFA Toolset are as follows.
 
 ### Integrating Annotation Datasets
 This tool integrates protein annoations from multiple sources. Currently, it
-supports UniProtKB/SwissProt and UniProt-GOA file format. Here is the 
+supports two file formats: UniProtKB/SwissProt and UniProt-GOA. Here is the
 command to run this tool:
 
 ```
 python Mergedb -I1=uniprot_sprot.dat.2014_09 -I2=gene_association.goa_ref_yeast.38 -G 559292
 ```
 
-The first input, uniprot_sprot.dat.2014_09, is a UniProtKB/SwissProt 
-filename. The second input, gene_association.goa_ref_yeast.38, is a
-UniProt-GOA file. The third input is the taxonomy id for which the 
-records will be integrated together. 
+The first input, uniprot_sprot.dat.2014_09, is the filename of a 
+UniProtKB/SwissProt file. The second input, 
+gene_association.goa_ref_yeast.38, is the filename of a UniProt-GOA file. 
+The third input is the taxonomy id for which the records will be integrated 
+together.
 
-This command will extract the annotations for taxon id 559292 from the
+This command will extract the annotations for taxonomy id 559292 from the
 UniProtKB/SwissProt file and append them at the end of the UniProt-GOA file,
 considering only the entries that are NOT in the latter file.
 It will create a new file with the combined data:
@@ -172,7 +173,7 @@ It will create a new file with the combined data:
 whose file format would be the same as the UniProt-GOA format i.e. either
 GAF 1.0 or GAF 2.0.
 
-Multiple runs of this program with the same input file versions will create
+Multiple runs of this program with the same input arguments will create
 subsequent versions of the output file where the file name will end with
 subsequent version number, such as 2, 3, 4, etc.
 
@@ -215,7 +216,7 @@ the name of the input file where the extension is formed in the following way:
 * The map file name is created by adding '.map' at the end of the target sequence
 output file name: [taxon id].[tfa].[version #].map
 
-* Multiple run of this program with the same input file will create
+* Multiple runs of this program with the same input file will create
 subsequent versions of the output files.
 
 The program can also take an output filename to save the filtered sequences 
@@ -241,19 +242,19 @@ Each of the input files must be in GAF 1.0 or GAF 2.0 format.
 
 Execution of this program will create six benchmark files:
 
-1. gene_association.goa_ref_yeast.52-23.benchmark_LK_bpo.1
-2. gene_association.goa_ref_yeast.52-23.benchmark_LK_cco.1
-3. gene_association.goa_ref_yeast.52-23.benchmark_LK_mfo.1
-4. gene_association.goa_ref_yeast.52-23.benchmark_NK_bpo.1
-5. gene_association.goa_ref_yeast.52-23.benchmark_NK_cco.1
-6. gene_association.goa_ref_yeast.52-23.benchmark_NK_mfo.1 
+1. gene_association.goa_ref_yeast.52-23.benchmark_LK_mfo.1
+2. gene_association.goa_ref_yeast.52-23.benchmark_LK_bpo.1
+3. gene_association.goa_ref_yeast.52-23.benchmark_LK_cco.1
+4. gene_association.goa_ref_yeast.52-23.benchmark_NK_mfo.1
+5. gene_association.goa_ref_yeast.52-23.benchmark_NK_bpo.1
+6. gene_association.goa_ref_yeast.52-23.benchmark_NK_cco.1
 
-Files (1) – (3) are the three LK-benchmark files in BPO, CCO, and MFO 
+Files (1) – (3) are the three LK-benchmark files in MFO, BPO, and CCO 
 categories, respectively. Files (4) – (6) are the three NK-benchmark 
-files in these ontologies (BPO, CCO, and MFO), respectively. Running this 
+files in these ontologies (MFO, BPO, and CCO), respectively. Running this 
 tool multiple times with the same input file name at time point t2, will 
 create the benchmark files that end with the subseqent version number, 
-such as 2, 3, 4 etc. in consecutive runs.
+such as 2, 3, 4 etc.
 
 ### Benchmark Verification
 This tool will verify the benchmark files generated by the Benchmark Creation 
