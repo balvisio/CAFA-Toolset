@@ -120,7 +120,7 @@ Thus, we can have total six types of benchmark sets.
 ##### No-knowledge (NK) benchmark sets
 An NK-benchmark set consists of the proteins that did not have any
 experimentally verified annotations in any of the GO ontologies
-(MFO, BPO, CCO) at time t1 but have gained at least one experimentally
+(MFO, BPO, and CCO) at time t1 but have gained at least one experimentally
 verified functional term in a specific ontology between time t1 and t2.
 Therefore, we will have three NK-benchmark sets – one for each ontology.
 
