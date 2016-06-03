@@ -161,9 +161,8 @@ class Mergedb:
 
     def print_prolog(self):
         print("*************************************************")
-        print("Welcome to Merge Database Tool !!!!!")
-        print("*************************************************\n")
-        print('Following is a list of user supplied inputs:\n')
+        print("Running Merge Database Tool !!!!!")
+        print('Following is a list of user supplied inputs:')
         for arg in self.parsed_dict:
             print(arg + ': ' + str(self.parsed_dict[arg]))
         print('*********************************************\n')
@@ -193,7 +192,7 @@ class Mergedb:
         self.check_gaf_format(self.t2_input_file) 
 
         # Merging in TWO steps:
-        print ('Merging records: ')
+        print ('Merging records in two steps - copying and appending:')
 
         # Step 1: 
            # Copy the gene association file to the output file:
