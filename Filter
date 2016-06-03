@@ -116,9 +116,8 @@ class Filter:
 
     def print_prolog(self):
         print ("*************************************************")
-        print ("Welcome to Target Generatin Tool !!!!!")
-        print ("*************************************************\n")
-        print ('Following is a list of user supplied inputs:\n')
+        print ("Running Target Generatin Tool !!!!!")
+        print ('Following is a list of user supplied inputs:')
         for arg in self.parsed_dict:
             print (arg + ': ' + str(self.parsed_dict[arg]))
         print ('*********************************************\n')
