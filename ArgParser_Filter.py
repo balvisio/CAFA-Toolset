@@ -31,7 +31,7 @@ def collect_args():
     at the end.
     """
     parser = argparse.ArgumentParser(description='Generate a set of target ' + \
-        'sequences for a specific organism by filtering them out fro a ' + \
+        'sequences for a specific organism by filtering them out from a ' + \
         'UniProt-SwissProt file.')
     parser.add_argument('-I1', '--input1', help=' Specifies path to a ' + \
         'UniProt-SwissProt file. This opton is mandatory.')
