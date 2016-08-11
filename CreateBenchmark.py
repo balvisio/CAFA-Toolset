@@ -82,6 +82,10 @@ def write_benchmarks(protName,
                     bmfile_NK_xxo_handle,
                     ontType # Can take string BPO, CCO, or MFO
                    ):
+    '''
+    This method selects proteins for different benchmark type and 
+    does the actual writing.
+    '''
     if ontType.upper() == 'BPO':
         t1_xxo_dict = t1_bpo_dict
     elif ontType.upper() == 'CCO':
@@ -124,7 +128,7 @@ def create_benchmarks(t1_iea_handle,
     for lines in t1_iea_handle:
         cols = lines.strip().split('\t')
         if cols[8] == 'F':
-            # write out MFO type benchmarks: 
+            # write out MFO type benchmarks:
             write_benchmarks(cols[1],
                              t1_bpo_dict,
                              t1_cco_dict,
@@ -135,7 +139,7 @@ def create_benchmarks(t1_iea_handle,
                              'MFO'
                             )
         elif cols[8] == 'P':
-            # write out BPO type benchmarks: 
+            # write out BPO type benchmarks:
             write_benchmarks(cols[1],
                               t1_bpo_dict,
                               t1_cco_dict,
@@ -146,7 +150,7 @@ def create_benchmarks(t1_iea_handle,
                               'BPO'
                             )
         elif cols[8] == 'C':
-            # write out CCO type benchmarks: 
+            # write out CCO type benchmarks:
             write_benchmarks(cols[1],
                              t1_bpo_dict,
                              t1_cco_dict,
@@ -156,7 +160,7 @@ def create_benchmarks(t1_iea_handle,
                              bmfile_NK_cco_handle,
                              'CCO'
                             )
-    # Clear all dictionaries: 
+    # Clear all dictionaries:
     t1_bpo_dict.clear()
     t1_cco_dict.clear()
     t1_mfo_dict.clear()
