@@ -73,39 +73,58 @@ def create_exp_ann_dict(goa_exp_handle):
             t1_cco_dict[cols[1]].add(cols[4])
     return (t1_bpo_dict, t1_cco_dict, t1_mfo_dict)
 
-def write_benchmarks(protName,
+
+def write_NK_benchmarks(protName,
                     t1_bpo_dict,
                     t1_cco_dict,
                     t1_mfo_dict,
-                    t2_xxo_dict,
-                    bmfile_LK_xxo_handle,
-                    bmfile_NK_xxo_handle,
-                    ontType # Can take string BPO, CCO, or MFO
+                    t2_xxo_dict, 
+                    bmfile_NK_xxo_handle  
                    ):
     '''
-    This method selects proteins for different benchmark type and 
-    does the actual writing.
+    This method selects proteins for no-knowledge benchmarks in different 
+    ontological categories and does the actual writing.
+    t2_xxo_dict and bmfile_NK_xxo_handle should match: 
+    If t2_xxo_dict is for BPO then bmfile_NK_xxo_handle will also be for BPO
+    and so on. 
     '''
-    if ontType.upper() == 'BPO':
-        t1_xxo_dict = t1_bpo_dict
-    elif ontType.upper() == 'CCO':
-        t1_xxo_dict = t1_cco_dict
-    elif ontType.upper() == 'MFO':
-        t1_xxo_dict = t1_mfo_dict
-    else:
-        print 'Error in write_benchmarks parameter passing'
-        sys.exit(1)
-
-    if protName not in t1_xxo_dict and protName in t2_xxo_dict:
-        # Limited-Knowledge benchmarks: BPO, CCO, or MFO type based on LKtype
-        for term in t2_xxo_dict[protName]:
-            print >> bmfile_LK_xxo_handle, str(protName) + '\t' + str(term)
-
     if protName not in t1_mfo_dict and protName not in t1_bpo_dict and \
        protName not in t1_cco_dict and protName in t2_xxo_dict:
         # No-Knowledge benchmarks: BPO, CCO, or MFO type based on LKtype
         for term in t2_xxo_dict[protName]:
             print >> bmfile_NK_xxo_handle, str(protName) + '\t' + str(term)
+    return None
+
+def write_LK_benchmarks(protName,
+                    t1_bpo_dict,
+                    t1_cco_dict,
+                    t1_mfo_dict,
+                    t2_xxo_dict,
+                    bmfile_LK_xxo_handle,
+                    ontType # Can take string BPO, CCO, or MFO
+                   ):
+    '''
+    This method selects proteins for limited-knowledge benchmarks in 
+    different ontological categories and does the actual writing.
+    '''
+    if ontType.upper()=='BPO':
+        if protName not in t1_bpo_dict and protName in t2_xxo_dict and \
+          (protName in t1_cco_dict or protName in t1_mfo_dict):
+        # Limited-Knowledge benchmarks: BPO type
+            for term in t2_xxo_dict[protName]:
+                print >> bmfile_LK_xxo_handle, str(protName) + '\t' + str(term)
+    elif ontType.upper()=='CCO':
+        if protName not in t1_cco_dict and protName in t2_xxo_dict and \
+          (protName in t1_bpo_dict or protName in t1_mfo_dict):
+        # Limited-Knowledge benchmarks: CCO type
+            for term in t2_xxo_dict[protName]:
+                print >> bmfile_LK_xxo_handle, str(protName) + '\t' + str(term)
+    elif ontType.upper()=='MFO':
+        if protName not in t1_mfo_dict and protName in t2_xxo_dict and \
+          (protName in t1_cco_dict or protName in t1_cco_dict):
+        # Limited-Knowledge benchmarks: MFO type
+            for term in t2_xxo_dict[protName]:
+                print >> bmfile_LK_xxo_handle, str(protName) + '\t' + str(term)
     return None
 
 def create_benchmarks(t1_iea_handle,
@@ -129,37 +148,65 @@ def create_benchmarks(t1_iea_handle,
         cols = lines.strip().split('\t')
         if cols[8] == 'F':
             # write out MFO type benchmarks:
-            write_benchmarks(cols[1],
+            write_NK_benchmarks(cols[1],
+                             t1_bpo_dict,
+                             t1_cco_dict,
+                             t1_mfo_dict,
+                             t2_mfo_dict,
+                             bmfile_NK_mfo_handle
+                            )
+            write_LK_benchmarks(cols[1],
                              t1_bpo_dict,
                              t1_cco_dict,
                              t1_mfo_dict,
                              t2_mfo_dict,
                              bmfile_LK_mfo_handle,
-                             bmfile_NK_mfo_handle,
                              'MFO'
                             )
         elif cols[8] == 'P':
             # write out BPO type benchmarks:
-            write_benchmarks(cols[1],
+            write_NK_benchmarks(cols[1],
+                              t1_bpo_dict,
+                              t1_cco_dict,
+                              t1_mfo_dict,
+                              t2_bpo_dict,
+                              bmfile_NK_bpo_handle
+                            )
+            write_LK_benchmarks(cols[1],
                               t1_bpo_dict,
                               t1_cco_dict,
                               t1_mfo_dict,
                               t2_bpo_dict,
                               bmfile_LK_bpo_handle,
-                              bmfile_NK_bpo_handle,
                               'BPO'
                             )
         elif cols[8] == 'C':
             # write out CCO type benchmarks:
-            write_benchmarks(cols[1],
+            write_NK_benchmarks(cols[1],
+                             t1_bpo_dict,
+                             t1_cco_dict,
+                             t1_mfo_dict,
+                             t2_cco_dict,
+                             bmfile_NK_cco_handle
+                            )
+            write_LK_benchmarks(cols[1],
                              t1_bpo_dict,
                              t1_cco_dict,
                              t1_mfo_dict,
                              t2_cco_dict,
                              bmfile_LK_cco_handle,
-                             bmfile_NK_cco_handle,
                              'CCO'
                             )
+    # Clear all dictionaries:
+    t1_bpo_dict.clear()
+    t1_cco_dict.clear()
+    t1_mfo_dict.clear()
+
+    t2_bpo_dict.clear()
+    t2_cco_dict.clear()
+    t2_mfo_dict.clear()
+    return None
+
     # Clear all dictionaries:
     t1_bpo_dict.clear()
     t1_cco_dict.clear()
