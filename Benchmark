@@ -141,6 +141,54 @@ class Benchmark:
             ob = basename(self.parsed_dict['outfile']) + \
                  '.benchmark' + '_' + ontType
         else:
+
+            if bool(self.parsed_dict['Taxon_ID']):
+                ob = basename(self.parsed_dict['t2']) + '-' + \
+                    ((basename(self.parsed_dict['t1'])).split('.'))[-1] + \
+                    '.' + str((list(self.parsed_dict['Taxon_ID']))[0]) + \
+                    '.benchmark' + '_' + ontType
+            else: 
+                ob = basename(self.parsed_dict['t2']) + '-' + \
+                    ((basename(self.parsed_dict['t1'])).split('.'))[-1] + \
+                    '.benchmark' + '_' + ontType
+        index = 1
+        while os.path.exists(self.work_dir + '/' + ob + '.' + str(index)):
+            index = index + 1
+        output_filename = self.work_dir + '/' + ob + '.' + str(index)
+        return output_filename
+
+    def create_outfilename_old(self, ontType):
+        """
+        This method creates an output filename according to the following
+        rules: 
+            (1) When the user supplies the optional output filename prefix,
+                this method looks for the latest version of the related file
+                name in the workspace (See the while loop). It creates a new
+                file name for the subsequent version:
+
+                output_filename = self.work_dir + '/' + ob + '.' + str(index)
+            
+                This ensures that multiple runs of Benchmark program with the 
+                same arguments creates new version of output files.
+
+            (2) When the user does not supply the optional output filename 
+                prefix, this method creates a new prefix based on the two 
+                input data file names (See code in else block). Then the 
+                program looks for the latest version of the related file 
+                name in the workspace (See the while loop). Then, it creates
+                a new file name for the subsequent version:
+
+                output_filename = self.work_dir + '/' + ob + '.' + str(index)
+
+                Here again, this ensures that multiple runs of Benchmark 
+                program with the same arguments creates new version of output
+                files.
+        At the end, the method returns the newly created filename.
+        """
+        if not self.parsed_dict['outfile'] == '':
+            ob = basename(self.parsed_dict['outfile']) + \
+                 '.benchmark' + '_' + ontType
+        else:
             ob = basename(self.parsed_dict['t2']) + '-' + \
                  ((basename(self.parsed_dict['t1'])).split('.'))[-1] + \
                 '.benchmark' + '_' + ontType
@@ -257,6 +305,11 @@ class Benchmark:
         if os.stat(self.t2_exp_name).st_size == 0:
             print('Your benchmark set will be empty with the ' + \
                   'parameters provided. Quiting ...')
+            # Delete two intermediate files: 
+            # Delete exp_name files:
+            # os.remove(self.t2_exp_name)
+            # Delete paper term frequency file for t2 file:
+            # os.remove(self.t2_ptf_file)
             sys.exit(1)
        
         # Create t1.iea_name and t1.exp_name files:
