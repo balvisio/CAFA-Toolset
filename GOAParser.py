@@ -402,34 +402,6 @@ def gafiterator(handle):
         sys.stderr.write("gaf 1.0\n")
         return _gaf10iterator(handle)
 
-def writerec_old(outrec,handle,fields=GAF20FIELDS):
-    """Write a single UniProt-GOA record to an output stream. 
-
-    Caller should know the  format version. Default: gaf-2.0
-    If header has a value, then it is assumed this is the first record,
-    a header is written.
-    """
-    outstr = ''
-    for field in fields[:-1]:
-        try:
-            if isinstance(outrec[field], list):
-                for subfield in outrec[field]:
-                    outstr += subfield + '|'
-                outstr = outstr[:-1] + '\t'
-            else:
-                outstr += outrec[field] + '\t'
-        except:
-            print('something')
-    #print fields
-    #print fields[:-1]
-    #print fields[-1]
-    print outrec
-    #print outstr
-    #print outrec[fields[-1]] 
-    sys.exit(0)
-    outstr += outrec[fields[-1]] + '\n'
-    handle.write("%s" % outstr)
-
 def writerec(outrec,handle,fields=GAF20FIELDS):
     """Write a single UniProt-GOA record to an output stream. 
 
