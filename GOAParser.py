@@ -141,7 +141,6 @@ GAF10FIELDS = ['DB' ,
         'Date' , 
         'Assigned_By'] 
 
-
 # GPA version 1.0
 GPA10FIELDS = [
       'DB',
@@ -247,7 +246,6 @@ def gpi_iterator(handle):
         sys.stderr.write("gpi 1.0\n")
         return _gpi10iterator(handle)
 
-
 def _gpa10iterator(handle):
     """
     Read GPA 1.0 format files (PRIVATE).
@@ -267,7 +265,6 @@ def _gpa10iterator(handle):
         inrec[10] = inrec[10].split('|') # Annotation extension
         yield dict(zip(GPA10FIELDS, inrec))
 
-
 def _gpa11iterator(handle):
     """
     Read GPA 1.1 format files (PRIVATE).
@@ -286,7 +283,6 @@ def _gpa11iterator(handle):
         inrec[10] = inrec[10].split('|') # Annotation extension
         yield dict(zip(GPA11FIELDS, inrec))
 
-
 def gpa_iterator(handle):
     """
     Wrapper function: read GPA format files.
@@ -301,7 +297,6 @@ def gpa_iterator(handle):
     else:
         sys.stderr.write("gpa 1.0\n")
         return _gpa10iterator(handle)
-
 
 def _gaf20iterator(handle):
     for inline in handle:
@@ -406,6 +401,34 @@ def gafiterator(handle):
     else:
         sys.stderr.write("gaf 1.0\n")
         return _gaf10iterator(handle)
+
+def writerec_old(outrec,handle,fields=GAF20FIELDS):
+    """Write a single UniProt-GOA record to an output stream. 
+
+    Caller should know the  format version. Default: gaf-2.0
+    If header has a value, then it is assumed this is the first record,
+    a header is written.
+    """
+    outstr = ''
+    for field in fields[:-1]:
+        try:
+            if isinstance(outrec[field], list):
+                for subfield in outrec[field]:
+                    outstr += subfield + '|'
+                outstr = outstr[:-1] + '\t'
+            else:
+                outstr += outrec[field] + '\t'
+        except:
+            print('something')
+    #print fields
+    #print fields[:-1]
+    #print fields[-1]
+    print outrec
+    #print outstr
+    #print outrec[fields[-1]] 
+    sys.exit(0)
+    outstr += outrec[fields[-1]] + '\n'
+    handle.write("%s" % outstr)
 
 def writerec(outrec,handle,fields=GAF20FIELDS):
     """Write a single UniProt-GOA record to an output stream. 
