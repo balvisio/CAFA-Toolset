@@ -199,7 +199,6 @@ def swissProt2GOA(sprotRec, crossRef, fields=GOAParser.GAF20FIELDS):
      dictionary using the 'fields' as keys and values taken from
      sprotRec, and then returns the constructed GOA record.
     """
-
     # 15 fields are defined for GAF10FIELDS (GAF 1.0):
     goaRec = {'DB':'SwissProt', # 'SwissProt' is assigned to DB
               'DB_Object_ID': sprotRec.accessions[0],
