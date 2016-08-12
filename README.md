@@ -169,7 +169,9 @@ This command will extract the annotations for taxonomy id 559292 from the
 UniProtKB/SwissProt file and append them at the end of the UniProt-GOA file,
 considering only the entries that are NOT in the latter file.
 It will create a new file with the combined data:
-   gene_association.goa_ref_yeast.38+sprot.38.1
+```
+   gene_association.goa_ref_yeast.38+sprot.2014_09.1
+```
 whose file format would be the same as the UniProt-GOA format i.e. either
 GAF 1.0 or GAF 2.0.
 
