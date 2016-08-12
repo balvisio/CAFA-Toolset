@@ -22,7 +22,8 @@ import sys
 import shutil
 import subprocess
 from os.path import basename 
-from Bio.UniProt import GOA
+#from Bio.UniProt import GOA
+import GOAParser as GOA
 
 import ArgParser_Benchmark as ap
 import Config
