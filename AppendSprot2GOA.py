@@ -204,11 +204,11 @@ def swissProt2GOA(sprotRec, crossRef, fields=GOAParser.GAF20FIELDS):
     goaRec = {'DB':'SwissProt', # 'SwissProt' is assigned to DB
               'DB_Object_ID': sprotRec.accessions[0],
               'DB_Object_Symbol': assignSymbol(sprotRec),
-              'Qualifier': [], # is assinged an empty list
+              'Qualifier': [''], # is assinged an empty list
               'GO_ID': crossRef[1],
               'DB:Reference': assignDB_REF(sprotRec, crossRef),
               'Evidence': (crossRef[3].split(':'))[0],
-              'With': [],
+              'With': [''],
               'Aspect': (crossRef[2].split(':'))[0],
               'DB_Object_Name' : (crossRef[2].split(':'))[1],
               'Synonym': assignSynonym(sprotRec),
@@ -220,8 +220,8 @@ def swissProt2GOA(sprotRec, crossRef, fields=GOAParser.GAF20FIELDS):
 #    print goaRec['DB:Reference']
     # Two extra fields are defined for GAF20FIELDS (GAF 2.0):
     if len(fields) == 17:
-        goaRec['Annotation_Extension'] = ''
-        goaRec['Gene_Product_Form_ID'] = ''
+        goaRec['Annotation_Extension'] = '' 
+        goaRec['Gene_Product_Form_ID'] = '' 
     return goaRec
 
 def create_iterator(infile):
