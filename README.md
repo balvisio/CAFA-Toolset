@@ -125,13 +125,12 @@ verified functional term in a specific ontology between time t1 and t2.
 Therefore, we will have three NK-benchmark sets – one for each ontology.
 
 ##### Limited-knowledge (LK) benchmark sets
-An LK-benchmark set consists of the proteins that did not have any
-experimentally verified annotations in a specific GO ontology, such as
-MFO (irrespective of whether it had such annotations in one or both of the
-other two ontologies) at time point t1 but have gained at least one
-experimentally verified functional term in that specific ontology between
-time points t1 and t2. Therefore, we will have three LK-benchmark sets – 
-one for each ontology.
+An LK-benchmark set consists of the proteins that did not have any 
+experimentally verified annotations in a specific GO ontology (say, MFO) 
+but had such annotations in any of the other two ontologies (say, BPO and 
+CCO) at time t1 and subsequently gained at least one experimentally verified 
+functional term in that specific ontology (MFO) between time t1 and t2. 
+Therefore, we will have three LK benchmark sets – one for each ontology.
 
 ### Requirements
 * Python 2.7 
