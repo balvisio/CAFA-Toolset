@@ -304,13 +304,17 @@ class Benchmark:
 
         # If t2.exp is empty, program quits:
         if os.stat(self.t2_exp_name).st_size == 0:
+            print('Empty intermediate file: ' + basename(self.t2_exp_name))
             print('Your benchmark set will be empty with the ' + \
-                  'parameters provided. Quiting ...')
-            # Delete two intermediate files: 
+                  'parameters provided.')
+            print('Program will quit after deleting the intermediate files ...')
             # Delete exp_name files:
-            # os.remove(self.t2_exp_name)
+            print('Deleting intermediate file: '+ basename(self.t2_exp_name))
+            os.remove(self.t2_exp_name)
             # Delete paper term frequency file for t2 file:
-            # os.remove(self.t2_ptf_file)
+            print('Deleting intermediate file: '+ basename(self.t2_ptf_file))
+            os.remove(self.t2_ptf_file)
+            print('Quiting ...')
             sys.exit(1)
        
         # Create t1.iea_name and t1.exp_name files:
