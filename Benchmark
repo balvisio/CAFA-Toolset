@@ -284,7 +284,8 @@ class Benchmark:
 
         # Create tax_id_name_mapping for filtering t2 file:
         tax_id_name_mapping = gc.parse_tax_file(self.ConfigParam['tax_file'])
-
+        #print(tax_id_name_mapping)
+        #sys.exit(0)
         # Create t2_exp_name file:
         # Filter t2 file for all proteins with EXP evidence:
         print 'Parsing t2 file: ' + basename(self.t2_input_file) + ' ...'
@@ -310,10 +311,10 @@ class Benchmark:
             print('Program will quit after deleting the intermediate files ...')
             # Delete exp_name files:
             print('Deleting intermediate file: '+ basename(self.t2_exp_name))
-            os.remove(self.t2_exp_name)
+            #os.remove(self.t2_exp_name)
             # Delete paper term frequency file for t2 file:
             print('Deleting intermediate file: '+ basename(self.t2_ptf_file))
-            os.remove(self.t2_ptf_file)
+            #os.remove(self.t2_ptf_file)
             print('Quiting ...')
             sys.exit(1)
        
@@ -403,8 +404,8 @@ class Benchmark:
         This method processes user data, creates necessary intermediate files, 
         creates benchmark sets, and afterwards deletes the intermediate files.
         """
-        # Print the wellcome message and argument list:
-        self.print_prolog() 
+        # Print the welcome message and argument list:
+        self.print_prolog()
         # File format check for t1 file:
         self.check_gaf_format(self.t1_input_file)
         # File format check for t2 file:
@@ -425,9 +426,9 @@ class Benchmark:
         # Remove redundant benchmark entries:
         self.remove_redundant_benchmarks()
         # Delete intermediate files:
-        self.delete_intermediate_files()
+        #self.delete_intermediate_files()
         # Print summary of running this program:
-        self.print_epilog() 
+        self.print_epilog()
         return None
 
 if __name__ == '__main__':
