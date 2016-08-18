@@ -44,7 +44,6 @@ def parse_tax_file(tax_filename):
     This method acepts a taxonomy file, downloaded from NCBI
     and produces a mapping between tax ids and tax names.
     '''
-
     tax_id_name_mapping = {}
     tax_file = open(tax_filename,'r')
     for tax_lines in tax_file:
@@ -69,7 +68,6 @@ def record_has_forBenchmark(inupgrec,
     If any field in the record does not have an allowed value, the function
     stops search and returns false. Otherwise, the function returns true.
     """
-
 #    print allowed
 #    print allowed.keys()
 #    print '\n'
@@ -163,7 +161,6 @@ def t1_filter(t1_iter,
     in t1 file is electronic or experimental. Accordingly, splits them
     into 2 different files and writes out the files
     '''
-
     t2_exp_handle = open(t2_exp_name, 'r')
     
     exp_pid_dict = defaultdict(lambda:defaultdict())
