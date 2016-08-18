@@ -84,21 +84,26 @@ def species_filter(fh_sprot, taxon_id, fh_targets,
 
                 outseq = SeqRecord(Seq(rec.sequence),
                                    id="T"+str(target_id),
-                                   description = "%s" %
-                                   (rec.accessions[0]))
+                                   description = "%s\t%s" %
+                                   (rec.entry_name, rec.accessions[0]))
 
+#                outseq = SeqRecord(Seq(rec.sequence),
+#                                   id="T"+str(target_id),
+#                                   description = "%s" %
+#                                   (rec.accessions[0]))
                 outseq_list = [outseq]
                 # Write out the sequence:
                 SeqIO.write(outseq_list,fh_targets, "fasta")
+                # Create target id -> protein name map string:
 #                mapStr = "T" + str(target_id) + '\t' + \
 #                               str(rec.entry_name) + '\n'
 
-#                mapStr = "T" + str(target_id) + '\t' + \
-#                               str(rec.entry_name) + '\t' + \
-#                               str(rec.accessions[0]) + '\n'
-
                 mapStr = "T" + str(target_id) + '\t' + \
+                               str(rec.entry_name) + '\t' + \
                                str(rec.accessions[0]) + '\n'
+
+#                mapStr = "T" + str(target_id) + '\t' + \
+#                               str(rec.accessions[0]) + '\n'
 
                 # Write out the mapping (target id -> protein name):
                 fh_map.write("%s" % mapStr)
