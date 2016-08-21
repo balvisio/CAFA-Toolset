@@ -88,15 +88,13 @@ class Get_taxons:
         """
         #print('Checking target proteins in the UniProt-GOA list ...')
         fh_tlist = open(self.tList_fname, 'r')
-        # Create file handle for output file name:
+        # Create a dictionary with the target proteins:
         protein_dict = defaultdict(list)
         for line in fh_tlist:
             protName = line.strip()
             protein_dict[protName] = []
         fh_tlist.close()
-        #print(len(protein_dict.keys()))
         self.obtain_taxons(protein_dict, open(self.sprot_fname, 'r'))
-        #print(protein_dict.values())
         taxon_dict = self.group_proteins_by_taxons(protein_dict)
         #self.print_protein_dict(protein_dict)
         self.print_taxon_dict(taxon_dict)
