@@ -107,8 +107,8 @@ if __name__ == '__main__':
         print (sys.argv[0] + ':')
         print(__doc__)
     else:
-        # sys.argv[1]: file containing of proteins, one protein in each row
-        # sys.argv[2]: SwissProt file to retrieve the taxons from
+        # sys.argv[1]: file containing proteins, one protein in each row
+        # sys.argv[2]: SwissProt file to retrieve the taxon ids from
         gt = Get_taxons(sys.argv[1], sys.argv[2])
         gt.process_data()
     sys.exit(0)
