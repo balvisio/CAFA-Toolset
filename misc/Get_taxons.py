@@ -1,0 +1,104 @@
+#!/usr/bin/env python
+'''
+   How to run this program: 
+   python Get_taxons.py cafa3targetlist.csv uniprot_sprot.dat.2016_06 > t.txt
+
+   The program takes takes two input files:  
+       cafa3targetlist.csv: a file with protein names - one protein per line.
+       uniprot_sprot.dat.2016_06: a UniProtKB/SwissProt file 
+   The program retreives the taxon id for each protein in the first 
+   input file from the second file. Then groups the proteins 
+   according to the taxon ids. 
+
+   It outputs these proteins by taxon ids as groups.
+   It also has a method which can invoked to print each protein and 
+   its taxon id as retrieved. 
+'''
+import os
+import sys
+import subprocess
+from collections import defaultdict
+
+from Bio import SwissProt as sp
+
+#import Config
+
+config_filename = '.cafarc'
+
+class Get_taxons:
+    def __init__(self, tList_fname, sprot_fname):
+        # Collect config file entries:
+#        self.ConfigParam = Config.read_config(config_filename)
+#        self.work_dir = (self.ConfigParam['workdir']).rstrip('/')
+        self.work_dir = './workspace' 
+
+        self.tList_fname = self.work_dir + '/' + tList_fname
+        self.sprot_fname = self.work_dir + '/' + sprot_fname
+
+    def obtain_taxons(self, protein_dict, fh_sprot): 
+        found = False
+        for rec in sp.parse(fh_sprot):
+            for ac in range(len(rec.accessions)): 
+                if rec.accessions[ac] in protein_dict.keys(): 
+                    # assign rec.taxonomy_id list to the protein 
+                    protein_dict[rec.accessions[ac]] = rec.taxonomy_id 
+                    found = True
+                    break
+            #if found: 
+            #    break 
+        return protein_dict
+
+    def group_proteins_by_taxons(self, protein_dict):
+        taxons = set()
+        for v in list(protein_dict.values()):
+            taxons = taxons.union(set(v))
+        #print(taxons)
+        taxon_dict = defaultdict(list)
+
+        for t in list(taxons):
+            for p in protein_dict.keys():
+                if t in protein_dict[p]:
+                    taxon_dict[t].append(p)
+        return taxon_dict
+
+    def print_protein_dict(self, protein_dict):
+        for k in protein_dict.keys():
+            print(k + '\t' + str(protein_dict[k]))
+        return None
+
+    def print_taxon_dict(self, taxon_dict):
+        for t in taxon_dict.keys():
+            print(t + '\t',', '.join(taxon_dict[t]))
+        return None
+
+    def process_data(self):
+        """
+        This method creates all the necessary intermediate files
+        that are needed to create the desired benchmark sets.
+        """
+        #print('Checking target proteins in the UniProt-GOA list ...')
+        fh_tlist = open(self.tList_fname, 'r')
+        # Create file handle for output file name:
+        protein_dict = defaultdict(list)
+        for line in fh_tlist:
+            protName = line.strip()
+            protein_dict[protName] = []
+        fh_tlist.close()
+        #print(len(protein_dict.keys()))
+        self.obtain_taxons(protein_dict, open(self.sprot_fname, 'r'))
+        #print(protein_dict.values())
+        taxon_dict = self.group_proteins_by_taxons(protein_dict)
+        #self.print_protein_dict(protein_dict)
+        self.print_taxon_dict(taxon_dict)
+        return None
+
+if __name__ == '__main__':
+    if len(sys.argv) == 1:
+        print (sys.argv[0] + ':')
+        print(__doc__)
+    else:
+        # sys.argv[1]: file containing of proteins, one protein in each row
+        # sys.argv[2]: SwissProt file to retrieve the taxons from
+        gt = Get_taxons(sys.argv[1], sys.argv[2])
+        gt.process_data()
+    sys.exit(0)
