@@ -67,7 +67,17 @@ class Get_taxons:
         return None
 
     def print_taxon_dict(self, taxon_dict):
-        for t in taxon_dict.keys():
+        for t,p in taxon_dict.items():
+            print(t+'\t',', '.join(p))
+        return None
+
+    def print_taxon_dict_old(self, taxon_dict):
+        # Convert the list elements to integers and then sort it: 
+        taxon_nos = sorted(list(map(int,taxon_dict.keys())))
+        # convert the list elements back to strings: 
+        taxon_ids = list(map(str, taxon_nos))
+        # print the taxon id and the corresponding proteins:  
+        for t in taxon_ids:
             print(t + '\t',', '.join(taxon_dict[t]))
         return None
 
