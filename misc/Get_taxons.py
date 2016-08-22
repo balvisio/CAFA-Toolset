@@ -11,7 +11,7 @@
    according to the taxon ids. 
 
    It outputs these proteins by taxon ids as groups.
-   It also has a method (print_protein_dict)which can be invoked to print each protein and 
+   It also has a method (print_protein_dict) which can be invoked to print each protein and 
    its taxon id as retrieved.
 '''
 import os
