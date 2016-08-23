@@ -7,12 +7,12 @@
 # how to run: ./dl_cafa3targets.sh cafa3targetlist-uniq.csv cafa3targets_sprot.dat 
 outfile=$2
 #nrows=$(cat "$1" | wc -l)
+main_url="http://www.uniprot.org/uniprot/" 
 cat "$@"| 
 {
 while read name 
 do 
  protName=$(echo $name | tr -d '\r')
- main_url="http://www.uniprot.org/uniprot/" 
  dl_url=$main_url$protName".txt"
  wget $dl_url
  fname=$protName".txt"
