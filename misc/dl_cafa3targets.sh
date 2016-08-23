@@ -6,7 +6,7 @@
 # 2nd argument: an output file name 
 # how to run: ./dl_cafa3targets.sh cafa3targetlist-uniq.csv cafa3targets_sprot.dat 
 outfile=$2
-nrows=$(cat "$1" | wc -l)
+#nrows=$(cat "$1" | wc -l)
 cat "$@"| 
 {
 while read name 
