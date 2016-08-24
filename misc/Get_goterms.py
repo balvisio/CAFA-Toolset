@@ -112,16 +112,16 @@ class Get_goterms:
         """
         #print('Checking target proteins in the UniProt-GOA list ...')
         fh_tlist = open(self.tList_fname, 'r')
+
         # Create a dictionary with the target proteins:
-        protein_dict = defaultdict(list)
+        #protein_dict = defaultdict(list)
 
         # Create a dictionary with the target proteins as keys and set of
         # retreived GO term tuple (GO term, Exp Evid Code, Ont) as values:
         goterm_dict = defaultdict(set)
-
         for line in fh_tlist:
             protName = line.strip()
-            protein_dict[protName] = []
+            #protein_dict[protName] = []
             goterm_dict[protName]= set()
         fh_tlist.close()
 
