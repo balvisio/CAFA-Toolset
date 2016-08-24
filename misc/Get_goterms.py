@@ -92,11 +92,11 @@ class Get_goterms:
     def print_goterm_dict(self, goterm_dict):
         count=0
         for p,v in goterm_dict.items():
-            print('>'+p)
             # Print the tuples in the set of GO term information
             # (GO term, Exp Ev. Code, Ont):
             if not v: 
                 continue 
+            print('>'+p)
             for tp in v: 
                 print(','.join(str(e) for e in tp))
                 pass
