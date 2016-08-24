@@ -73,8 +73,8 @@ class Get_taxons:
 
     def process_data(self):
         """
-        This method creates all the necessary intermediate files
-        that are needed to create the desired benchmark sets.
+        This method invokes other methods to process data 
+        and obtain desired results. 
         """
         #print('Checking target proteins in the UniProt-GOA list ...')
         fh_tlist = open(self.tList_fname, 'r')
