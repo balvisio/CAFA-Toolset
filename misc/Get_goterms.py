@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 '''
    How to run this program: 
-   python Get_goterms.py cafa3targetlist.csv cafa3targets_sprot.dat > cafa3targets-goterms.txt
+   python Get_goterms.py cafa3targetlist.csv cafa3targets_sprot.dat > cafa3targets-GOterms.txt
 
    The program takes takes two input files:  
        cafa3targetlist.csv: a file with protein names - one protein per line.
