@@ -41,10 +41,11 @@ are submitted for publication.
 
 ##### Some informative sites 
 * CAFA rules and announcements: http://biofunctionprediction.org/node/8 
-* Automated Protein Function Prediction: http://biofunctionprediction.org/
+* Automated protein function prediction: http://biofunctionprediction.org/
 * Function-SIG (formerly AFP-SIG) at ISMB 2016: https://www.iscb.org/ismb2016program/ismb2016-sigs#afp-sig  
-* Selected Proceedings from AFP Meeting 2011: http://bmcbioinformatics.biomedcentral.com/articles/supplements/volume-14-supplement-3 
-* News Release about CAFA-1: http://miamioh.edu/news/article/view/18233.html
+* Selected proceedings from AFP meeting 2011: http://bmcbioinformatics.biomedcentral.com/articles/supplements/volume-14-supplement-3 
+* News release about CAFA-1: http://miamioh.edu/news/article/view/18233.html
+* Evidence code decision tree: http://miamioh.edu/news/article/view/18233.html
 
 
 ##### UniProt-GOA 
