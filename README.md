@@ -45,8 +45,7 @@ are submitted for publication.
 * Function-SIG (formerly AFP-SIG) at ISMB 2016: https://www.iscb.org/ismb2016program/ismb2016-sigs#afp-sig  
 * Selected proceedings from AFP meeting 2011: http://bmcbioinformatics.biomedcentral.com/articles/supplements/volume-14-supplement-3 
 * News release about CAFA-1: http://miamioh.edu/news/article/view/18233.html
-* Evidence code decision tree: http://miamioh.edu/news/article/view/18233.html
-
+* Evidence code decision tree: http://geneontology.org/page/evidence-code-decision-tree
 
 ##### UniProt-GOA 
 This is a database for protein assignments to GO resources which maintains a 
