@@ -133,8 +133,8 @@ functional term in that specific ontology (MFO) between time t1 and t2.
 Therefore, we will have three LK benchmark sets – one for each ontology.
 
 ### Requirements
-* Python 2.7 
-* Biopython 1.66 or greater 
+* Python 3.6
+* Biopython 1.79 or greater
 
 ### Software Usage 
 

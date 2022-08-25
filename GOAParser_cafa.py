@@ -176,8 +176,8 @@ def t1_filter(t1_iter,
     t1_exp_handle = open(t1_exp_name, "w")
 
     for rec in t1_iter:
-        if exp_pid_dict.has_key(rec['DB_Object_ID']):
-            if exp_pid_dict[rec['DB_Object_ID']].has_key(rec['Aspect']):
+        if rec['DB_Object_ID'] in exp_pid_dict:
+            if rec['Aspect'] in exp_pid_dict[rec['DB_Object_ID']]:
                 if not rec['Evidence'] in EXP_default:
                     GOAParser.writerec(rec, t1_iea_handle,GAFFIELDS)
                 elif rec['Evidence'] in EXP_default:

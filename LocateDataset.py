@@ -48,7 +48,7 @@ def locate_GOAfile(infile, work_dir):
         pass
     elif os.path.exists(infile):
         shutil.copy(infile, work_dir)
-        print basename(infile) + ' has been copied to workspace.'
+        print(basename(infile) + ' has been copied to workspace.')
     else:
         print (infile + ' is NOT available. Quitting ' + inspect.stack() [1][1] + ' Tool ...')  
         print ('********************************************************************************')

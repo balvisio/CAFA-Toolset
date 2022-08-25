@@ -92,7 +92,7 @@ def write_NK_benchmarks(protName,
        protName not in t1_cco_dict and protName in t2_xxo_dict:
         # No-Knowledge benchmarks: BPO, CCO, or MFO type based on LKtype
         for term in t2_xxo_dict[protName]:
-            print >> bmfile_NK_xxo_handle, str(protName) + '\t' + str(term)
+            print(str(protName) + '\t' + str(term), file=bmfile_NK_xxo_handle)
     return None
 
 def write_LK_benchmarks(protName,
@@ -112,19 +112,19 @@ def write_LK_benchmarks(protName,
           (protName in t1_cco_dict or protName in t1_mfo_dict):
         # Limited-Knowledge benchmarks: BPO type
             for term in t2_xxo_dict[protName]:
-                print >> bmfile_LK_xxo_handle, str(protName) + '\t' + str(term)
+                print(str(protName) + '\t' + str(term), file=bmfile_LK_xxo_handle)
     elif ontType.upper()=='CCO':
         if protName not in t1_cco_dict and protName in t2_xxo_dict and \
           (protName in t1_bpo_dict or protName in t1_mfo_dict):
         # Limited-Knowledge benchmarks: CCO type
             for term in t2_xxo_dict[protName]:
-                print >> bmfile_LK_xxo_handle, str(protName) + '\t' + str(term)
+                print(str(protName) + '\t' + str(term), file=bmfile_LK_xxo_handle)
     elif ontType.upper()=='MFO':
         if protName not in t1_mfo_dict and protName in t2_xxo_dict and \
           (protName in t1_cco_dict or protName in t1_cco_dict):
         # Limited-Knowledge benchmarks: MFO type
             for term in t2_xxo_dict[protName]:
-                print >> bmfile_LK_xxo_handle, str(protName) + '\t' + str(term)
+                print(str(protName) + '\t' + str(term), file=bmfile_LK_xxo_handle)
     return None
 
 def create_benchmarks(t1_iea_handle,
@@ -143,7 +143,7 @@ def create_benchmarks(t1_iea_handle,
     t2_bpo_dict, t2_cco_dict, t2_mfo_dict = create_exp_ann_dict(t2_exp_handle)
 
     # Populate benchmark files:
-    print 'Creating benchmark sets ...'
+    print('Creating benchmark sets ...')
     for lines in t1_iea_handle:
         cols = lines.strip().split('\t')
         if cols[8] == 'F':

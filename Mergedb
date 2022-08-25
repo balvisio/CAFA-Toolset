@@ -33,8 +33,7 @@ import os
 import sys
 from os.path import basename
 
-#import configparser as cp
-import ConfigParser as cp
+import configparser as cp
 import shutil
 import subprocess
 
@@ -129,14 +128,14 @@ class Mergedb:
                     of FormatChecker module.
         """
         if os.stat(sprot_fname).st_size == 0:
-            print bcolors.WARNING + 'You submitted an empty file: ' + sprot_fname + \
-                  bcolors.ENDC
+            print(bcolors.WARNING + 'You submitted an empty file: ' + sprot_fname + \
+                  bcolors.ENDC)
             sys.exit(1)
         elif not fc.check_sprot_format(open(sprot_fname, 'r')):
-            print bcolors.WARNING + 'File format error: ' + \
-                  basename(sprot_fname) + bcolors.ENDC
-            print bcolors.WARNING + 'File must be in UniProtKB/SwissProt ' + \
-                'format' + bcolors.ENDC
+            print(bcolors.WARNING + 'File format error: ' + \
+                  basename(sprot_fname) + bcolors.ENDC)
+            print(bcolors.WARNING + 'File must be in UniProtKB/SwissProt ' + \
+                'format' + bcolors.ENDC)
             sys.exit(1)
 
     def check_gaf_format(self, goa_fname):
@@ -149,14 +148,14 @@ class Mergedb:
                     FormatChecker module.
         """
         if os.stat(goa_fname).st_size == 0:
-            print bcolors.WARNING + 'You submitted an empty file: ' + goa_fname + \
-                  bcolors.ENDC
+            print(bcolors.WARNING + 'You submitted an empty file: ' + goa_fname + \
+                  bcolors.ENDC)
             sys.exit(1)
         elif not fc.check_gaf_format(open(goa_fname, 'r')):
-            print bcolors.WARNING + "File format error: " + \
-                  basename(goa_fname) + bcolors.ENDC
-            print bcolors.WARNING + 'File must be in GAF 1.0 or GAF 2.0 ' + \
-                'format' + bcolors.ENDC
+            print(bcolors.WARNING + "File format error: " + \
+                  basename(goa_fname) + bcolors.ENDC)
+            print(bcolors.WARNING + 'File must be in GAF 1.0 or GAF 2.0 ' + \
+                'format' + bcolors.ENDC)
             sys.exit(1)
 
     def print_prolog(self):

@@ -28,7 +28,7 @@ import os
 import sys
 from os.path import basename 
 
-import ConfigParser as cp
+import configparser as cp
 import shutil
 import subprocess
 
@@ -153,14 +153,14 @@ class Filter:
                     of FormatChecker module.
         """
         if os.stat(sprot_fname).st_size == 0:
-            print bcolors.WARNING + 'You submitted an empty file: ' + sprot_fname + \
-                  bcolors.ENDC
+            print(bcolors.WARNING + 'You submitted an empty file: ' + sprot_fname + \
+                  bcolors.ENDC)
             sys.exit(1)
         elif not fc.check_sprot_format(open(sprot_fname, 'r')):
-            print bcolors.WARNING + 'File format error: ' + \
-                  basename(sprot_fname) + bcolors.ENDC
-            print bcolors.WARNING + 'File must be in UniProtKB/SwissProt ' + \
-                'format' + bcolors.ENDC
+            print(bcolors.WARNING + 'File format error: ' + \
+                  basename(sprot_fname) + bcolors.ENDC)
+            print(bcolors.WARNING + 'File must be in UniProtKB/SwissProt ' + \
+                'format' + bcolors.ENDC)
             sys.exit(1)
 
     def process_data(self):

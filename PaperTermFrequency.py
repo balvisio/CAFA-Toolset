@@ -44,11 +44,10 @@ def paper_term_freq(goa_handle, ptf_handle, params):
     """
     ann_conf, paper_conf = count_freq(goa_handle,
                             params['Evidence'])
-    print 'Populating paper-term frequency file ...'
+    print('Populating paper-term frequency file ...')
     if len(paper_conf) > 0:
         for pubmed_id in paper_conf:
-            print >> ptf_handle, pubmed_id + '\t' + \
-                     str(len(paper_conf[pubmed_id]))
+            print(pubmed_id + '\t' + str(len(paper_conf[pubmed_id])), file=ptf_handle)
     paper_conf.clear()
     return ann_conf
 

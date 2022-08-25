@@ -131,20 +131,20 @@ def check_args(args_dict, parser):
     for arg in args_dict:
         if arg == 't1':
             if args_dict[arg] == None:
-                print 'Missing input file at time t1\n'
-                print parser.parse_args(['--help'])
+                print('Missing input file at time t1\n')
+                print(parser.parse_args(['--help']))
             else:
                 user_dict['t1'] = args_dict[arg]
         elif arg == 't2':
             if args_dict[arg] == None:
-                print 'Missing input file at time t2\n'
-                print parser.parse_args(['--help'])
+                print('Missing input file at time t2\n')
+                print(parser.parse_args(['--help']))
             else:
                 user_dict['t2'] = args_dict[arg]
         elif arg == 't3':
             if args_dict[arg] == None:
-                print 'Missing the benchmark file name\n'
-                print parser.parse_args(['--help'])
+                print('Missing the benchmark file name\n')
+                print(parser.parse_args(['--help']))
             else:
                 user_dict['t3'] = args_dict[arg]
         elif arg == 'outfile':
@@ -183,11 +183,11 @@ def parse_args(prog='benchmark'):
     args_dict = {}
     args, unknown = parser.parse_known_args()
     if len(unknown) > 0:
-        print '\n*********************************'
-        print "Invalid Arguments"
-        print '*********************************\n'
+        print('\n*********************************')
+        print("Invalid Arguments")
+        print('*********************************\n')
         # Shows help messages and quits:
-        print parser.parse_args(['--help']) 
+        print(parser.parse_args(['--help']))
     args_dict = extract_args(args, prog)
     user_dict = check_args(args_dict, parser)
     return user_dict
