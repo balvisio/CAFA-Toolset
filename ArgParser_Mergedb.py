@@ -90,11 +90,7 @@ def check_args(args_dict, parser):
         elif arg == 'outfile':
             user_dict[arg] = args_dict[arg]
         elif arg == 'g':
-            if args_dict[arg] == None: 
-                print('Missing organism id\n')
-                print (parser.parse_args(['--help']))
-            else:
-                user_dict['g'] = args_dict[arg]
+            user_dict['g'] = args_dict[arg]
         elif arg == 'Taxon_ID':
             if 'all' in args_dict[arg] or len(args_dict[arg]) == 0:
                 user_dict[arg] = set([])

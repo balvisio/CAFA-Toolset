@@ -272,7 +272,7 @@ def appendSprot2goa(fh_sprot, goa_file_name, taxon_id, fh_merged_go):
     for rec in sp.parse(fh_sprot):
         # SELECTS records that are related to a specific taxon_id
         # such as 559292 for yeast:
-        if taxon_id in rec.taxonomy_id:
+        if taxon_id is None or taxon_id in rec.taxonomy_id:
             # Going over each of the entries of the accessions list:
             for ac in range(len(rec.accessions)):
                 # knownProt is an indicator to detect whether the
