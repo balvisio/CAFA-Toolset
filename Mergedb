@@ -33,9 +33,8 @@ import os
 import sys
 from os.path import basename
 
-import configparser as cp
-import shutil
-import subprocess
+from Bio import SwissProt as sp
+import GOAParser as GOA
 
 import AppendSprot2GOA as as2g
 import ArgParser_Mergedb as ap
@@ -193,33 +192,51 @@ class Mergedb:
         # Merging in TWO steps:
         print ('Merging records in two steps - copying and appending:')
 
-        # Step 1: 
-           # Copy the gene association file to the output file:
-        print ('Copying records from ' + \
-                basename(self.t2_input_file) + ' to ' + \
-                basename(self.output_filename) + ' ...')
+        # Step 1: Create a map from ACs to primary AC.
+        primary_ac_map: dict[str, str] = {}
+        with open(self.t1_input_file, "r") as sprot_file:
+            for rec in sp.parse(sprot_file):
+                primary_ac = rec.accessions[0]
+                for ac in rec.accessions:
+                    primary_ac_map[ac] = primary_ac
 
-        cmd = "cp " + self.t2_input_file + " " + self.output_filename
-        subprocess.call(cmd, shell=True)
+        # Step 2: Create a file with a GAF header
+        with open(self.output_filename, "w") as output_file:
+            output_file.write("!gaf-version: 2.0\n")
 
-        # Step 2:
+            # Step 3: Iterate through input GAF file and replace secondary ACs
+            # with primary ACs.
+            iter_handle, GAFFIELDS = self.create_iterator(self.t2_input_file)
+            for ingen in iter_handle:
+                ingen['DB_Object_ID'] = primary_ac_map.get(
+                    ingen['DB_Object_ID'],
+                    ingen['DB_Object_ID']
+                )
+                GOA.writerec(ingen, output_file, GAFFIELDS)
+
+            # Step 4:
             # Fetch records from Uniprot-SwissProt file
             # Check for duplicacy in UniProt-GOA file 
             # Convert them to GOA records
             # Append them at the end of the output file one by one
             # All these are performed in appendSprot2goa method
-        print ('Appedning records from ' + \
-                basename(self.t1_input_file) + ' to ' + \
-                basename(self.output_filename) + ' ...')
+            print(
+                "Writing records from "
+                f"{basename(self.t1_input_file)} to "
+                f"{basename(self.output_filename)} ..."
+            )
 
-        goCount = as2g.appendSprot2goa(open(self.t1_input_file, 'r'),
-                                            self.t2_input_file,
-                                            self.parsed_dict['g'],
-                                       open(self.output_filename, 'a'))
+            goCount = as2g.appendSprot2goa(
+                open(self.t1_input_file, 'r'),
+                self.t2_input_file,
+                self.parsed_dict['g'],
+                output_file,
+            )
 
         # Print the summary of running this program:
         self.print_epilog(goCount)
         return None
+
 
 if __name__ == '__main__':
     if len(sys.argv) == 1:
